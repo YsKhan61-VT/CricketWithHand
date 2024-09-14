@@ -23,6 +23,8 @@ MonoBehaviour:
     - Category: Login
       Name: LoginWithUsername
     - Category: Login
+      Name: PlayAsGuest
+    - Category: Login
       Name: Register
     - Category: MainMenu
       Name: Login

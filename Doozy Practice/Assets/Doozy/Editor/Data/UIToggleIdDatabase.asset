@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: UIToggleIdDatabase
   m_EditorClassIdentifier: 
   Database:
-    Items: []
+    Items:
+    - Category: Login
+      Name: RememberMe
+    - Category: None
+      Name: None
