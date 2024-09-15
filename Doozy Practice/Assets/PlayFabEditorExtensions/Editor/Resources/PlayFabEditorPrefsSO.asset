@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d0199c11aa6f514784c5c69cd8378d8, type: 3}
+  m_Name: PlayFabEditorPrefsSO
+  m_EditorClassIdentifier: 
+  DevAccountEmail: yskhan61@gmail.com
+  DevAccountToken: 9dwei3r6ry89aw3yjk5a5idb9rt99wnxd747yeinkegessdb5njdkuikgqrsxffz3phiw69tatkryahtt1csznkuy4y9uwdxyrxrpxyuohwwtjjsmxqq5w5c3t517g4au8a1zc1o8de7io3m86md1yu8184hqc8d5ww7k3jbjqxgm7xtwhms1m6cdutdtgnuw1cmqdps
+  AadAuthorization: 
+  SelectedStudio: Mango
+  SdkPath: Assets/PlayFabSDK
+  EdExPath: 
+  LocalCloudScriptPath: 
+  PanelIsShown: 0
+  curMainMenuIdx: 0
+  curSubMenuIdx: 0

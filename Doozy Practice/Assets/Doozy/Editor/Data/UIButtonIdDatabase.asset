@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Database:
     Items:
-    - Category: GoogleSignOut
-      Name: Logout
+    - Category: DisplayName
+      Name: Save
+    - Category: Login
+      Name: LoginWithEmail
     - Category: Login
       Name: LoginWithFacebook
     - Category: Login
       Name: LoginWithGoogle
-    - Category: Login
-      Name: LoginWithUsername
     - Category: Login
       Name: PlayAsGuest
     - Category: Login
@@ -32,5 +32,9 @@ MonoBehaviour:
       Name: Settings
     - Category: None
       Name: None
+    - Category: Profile
+      Name: LinkAccount
+    - Category: Profile
+      Name: LogOut
     - Category: Settings
       Name: Back

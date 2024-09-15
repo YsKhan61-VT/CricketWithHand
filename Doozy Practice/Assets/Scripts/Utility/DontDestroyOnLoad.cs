@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-namespace YSK.Utility
+namespace YSK.Utilities
 {
     public class DontDestroyOnLoad : MonoBehaviour
     {

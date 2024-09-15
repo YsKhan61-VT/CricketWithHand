@@ -1,0 +1,70 @@
+﻿using Doozy.Runtime.UIManager.Components;
+using TMPro;
+using UnityEngine;
+using YSK.Utilities;
+
+
+namespace DoozyPractice.UI
+{
+    public class LoginUI : MonoBehaviour
+    {
+        [SerializeField]
+        Register_LoginUIMediator _registerLoginUIMediator;
+
+        [SerializeField]
+        TMP_InputField _email;
+
+        [SerializeField]
+        TMP_InputField _password;
+
+        [SerializeField]
+        UIToggle _rememberMeToggle;
+
+        public void LoginWithEmailAndPassword()
+        {
+            if (!IsLoginCredentialsValid()) return;
+
+            LogUI.Instance.AddStatusText($"Loging in ...");
+            _registerLoginUIMediator.LoginWithEmailAndPassword(_email.name, _password.name);
+        }
+
+        public void LoginWithGoogle()
+        {
+
+        }
+
+        public void LoginWithFacebook()
+        {
+
+        }
+
+        public void SetRememberMeToRememberedState(bool state) =>
+            _rememberMeToggle.isOn = state;
+
+        public void ToggleRememberMe(bool toggle) =>
+            _registerLoginUIMediator.ToggleRememberMe(toggle);
+
+        public void Reset()
+        {
+            _email.text = "";
+            _password.text = "";
+        }
+
+        bool IsLoginCredentialsValid()
+        {
+            if (string.IsNullOrEmpty(_email.text))
+            {
+                LogUI.Instance.AddStatusText("Email address can't be empty!");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(_password.text))
+            {
+                LogUI.Instance.AddStatusText("Password can't be empty!");
+                return false;
+            }
+
+            return true;
+        }
+    }
+}

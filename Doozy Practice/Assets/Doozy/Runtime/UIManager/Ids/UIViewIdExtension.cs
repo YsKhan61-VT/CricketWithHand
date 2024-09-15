@@ -26,9 +26,9 @@ namespace Doozy.Runtime.UIManager
     {
         public enum Bootstrap
         {
-            GoogleSignOut,
+            DisplayName,
             Login,
-            MainMenu,
+            Profile,
             Settings
         }    
     }

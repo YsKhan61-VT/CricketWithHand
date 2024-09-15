@@ -15,11 +15,11 @@ MonoBehaviour:
   Database:
     Items:
     - Category: Bootstrap
-      Name: GoogleSignOut
+      Name: DisplayName
     - Category: Bootstrap
       Name: Login
     - Category: Bootstrap
-      Name: MainMenu
+      Name: Profile
     - Category: Bootstrap
       Name: Settings
     - Category: None

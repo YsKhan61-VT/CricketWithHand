@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Database:
     Items:
-    - Category: GoogleSignIn
-      Name: SignInResult
     - Category: None
       Name: None
+    - Category: OnLoginSuccess
+      Name: OnLoggedInWithDIsplayName
+    - Category: OnLoginSuccess
+      Name: OnLoggedInWithoutDisplaName
