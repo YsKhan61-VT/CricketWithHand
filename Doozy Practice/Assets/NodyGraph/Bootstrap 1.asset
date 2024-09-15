@@ -73,7 +73,7 @@ MonoBehaviour:
   CanBeDeleted: 1
   Passthrough: 1
   ClearGraphHistory: 0
-  Position: {x: 492.46863, y: -0.000022888184}
+  Position: {x: 703.1923, y: -0.000058412552}
   Trigger: 0
   SignalPayload:
     StreamId:
@@ -139,7 +139,7 @@ MonoBehaviour:
   CanBeDeleted: 1
   Passthrough: 1
   ClearGraphHistory: 0
-  Position: {x: 495, y: 135.50014}
+  Position: {x: 706.19226, y: 135.99992}
   Trigger: 0
   SignalPayload:
     StreamId:
@@ -181,8 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02761efe598a45c98fa1baf4d446c6a7, type: 3}
   m_Name: Bootstrap 1
   m_EditorClassIdentifier: 
-  EditorPosition: {x: -363, y: -24, z: 0}
-  EditorScale: {x: 1.520875, y: 1.520875, z: 1}
+  EditorPosition: {x: -56, y: 402, z: 0}
+  EditorScale: {x: 0.8695652, y: 0.8695652, z: 1}
   Id: b6343a2e-b06a-4da4-8d7c-a075c2b4d717
   GraphName: Bootstrap 1
   GraphDescription: 
@@ -275,7 +275,7 @@ MonoBehaviour:
   CanBeDeleted: 1
   Passthrough: 0
   ClearGraphHistory: 0
-  Position: {x: 695, y: 135.50014}
+  Position: {x: 906.1923, y: 135.99992}
   OnEnterShowViews:
   - Id:
       Category: Bootstrap
@@ -325,7 +325,8 @@ MonoBehaviour:
     PortId: 6021ac25-0031-4680-8ebd-f68ec2f724b3
     Direction: 1
     Capacity: 0
-    Connections: []
+    Connections:
+    - 6544b266-a4e8-42a0-84c9-4ec6606f2347
     Value: 
     ValueTypeQualifiedName: 
     CanBeDeleted: 0
@@ -337,7 +338,7 @@ MonoBehaviour:
   CanBeDeleted: 1
   Passthrough: 1
   ClearGraphHistory: 0
-  Position: {x: 914.3043, y: 373.52176}
+  Position: {x: 1125.1924, y: 372.99988}
   PivotOrientation: 2
 --- !u!114 &2396150552994909801
 MonoBehaviour:
@@ -361,7 +362,8 @@ MonoBehaviour:
     PortId: 334aa720-0503-47d0-9565-d975c2834add
     Direction: 0
     Capacity: 1
-    Connections: []
+    Connections:
+    - d15f4f52-7492-4d58-aa60-d017d51cdcbb
     Value: '{"CanGoBack":false}'
     ValueTypeQualifiedName: Doozy.Runtime.UIManager.Nodes.PortData.GoBackInputPortData,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -464,7 +466,8 @@ MonoBehaviour:
     PortId: 6544b266-a4e8-42a0-84c9-4ec6606f2347
     Direction: 0
     Capacity: 1
-    Connections: []
+    Connections:
+    - 6021ac25-0031-4680-8ebd-f68ec2f724b3
     Value: 
     ValueTypeQualifiedName: 
     CanBeDeleted: 0
@@ -474,7 +477,8 @@ MonoBehaviour:
     PortId: d15f4f52-7492-4d58-aa60-d017d51cdcbb
     Direction: 1
     Capacity: 0
-    Connections: []
+    Connections:
+    - 334aa720-0503-47d0-9565-d975c2834add
     Value: 
     ValueTypeQualifiedName: 
     CanBeDeleted: 0
@@ -486,8 +490,8 @@ MonoBehaviour:
   CanBeDeleted: 1
   Passthrough: 1
   ClearGraphHistory: 0
-  Position: {x: 491.16464, y: 374.78427}
-  PivotOrientation: 0
+  Position: {x: 111.41399, y: 372.75613}
+  PivotOrientation: 3
 --- !u!114 &8951126085075507506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,7 +539,7 @@ MonoBehaviour:
   CanBeDeleted: 1
   Passthrough: 0
   ClearGraphHistory: 0
-  Position: {x: 695.46857, y: -0.000022888184}
+  Position: {x: 906.1923, y: -0.000058412552}
   OnEnterShowViews:
   - Id:
       Category: Bootstrap
