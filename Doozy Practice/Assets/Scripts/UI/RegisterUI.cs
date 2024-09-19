@@ -1,5 +1,4 @@
-﻿using DoozyPractice.Bootstrap;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using YSK.Utilities;
 
@@ -31,13 +30,13 @@ namespace DoozyPractice.UI
         {
             if (!IsRegistrationCredentialsValid()) return;
 
-            LogUI.Instance.AddStatusText($"Registering ...");
+            LogUI.instance.AddStatusText($"Registering ...");
             _registerLoginUIMediator.RegisterWithEmailAndPassword(_email.name, _password.name);
         }
 
         public void PlayAsGuest()
         {
-            LogUI.Instance.AddStatusText("Logging In As Guest ...");
+            LogUI.instance.AddStatusText("Logging In As Guest ...");
             _registerLoginUIMediator.PlayAsGuest();
         }
 
@@ -45,20 +44,20 @@ namespace DoozyPractice.UI
         {
             if (string.IsNullOrEmpty(_email.text))
             {
-                LogUI.Instance.AddStatusText("Email address can't be empty!");
+                LogUI.instance.AddStatusText("Email address can't be empty!");
                 return false;
             }
 
             if (string.IsNullOrEmpty(_password.text))
             {
-                LogUI.Instance.AddStatusText("Password can't be empty!");
+                LogUI.instance.AddStatusText("Password can't be empty!");
                 return false;
             }
 
             if (string.IsNullOrEmpty(_confirmPassword.text) ||
                 _password.text != _confirmPassword.text)
             {
-                LogUI.Instance.AddStatusText("Password doesn't match.!");
+                LogUI.instance.AddStatusText("Password doesn't match.!");
                 return false;
             }
 

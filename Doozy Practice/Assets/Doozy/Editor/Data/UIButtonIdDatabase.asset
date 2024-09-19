@@ -25,6 +25,8 @@ MonoBehaviour:
     - Category: Login
       Name: PlayAsGuest
     - Category: Login
+      Name: Quit
+    - Category: Login
       Name: Register
     - Category: MainMenu
       Name: Login

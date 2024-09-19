@@ -1,3 +1,4 @@
+using PlayFab.Internal;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -5,30 +6,19 @@ using UnityEngine;
 
 namespace YSK.Utilities
 {
-    public class LogUI : MonoBehaviour
+    public class LogUI : SingletonMonoBehaviour<LogUI>
     {
         [SerializeField]
         TMP_Text _debugText;
 
-        public static LogUI Instance;
+        [SerializeField]
+        private int _maxMessageCount;
 
         private Queue<string> _messages = new();
 
-        private void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(Instance);
-            }
-        }
-
         public void AddStatusText(string text)
         {
-            if (_messages.Count == 5)
+            if (_messages.Count >= _maxMessageCount)
             {
                 _messages.Dequeue();
             }

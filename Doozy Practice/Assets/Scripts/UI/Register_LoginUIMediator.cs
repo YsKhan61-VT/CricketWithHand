@@ -23,6 +23,9 @@ namespace DoozyPractice.UI
         GetPlayerCombinedInfoRequestParams InfoRequestParams;
 
         [SerializeField]
+        string _googleWebClientId;
+
+        [SerializeField]
         UnityEvent<string> m_OnLoggedInWithDisplayname;
 
         [SerializeField]
@@ -48,15 +51,15 @@ namespace DoozyPractice.UI
 
         private void Start()
         {
-            PlayFabAuthServiceFacade.OnDisplayAuthentication += OnDisplayAuthentication;
-            PlayFabAuthServiceFacade.OnLoginSuccess += OnLoginSuccess;
-            PlayFabAuthServiceFacade.OnPlayFabError += OnPlayFaberror;
-            PlayFabAuthServiceFacade.OnDisplayNameSet += OnDisplayNameSet;
+            PlayFabAuthServiceFacade.Instance.OnDisplayAuthentication += OnDisplayAuthentication;
+            PlayFabAuthServiceFacade.Instance.OnLoginSuccess += OnLoginSuccess;
+            PlayFabAuthServiceFacade.Instance.OnPlayFabError += OnPlayFaberror;
+            PlayFabAuthServiceFacade.Instance.OnDisplayNameSet += OnDisplayNameSet;
 
             _authServiceFacade.InfoRequestParams = InfoRequestParams;
-            _authServiceFacade.Authenticate();
+            // _authServiceFacade.Authenticate();
 
-            TryLoginWithRememberedAccount();
+            // TryLoginWithRememberedAccount();
         }
 
         void TryLoginWithRememberedAccount()
@@ -72,10 +75,10 @@ namespace DoozyPractice.UI
 
         private void OnDestroy()
         {
-            PlayFabAuthServiceFacade.OnDisplayAuthentication -= OnDisplayAuthentication;
-            PlayFabAuthServiceFacade.OnLoginSuccess -= OnLoginSuccess;
-            PlayFabAuthServiceFacade.OnPlayFabError -= OnPlayFaberror;
-            PlayFabAuthServiceFacade.OnDisplayNameSet -= OnDisplayNameSet;
+            PlayFabAuthServiceFacade.Instance.OnDisplayAuthentication -= OnDisplayAuthentication;
+            PlayFabAuthServiceFacade.Instance.OnLoginSuccess -= OnLoginSuccess;
+            PlayFabAuthServiceFacade.Instance.OnPlayFabError -= OnPlayFaberror;
+            PlayFabAuthServiceFacade.Instance.OnDisplayNameSet -= OnDisplayNameSet;
         }
 
         public void RegisterWithEmailAndPassword(string email, string password)
@@ -92,6 +95,11 @@ namespace DoozyPractice.UI
             _authServiceFacade.Authenticate(Authtypes.EmailAndPassword);
         }
 
+        public void LoginWithGoogleAccount()
+        {
+            _authServiceFacade.AuthenticateWithGoogle(_googleWebClientId);
+        }
+
         public void PlayAsGuest() =>
             _authServiceFacade.Authenticate(Authtypes.Silent);
 
@@ -103,22 +111,19 @@ namespace DoozyPractice.UI
 
         private void OnLoginSuccess(LoginResult result)
         {
-            LogUI.Instance.AddStatusText("Logged In as: {0}" + result.PlayFabId);
+            LogUI.instance.AddStatusText("Logged In as: {0}" + result.PlayFabId);
 
-            PlayFabManager.IsLoggedIn = true;
             string displayName = result.InfoResultPayload.AccountInfo.TitleInfo.DisplayName;
             if (displayName != null)
             {
+                LogUI.instance.AddStatusText($"Welcome: {displayName}");
                 m_OnLoggedInWithDisplayname?.Invoke(displayName);
             }
             else
             {
+                LogUI.instance.AddStatusText("No Display name found!");
                 m_OnLoggedInWithoutDisplayname?.Invoke();
             }
-
-            // PlayFabManager.LoadUserData();
-            // PlayFabManager.LoadAccountData();
-            // PlayFabManager.LoadTitleData();
         }
 
         public void SetDisplayName(string displayName) =>
@@ -133,13 +138,13 @@ namespace DoozyPractice.UI
                 case PlayFabErrorCode.InvalidEmailAddress:
                 case PlayFabErrorCode.InvalidPassword:
                 case PlayFabErrorCode.InvalidEmailOrPassword:
-                    LogUI.Instance.AddStatusText("Invalid Email or Password");
+                    LogUI.instance.AddStatusText("Invalid Email or Password");
                     break;
 
                 case PlayFabErrorCode.AccountNotFound:
                     return;
                 default:
-                    LogUI.Instance.AddStatusText(error.GenerateErrorReport());
+                    LogUI.instance.AddStatusText(error.GenerateErrorReport());
                     break;
             }
         }
@@ -158,9 +163,7 @@ namespace DoozyPractice.UI
              */
         }
 
-        void OnDisplayNameSet(string displayName)
-        {
+        void OnDisplayNameSet(string displayName) =>
             m_OnLoggedInWithDisplayname?.Invoke(displayName);
-        }
     }
 }

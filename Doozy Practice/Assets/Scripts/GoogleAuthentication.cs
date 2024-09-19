@@ -1,54 +1,69 @@
 using Google;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TMPro;
-using UnityEngine;
-using UnityEngine.Events;
+using YSK.Utilities;
 
-namespace DoozyPractice.Bootstrap
+namespace DoozyPractice.PlayFab.Google
 {
-    public class GoogleAuthentication : MonoBehaviour
+    public class GoogleAuthentication
     {
-        [SerializeField]
-        UnityEvent _signInSuccess;
+        public event Action<GoogleSignInUser> OnSignInSuccess;
 
-        [SerializeField] 
-        string _webClientId;
+        public bool IsLoggedIn { get; private set; } = false;
 
-        [SerializeField]
-        TMP_Text _debugText;
-
-
-        private List<string> _messages = new();
-        private GoogleSignInConfiguration _configuration;
-
-        // Defer the configuration creation until Awake so the web Client ID
-        // Can be set via the property inspector in the Editor.
-        void Awake()
+        public void SignInWithGoogle(string webClientId)
         {
-            _configuration = new GoogleSignInConfiguration
+            GoogleSignIn.Configuration = new GoogleSignInConfiguration
             {
-                WebClientId = _webClientId,
+                WebClientId = webClientId,
                 RequestIdToken = true,
                 RequestEmail = true,
+                RequestAuthCode = true,
+                UseGameSignIn = false,
             };
-        }
 
-        public void SignIn()
-        {
-            GoogleSignIn.Configuration = _configuration;
-            GoogleSignIn.Configuration.UseGameSignIn = false;
-            GoogleSignIn.Configuration.RequestIdToken = true;
-            GoogleSignIn.Configuration.RequestEmail = true;
-            AddStatusText("Calling sign in google account!");
+            LogUI.instance.AddStatusText("Calling sign in google account!");
 
             GoogleSignIn.DefaultInstance.SignIn().ContinueWith(
               OnAuthenticationFinished, TaskScheduler.Default);
         }
 
+        public void SignInSilently(string webClientId)
+        {
+            GoogleSignIn.Configuration = new GoogleSignInConfiguration
+            {
+                WebClientId = webClientId,
+                RequestIdToken = true,
+                RequestEmail = true,
+                UseGameSignIn = false
+            };
+
+            LogUI.instance.AddStatusText("Calling SignIn Silently");
+
+            GoogleSignIn.DefaultInstance.SignInSilently()
+                  .ContinueWith(OnAuthenticationFinished);
+        }
+
+        public void SignInWithPlayGames(string webClientId)
+        {
+            GoogleSignIn.Configuration = new GoogleSignInConfiguration
+            {
+                WebClientId = webClientId,
+                RequestIdToken = true,
+                RequestEmail = true,
+                UseGameSignIn = true,
+            };
+
+            LogUI.instance.AddStatusText("Calling Games SignIn");
+
+            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(
+              OnAuthenticationFinished);
+        }
+
         public void SignOut()
         {
-            AddStatusText("Calling sign out google account!");
+            LogUI.instance.AddStatusText("Calling sign out google account!");
             Task.Run(() =>
             {
                 GoogleSignIn.DefaultInstance.SignOut();
@@ -56,42 +71,19 @@ namespace DoozyPractice.Bootstrap
             {
                 if (task.IsFaulted)
                 {
-                    AddStatusText("Sign out failed: " + task.Exception?.Message);
+                    LogUI.instance.AddStatusText("Sign out failed: " + task.Exception?.Message);
                 }
                 else
                 {
-                    AddStatusText("Sign out successful");
+                    LogUI.instance.AddStatusText("Sign out successful");
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         public void Disconnect()
         {
-            AddStatusText("Calling Disconnect");
+            LogUI.instance.AddStatusText("Calling Disconnect");
             GoogleSignIn.DefaultInstance.Disconnect();
-        }
-
-        public void SignInSilently()
-        {
-            GoogleSignIn.Configuration = _configuration;
-            GoogleSignIn.Configuration.UseGameSignIn = false;
-            GoogleSignIn.Configuration.RequestIdToken = true;
-            AddStatusText("Calling SignIn Silently");
-
-            GoogleSignIn.DefaultInstance.SignInSilently()
-                  .ContinueWith(OnAuthenticationFinished);
-        }
-
-        public void OnGamesSignIn()
-        {
-            GoogleSignIn.Configuration = _configuration;
-            GoogleSignIn.Configuration.UseGameSignIn = true;
-            GoogleSignIn.Configuration.RequestIdToken = false;
-
-            AddStatusText("Calling Games SignIn");
-
-            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(
-              OnAuthenticationFinished);
         }
 
         void OnAuthenticationFinished(Task<GoogleSignInUser> task)
@@ -104,36 +96,23 @@ namespace DoozyPractice.Bootstrap
                 {
                     GoogleSignIn.SignInException error =
                             (GoogleSignIn.SignInException)enumerator.Current;
-                    AddStatusText("Got Error: " + error.Status + " " + error.Message);
+                    LogUI.instance.AddStatusText("Got Error: " + error.Status + " " + error.Message);
                 }
                 else
                 {
-                    AddStatusText("Got Unexpected Exception?!?" + task.Exception);
+                    LogUI.instance.AddStatusText("Got Unexpected Exception?!?" + task.Exception);
                 }
             }
             else if (task.IsCanceled)
             {
-                AddStatusText("Canceled");
+                LogUI.instance.AddStatusText("Canceled");
             }
             else
             {
-                AddStatusText("Welcome: " + task.Result.DisplayName + "!");
-                _signInSuccess?.Invoke();
+                LogUI.instance.AddStatusText("Welcome: " + task.Result.DisplayName + "!");
+                IsLoggedIn = true;
+                OnSignInSuccess?.Invoke(task.Result);
             }
-        }
-        void AddStatusText(string text)
-        {
-            if (_messages.Count == 5)
-            {
-                _messages.RemoveAt(0);
-            }
-            _messages.Add(text);
-            string txt = "";
-            foreach (string s in _messages)
-            {
-                txt += "\n" + s;
-            }
-            _debugText.text = txt;
         }
     }
 }

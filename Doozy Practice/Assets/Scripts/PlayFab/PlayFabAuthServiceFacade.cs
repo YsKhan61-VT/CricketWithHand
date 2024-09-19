@@ -11,8 +11,10 @@ using PlayFab;
 using PlayFab.ClientModels;
 using LoginResult = PlayFab.ClientModels.LoginResult;
 using System;
-using static DoozyPractice.PlayFab.PlayFabAuthServiceFacade;
 using YSK.Utilities;
+using DoozyPractice.PlayFab.Google;
+using Google;
+
 
 namespace DoozyPractice.PlayFab
 {
@@ -26,23 +28,21 @@ namespace DoozyPractice.PlayFab
         Silent,
         UsernameAndPassword,
         EmailAndPassword,
-        RegisterPlayFabAccount
+        RegisterPlayFabAccount,
+        Google
     }
 
     public class PlayFabAuthServiceFacade
     {
+        private const string _LoginRememberKey = "PlayFabLoginRemember";
+        private const string _PlayFabRememberMeIdKey = "PlayFabIdPassGuid";
+        private const string _PlayFabAuthTypeKey = "PlayFabAuthType";
+
         // Events to subscribe to for this service
-        public delegate void DisplayAuthenticationEvent();
-        public static event DisplayAuthenticationEvent OnDisplayAuthentication;
-
-        public delegate void LoginSuccessEvent(LoginResult success);
-        public static event LoginSuccessEvent OnLoginSuccess;
-
-        public delegate void PlayFabErrorEvent(PlayFabError error);
-        public static event PlayFabErrorEvent OnPlayFabError;
-
-        public delegate void DisplayNameSet(string displayName);
-        public static event DisplayNameSet OnDisplayNameSet;
+        public event Action OnDisplayAuthentication;
+        public event Action<LoginResult> OnLoginSuccess;
+        public event Action<PlayFabError> OnPlayFabError;
+        public event Action<string> OnDisplayNameSet;
 
         // These are fields that we set when we are using the service.
         public string Email;
@@ -55,15 +55,13 @@ namespace DoozyPractice.PlayFab
         public bool ForceLink = false;
 
         // Accessbility for PlayFab ID & Session Tickets
-        public static string PlayFabId { get { return _playFabId; } }
-        private static string _playFabId;
+        public bool IsLoggedIn => PlayFabClientAPI.IsClientLoggedIn();
+        public string PlayFabId { get; private set; }
+        public string SessionTicket { get; private set; }
+        public string UserDisplayName { get; private set; }
 
-        public static string SessionTicket { get { return _sessionTicket; } }
-        private static string _sessionTicket;
 
-        private const string _LoginRememberKey = "PlayFabLoginRemember";
-        private const string _PlayFabRememberMeIdKey = "PlayFabIdPassGuid";
-        private const string _PlayFabAuthTypeKey = "PlayFabAuthType";
+        private GoogleAuthentication _googleAuth;
 
         public static PlayFabAuthServiceFacade Instance
         {
@@ -171,21 +169,32 @@ namespace DoozyPractice.PlayFab
             }
         }
 
+        public void AuthenticateWithGoogle(string webClientId)
+        {
+            AuthType = Authtypes.Google;
+            _googleAuth ??= new();
+            _googleAuth.OnSignInSuccess += OnSignInSuccessWithGoogle;
+            _googleAuth.SignInWithGoogle(webClientId);
+        }
+
         public void SetDisplayName(string displayName)
         {
-            PlayFabManager.SetUserDisplayName(
-                displayName,
-
-                (string displayName) =>
+            PlayFabClientAPI.UpdateUserTitleDisplayName(
+                new UpdateUserTitleDisplayNameRequest
                 {
-                    LogUI.Instance.AddStatusText("UpdateUserTitleDisplayName completed.");
-                    OnDisplayNameSet?.Invoke(displayName);
+                    DisplayName = UserDisplayName
                 },
 
-                (string error) =>
+                (UpdateUserTitleDisplayNameResult result) =>
                 {
-                    LogUI.Instance.AddStatusText("UpdateUserTitleDisplayName failed.");
-                    LogUI.Instance.AddStatusText(error);
+                    UserDisplayName = result.DisplayName;
+                    LogUI.instance.AddStatusText($"Display name set to: . {UserDisplayName}");
+                    OnDisplayNameSet?.Invoke(result.DisplayName);
+                },
+
+                (PlayFabError error) =>
+                {
+                    LogUI.instance.AddStatusText(error.GenerateErrorReport());
                 });
         }
 
@@ -209,8 +218,8 @@ namespace DoozyPractice.PlayFab
                     (LoginResult result) =>
                     {
                         //Store identity and session
-                        _playFabId = result.PlayFabId;
-                        _sessionTicket = result.SessionTicket;
+                        PlayFabId = result.PlayFabId;
+                        SessionTicket = result.SessionTicket;
 
                         if (OnLoginSuccess != null)
                         {
@@ -230,19 +239,22 @@ namespace DoozyPractice.PlayFab
 
         public void LogOut()
         {
-            if (!PlayFabManager.IsLoggedIn)
+            if (!IsLoggedIn)
             {
-                LogUI.Instance.AddStatusText("No user is logged in!");
+                LogUI.instance.AddStatusText("No user is logged in!");
                 return;
             }
 
             switch (AuthType)
             {
-                case Authtypes.EmailAndPassword:
-                default:
-                    PlayFabClientAPI.ForgetAllCredentials();
+                case Authtypes.Google:
+                    if (_googleAuth == null || !_googleAuth.IsLoggedIn)
+                        return;
+                    _googleAuth.SignOut();
                     break;
             }
+
+            PlayFabClientAPI.ForgetAllCredentials();
         }
 
         /// <summary>
@@ -271,8 +283,8 @@ namespace DoozyPractice.PlayFab
                 (LoginResult result) =>
                 {
                     // Store identity and session
-                    _playFabId = result.PlayFabId;
-                    _sessionTicket = result.SessionTicket;
+                    PlayFabId = result.PlayFabId;
+                    SessionTicket = result.SessionTicket;
 
                     // Note: At this point, they already have an account with PlayFab using a Username (email) & Password
                     // If RememberMe is checked, then generate a new Guid for Login with CustomId.
@@ -345,8 +357,8 @@ namespace DoozyPractice.PlayFab
                             if (OnLoginSuccess != null)
                             {
                                 // Store identity and session
-                                _playFabId = result.PlayFabId;
-                                _sessionTicket = result.SessionTicket;
+                                PlayFabId = result.PlayFabId;
+                                SessionTicket = result.SessionTicket;
 
                                 // If they opted to be remembered on next login.
                                 if (RememberMe)
@@ -405,8 +417,8 @@ namespace DoozyPractice.PlayFab
         }, (result) => {
             
             //Store Identity and session
-            _playFabId = result.PlayFabId;
-            _sessionTicket = result.SessionTicket;
+            PlayFabId = result.PlayFabId;
+            SessionTicket = result.SessionTicket;
 
             //check if we want to get this callback directly or send to event subscribers.
             if (callback == null && OnLoginSuccess != null)
@@ -441,8 +453,8 @@ namespace DoozyPractice.PlayFab
             InfoRequestParameters = InfoRequestParams
         }, (result) => {
             //Store Identity and session
-            _playFabId = result.PlayFabId;
-            _sessionTicket = result.SessionTicket;
+            PlayFabId = result.PlayFabId;
+            SessionTicket = result.SessionTicket;
 
             //check if we want to get this callback directly or send to event subscribers.
             if (callback == null && OnLoginSuccess != null)
@@ -474,8 +486,8 @@ namespace DoozyPractice.PlayFab
                 InfoRequestParameters = InfoRequestParams
             }, (result) => {
                 //Store Identity and session
-                _playFabId = result.PlayFabId;
-                _sessionTicket = result.SessionTicket;
+                PlayFabId = result.PlayFabId;
+                SessionTicket = result.SessionTicket;
 
                 //check if we want to get this callback directly or send to event subscribers.
                 if (callback == null && OnLoginSuccess != null)
@@ -506,7 +518,7 @@ namespace DoozyPractice.PlayFab
 #endif
         }
 
-        public void UnlinkSilentAuth()
+        void UnlinkSilentAuth()
         {
             SilentlyAuthenticate((result) =>
             {
@@ -539,6 +551,32 @@ namespace DoozyPractice.PlayFab
             });
         }
 
+        void OnSignInSuccessWithGoogle(GoogleSignInUser user)
+        {
+            _googleAuth.OnSignInSuccess -= OnSignInSuccessWithGoogle;
+            UserDisplayName = user.DisplayName;
+            LoginWithGoogleAccountRequest request = new()
+            {
+                CreateAccount = true,
+                InfoRequestParameters = InfoRequestParams,
+                ServerAuthCode = user.AuthCode,
+            };
 
+            PlayFabClientAPI.LoginWithGoogleAccount(
+                request,
+                (result) =>
+                {
+                    LogUI.instance.AddStatusText("PlayFab login with google success!");
+                    SetDisplayName(UserDisplayName);
+                    
+                    // OnLoginSuccess?.Invoke(result); - it will invoke after display name is set.
+                },
+                (error) =>
+                {
+                    LogUI.instance.AddStatusText($"PlayFab error: {error.GenerateErrorReport()}");
+                    OnPlayFabError?.Invoke(error);
+                }
+            );
+        }
     }
 }

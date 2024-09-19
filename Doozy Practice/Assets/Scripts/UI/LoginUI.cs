@@ -24,13 +24,13 @@ namespace DoozyPractice.UI
         {
             if (!IsLoginCredentialsValid()) return;
 
-            LogUI.Instance.AddStatusText($"Loging in ...");
+            LogUI.instance.AddStatusText($"Loging in ...");
             _registerLoginUIMediator.LoginWithEmailAndPassword(_email.name, _password.name);
         }
 
         public void LoginWithGoogle()
         {
-
+            _registerLoginUIMediator.LoginWithGoogleAccount();
         }
 
         public void LoginWithFacebook()
@@ -54,13 +54,13 @@ namespace DoozyPractice.UI
         {
             if (string.IsNullOrEmpty(_email.text))
             {
-                LogUI.Instance.AddStatusText("Email address can't be empty!");
+                LogUI.instance.AddStatusText("Email address can't be empty!");
                 return false;
             }
 
             if (string.IsNullOrEmpty(_password.text))
             {
-                LogUI.Instance.AddStatusText("Password can't be empty!");
+                LogUI.instance.AddStatusText("Password can't be empty!");
                 return false;
             }
 
