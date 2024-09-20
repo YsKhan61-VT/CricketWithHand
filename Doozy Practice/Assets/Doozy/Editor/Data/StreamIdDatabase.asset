@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Database:
     Items:
+    - Category: Gameplay
+      Name: OnGameEnds
     - Category: None
       Name: None
     - Category: OnLoginSuccess

@@ -17,6 +17,10 @@ namespace Doozy.Runtime.UIManager.Containers
         public static IEnumerable<UIView> GetViews(UIViewId.Bootstrap id) => GetViews(nameof(UIViewId.Bootstrap), id.ToString());
         public static void Show(UIViewId.Bootstrap id, bool instant = false) => Show(nameof(UIViewId.Bootstrap), id.ToString(), instant);
         public static void Hide(UIViewId.Bootstrap id, bool instant = false) => Hide(nameof(UIViewId.Bootstrap), id.ToString(), instant);
+
+        public static IEnumerable<UIView> GetViews(UIViewId.Gameplay id) => GetViews(nameof(UIViewId.Gameplay), id.ToString());
+        public static void Show(UIViewId.Gameplay id, bool instant = false) => Show(nameof(UIViewId.Gameplay), id.ToString(), instant);
+        public static void Hide(UIViewId.Gameplay id, bool instant = false) => Hide(nameof(UIViewId.Gameplay), id.ToString(), instant);
     }
 }
 
@@ -30,6 +34,11 @@ namespace Doozy.Runtime.UIManager
             Login,
             Profile,
             Settings
+        }
+
+        public enum Gameplay
+        {
+            GameResultView
         }    
     }
 }

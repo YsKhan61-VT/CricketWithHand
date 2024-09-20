@@ -16,6 +16,10 @@ MonoBehaviour:
     Items:
     - Category: DisplayName
       Name: Save
+    - Category: GameResultView
+      Name: MainMenu
+    - Category: GameResultView
+      Name: PlayAgain
     - Category: Login
       Name: LoginWithEmail
     - Category: Login

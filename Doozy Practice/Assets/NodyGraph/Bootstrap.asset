@@ -85,12 +85,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02761efe598a45c98fa1baf4d446c6a7, type: 3}
-  m_Name: Bootstrap 1
+  m_Name: Bootstrap
   m_EditorClassIdentifier: 
   EditorPosition: {x: 222, y: 424, z: 0}
   EditorScale: {x: 0.16252795, y: 0.16252795, z: 1}
   Id: b6343a2e-b06a-4da4-8d7c-a075c2b4d717
-  GraphName: Bootstrap 1
+  GraphName: Bootstrap
   GraphDescription: 
   IsSubGraph: 0
   GraphState: 0
