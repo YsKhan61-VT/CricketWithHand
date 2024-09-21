@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: defe2424e2294add87e7fc8f38137ba9, type: 3}
-  m_Name: NodySettings
+  m_Script: {fileID: 11500000, guid: dc960e1248aa4252a57893a6e3e86e2a, type: 3}
+  m_Name: SceneManagementSettings
   m_EditorClassIdentifier: 
-  Graph: {fileID: 11400000, guid: fbd95d0a1000a1741bda9feae7e61d44, type: 2}
+  DebugMode: 0
