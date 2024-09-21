@@ -38,6 +38,7 @@ namespace Doozy.Runtime.UIManager
 
         public enum Gameplay
         {
+            GameplayView,
             GameResultView
         }    
     }

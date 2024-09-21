@@ -14,9 +14,7 @@
 
         public override void Enter()
         {
-            StateManager.OwnerDidBat = true;
-            _gameplayUIMediator.UpdateUIToOwnerIsBatting();
-            _gameplayUIMediator.UpdateUIToOtherIsBalling();
+            StateManager.OnOtherBattingStateStarted?.Invoke();
         }
 
         public override void Update()
@@ -26,7 +24,7 @@
 
         public override void Exit()
         {
-            throw new System.NotImplementedException();
+            StateManager.OwnerDidBat = true;
         }
     }
 

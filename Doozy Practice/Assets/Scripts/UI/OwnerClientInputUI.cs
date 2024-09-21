@@ -1,6 +1,6 @@
 using DoozyPractice.Gameplay;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 
 namespace DoozyPractice.UI
@@ -12,15 +12,10 @@ namespace DoozyPractice.UI
         TurnController _turnController;
 
         [SerializeField]
-        Button[] _interactingButtons;
+        UnityEvent<bool> _onToggleActiveInputButtons;
 
-        public void ToggleInteractions(bool enabled)
-        {
-            foreach (var button in _interactingButtons) 
-            { 
-                button.enabled = enabled; 
-            }
-        }
+        public void ToggleActiveInputButtons(bool toggle) =>
+            _onToggleActiveInputButtons?.Invoke(toggle);
 
         public void OnScoreOneButtonClicked() =>
             _turnController.RegisterOwnerInput((int)InputScore.One);

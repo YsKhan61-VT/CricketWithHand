@@ -17,10 +17,7 @@ namespace DoozyPractice.Gameplay
         ClientUI _otherClientUI;
 
         [SerializeField]
-        InputPanelButtonUI _ownerInputButtonUI;
-
-        [SerializeField]
-        InputPanelButtonUI _otherInputButtonUI;
+        OwnerClientInputUI _ownerClientInputUI;
 
         [SerializeField]
         OverScoreUI _overScoreUI;
@@ -28,8 +25,19 @@ namespace DoozyPractice.Gameplay
         [SerializeField]
         ResultUI _resultUI;
 
-        public void UpdateTurnDurationSlider(float value) =>
+        private void Start()
+        {
+            ResetOverScoreUI();
+            UpdateOwnerTotalScoreUI(0);
+            UpdateOtherTotalScoreUI(0);
+        }
+
+        public void UpdateTurnDurationSlider(float value)
+        {
+            if (_turnDurationSlider == null) return;
+
             _turnDurationSlider.value = value;
+        }
 
         public void ResetOverScoreUI() =>
             _overScoreUI.ResetBallUIs();
@@ -38,7 +46,7 @@ namespace DoozyPractice.Gameplay
             _overScoreUI.UpdateScoreOnBallUI(currentBall, score);
 
         public void ToggleUserInputInteraction(bool enable) =>
-            _ownerInputButtonUI.ToggleActiveInputButtons(enable);
+            _ownerClientInputUI.ToggleActiveInputButtons(enable);
 
         public void UpdateUIToOwnerIsBatting() =>
             _ownerClientUI.UpdatePlayingStateText(true);
@@ -52,10 +60,10 @@ namespace DoozyPractice.Gameplay
         public void UpdateUIToOtherIsBalling() =>
             _ownerClientUI.UpdatePlayingStateText(false);
 
-        public void UpdateOwnerTurnScoreUI(int score) =>
-            _ownerClientUI. ShowInputScore(score);
+        public void UpdateOwnerInputScoreUI(int score) =>
+            _ownerClientUI.ShowInputScore(score);
 
-        public void UpdateOtherTurnScoreUI(int score) =>
+        public void UpdateOtherInputScoreUI(int score) =>
             _otherClientUI.ShowInputScore(score);
 
         public void UpdateOwnerTotalScoreUI(int score) =>

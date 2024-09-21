@@ -13,6 +13,19 @@ namespace DoozyPractice.Gameplay
 
     public class GameStateManager : MonoBehaviour
     {
+        /// <summary>
+        /// Invoked when the Owner starts batting
+        /// </summary>
+        public UnityEvent OnOwnerBattingStateStarted;
+
+        /// <summary>
+        /// Invoked when the Other client starts batting (can be AI or other client)
+        /// </summary>
+        public UnityEvent OnOtherBattingStateStarted;
+
+        /// <summary>
+        /// Invoked when both the players finished batting.
+        /// </summary>
         public UnityEvent OnGameEnds;
 
         [SerializeField]

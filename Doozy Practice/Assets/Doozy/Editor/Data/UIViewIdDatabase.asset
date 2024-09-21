@@ -23,6 +23,8 @@ MonoBehaviour:
     - Category: Bootstrap
       Name: Settings
     - Category: Gameplay
+      Name: GameplayView
+    - Category: Gameplay
       Name: GameResultView
     - Category: None
       Name: None

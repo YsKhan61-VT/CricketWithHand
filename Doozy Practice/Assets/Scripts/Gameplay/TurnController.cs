@@ -45,16 +45,19 @@ namespace DoozyPractice.Gameplay
         int _waitBeforeNextTurn;
 
         public bool IsOwnerBatting => _gameStateManager.CurrentGameState.StateCategory == GameStateCategory.Owner_Batting;
+        public int OwnerTotalScore { get; private set; }
+        public int OtherTotalScore { get; private set; }
+
 
         private int _currentBallCount;
         private int _currentOverCount;
-        private float _timeElapsedSinceLastTurn;
+        private int _ownerInputScore;
+        private int _otherInputScore;
+        private int _turnScore;
 
-        private int _ownerTurnScore;
-        private int _otherTurnScore;
+        private float _timeElapsedSinceTurnCountdownStarted;
 
-        public int OwnerTotalScore { get; private set; }
-        public int OtherTotalScore { get; private set; }
+        private bool _pauseCountdown = false;
 
         private void Start()
         {
@@ -69,17 +72,19 @@ namespace DoozyPractice.Gameplay
         }
 
         public void RegisterOwnerInput(int scoreValue) =>
-            _ownerTurnScore = scoreValue;
+            _ownerInputScore = scoreValue;
 
         public void RegisterOtherInput(int scoreValue) =>
-            _otherTurnScore = scoreValue;
+            _otherInputScore = scoreValue;
 
         async void TryExecuteNextTurn()
         {
-            if (!CanExecuteNextTurn()) 
+            if (!HasTurnCountdownEnded()) 
                 return;
 
             OnNextTurnCountdownEnded?.Invoke();
+
+            _currentBallCount++;
 
             CalculateScore();
             UpdateScoreUI();
@@ -89,44 +94,55 @@ namespace DoozyPractice.Gameplay
             if (HaveBothPlayersBatted())
             {
                 EndGame();
+                return;
             }
 
             if (HaveWholeOversEnded())
             {
                 ChangeBatsman();
-            }
 
+                // Reset
+                _currentOverCount = 0;
+                _currentBallCount = 0;
+            }
 
             if (HasCurrentOverEnded())
             {
-                ResetForNextOver();
+                _currentOverCount++;
+
+                // Reset
+                _gameplayUIMediator.ResetOverScoreUI();
+                _currentBallCount = 0;
             }
 
             StartNextTurn();
         }
 
-        bool CanExecuteNextTurn()
+        bool HasTurnCountdownEnded()
         {
-            _timeElapsedSinceLastTurn += Time.deltaTime;
-            _gameplayUIMediator.UpdateTurnDurationSlider(1 - (_timeElapsedSinceLastTurn / _turnDuration));
+            if (_pauseCountdown) return false;
 
-            if (_timeElapsedSinceLastTurn < _turnDuration)
+            _timeElapsedSinceTurnCountdownStarted += Time.deltaTime;
+            _gameplayUIMediator.UpdateTurnDurationSlider(1 - (_timeElapsedSinceTurnCountdownStarted / _turnDuration));
+
+            if (_timeElapsedSinceTurnCountdownStarted < _turnDuration)
                 return false;
             else
+            {
+                _pauseCountdown = true;
                 return true;
+            }
         }
 
         void StartNextTurn()
         {
-            _timeElapsedSinceLastTurn = 0;
+            _timeElapsedSinceTurnCountdownStarted = 0;
             _gameplayUIMediator.UpdateTurnDurationSlider(1);
-
+            _pauseCountdown = false;
+            _turnScore = 0;
+            _ownerInputScore = 0;
+            _otherInputScore = 0;
             OnNextTurnCountdownStarted?.Invoke();
-        }
-
-        void ResetForNextOver()
-        {
-            _gameplayUIMediator.ResetOverScoreUI();
         }
 
         void ChangeBatsman()
@@ -139,6 +155,8 @@ namespace DoozyPractice.Gameplay
             {
                 _gameStateManager.ChangeGameState(GameStateCategory.Owner_Batting);
             }
+
+            _currentOverCount = 0;
         }
 
         void EndGame()
@@ -148,50 +166,49 @@ namespace DoozyPractice.Gameplay
 
         void CalculateScore()
         {
-            int score = Mathf.Abs(_ownerTurnScore - _otherTurnScore);
+            _turnScore = (_ownerInputScore == _otherInputScore) ? 0 :
+                IsOwnerBatting ? _ownerInputScore : _otherInputScore;
+
             if (IsOwnerBatting)
             {
-                _ownerTurnScore = score;
-                OwnerTotalScore += score;
+                OwnerTotalScore += _turnScore;
             }
             else
             {
-                _otherTurnScore = score;
-                OtherTotalScore += score;
+                OtherTotalScore += _turnScore;
             }
         }
 
         void UpdateScoreUI()
         {
-            _gameplayUIMediator.UpdateOwnerTurnScoreUI(_ownerTurnScore);
-            _gameplayUIMediator.UpdateOtherTurnScoreUI(_otherTurnScore);
+            _gameplayUIMediator.UpdateOwnerInputScoreUI(_ownerInputScore);
+            _gameplayUIMediator.UpdateOtherInputScoreUI(_otherInputScore);
 
             if (IsOwnerBatting)
             {
                 _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore);
-                _gameplayUIMediator.UpdateOverScoreUI(_currentBallCount, _ownerTurnScore);
+                
             }
             else
             {
                 _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore);
-                _gameplayUIMediator.UpdateOverScoreUI(_currentBallCount, _otherTurnScore);
             }
+
+            _gameplayUIMediator.UpdateOverScoreUI(_currentBallCount, _turnScore);
         }
 
-        bool HasCurrentOverEnded() => _currentBallCount >= BALLS_PER_OVER;
+        bool HasCurrentOverEnded() => _currentBallCount == BALLS_PER_OVER;
 
-        bool HaveWholeOversEnded() => _currentOverCount >= _totalOvers;
+        bool HaveWholeOversEnded() => _currentOverCount == _totalOvers;
 
         bool HaveBothPlayersBatted() => _gameStateManager.OwnerDidBat && _gameStateManager.OtherDidbat;
-    
+
         void ResetAtStart()
         {
             OwnerTotalScore = 0;
             OtherTotalScore = 0;
             _currentBallCount = 0;
             _currentOverCount = 0;
-            _ownerTurnScore = 0;
-            _otherTurnScore = 0;
         }
     }
 }

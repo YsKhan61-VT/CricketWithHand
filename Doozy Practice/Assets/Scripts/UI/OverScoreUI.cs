@@ -41,7 +41,8 @@ namespace DoozyPractice.UI
             int index = ballCount - 1;
             if (index < 0 || index >= _ballScoreUIs.Length)
             {
-                Debug.LogError("This should not happen!");
+                // index can be -1 when the first ball of the game is bowled.
+                return;
             }
 
             if (score == 0)

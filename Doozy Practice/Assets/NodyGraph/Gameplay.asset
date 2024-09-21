@@ -23,7 +23,7 @@ MonoBehaviour:
     Direction: 0
     Capacity: 1
     Connections:
-    - 6225cef4-2b7e-4152-a8e0-6c885ed7f436
+    - 86a18b06-49e4-4d1b-a2a8-a5e7f916032f
     Value: '{"CanGoBack":false}'
     ValueTypeQualifiedName: Doozy.Runtime.UIManager.Nodes.PortData.GoBackInputPortData,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -76,8 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02761efe598a45c98fa1baf4d446c6a7, type: 3}
   m_Name: Gameplay
   m_EditorClassIdentifier: 
-  EditorPosition: {x: -311, y: 212, z: 0}
-  EditorScale: {x: 1.3225, y: 1.3225, z: 1}
+  EditorPosition: {x: -35, y: 329, z: 0}
+  EditorScale: {x: 0.7561437, y: 0.7561437, z: 1}
   Id: 2d8074db-f8c5-4a26-945d-ca1728a6afe3
   GraphName: Flow Graph
   GraphDescription: 
@@ -103,8 +103,8 @@ MonoBehaviour:
       m_Calls: []
   Nodes:
   - {fileID: 779031482532588510}
-  - {fileID: 1620577087363455595}
   - {fileID: -6537017876588000746}
+  - {fileID: 2308108026082021963}
   RootNode: {fileID: 779031482532588510}
   ActiveNode: {fileID: 0}
 --- !u!114 &779031482532588510
@@ -131,7 +131,7 @@ MonoBehaviour:
     Direction: 1
     Capacity: 0
     Connections:
-    - 9673dfaf-5d5c-40c3-9f7a-7191c50ce0cd
+    - c188f8f0-814a-4ff9-bfd5-a7a2d55086cc
     Value: 
     ValueTypeQualifiedName: 
     CanBeDeleted: 0
@@ -145,7 +145,7 @@ MonoBehaviour:
   ClearGraphHistory: 1
   Position: {x: 0, y: 0}
   SystemNodeType: 0
---- !u!114 &1620577087363455595
+--- !u!114 &2308108026082021963
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,34 +154,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87c43f2597bc48340b6a8f2909b66d09, type: 3}
-  m_Name: Signal
+  m_Script: {fileID: 11500000, guid: 1c01f9a7d07f5c04a9f277379e94a10b, type: 3}
+  m_Name: UI
   m_EditorClassIdentifier: 
   FlowGraphId: 2d8074db-f8c5-4a26-945d-ca1728a6afe3
-  NodeId: 11df4f52-32c6-43d1-8ab3-feef699ff7b0
+  NodeId: f3eb3974-e2f0-469a-ae48-588aded4f532
   NodeType: 0
-  NodeName: Signal
+  NodeName: GamepalyView
   NodeDescription: 
   InputPorts:
-  - NodeId: 11df4f52-32c6-43d1-8ab3-feef699ff7b0
-    PortId: 9673dfaf-5d5c-40c3-9f7a-7191c50ce0cd
+  - NodeId: f3eb3974-e2f0-469a-ae48-588aded4f532
+    PortId: c188f8f0-814a-4ff9-bfd5-a7a2d55086cc
     Direction: 0
     Capacity: 1
     Connections:
     - f697c554-0409-47ed-80c4-8987cc4169a6
-    Value: 
-    ValueTypeQualifiedName: 
+    Value: '{"CanGoBack":false}'
+    ValueTypeQualifiedName: Doozy.Runtime.UIManager.Nodes.PortData.GoBackInputPortData,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     CanBeDeleted: 0
     CanBeReordered: 0
   OutputPorts:
-  - NodeId: 11df4f52-32c6-43d1-8ab3-feef699ff7b0
-    PortId: 6225cef4-2b7e-4152-a8e0-6c885ed7f436
+  - NodeId: f3eb3974-e2f0-469a-ae48-588aded4f532
+    PortId: 86a18b06-49e4-4d1b-a2a8-a5e7f916032f
     Direction: 1
     Capacity: 0
     Connections:
     - 537fb483-3b6d-4381-9a39-705d1a018d67
-    Value: 
-    ValueTypeQualifiedName: 
+    Value: '{"Trigger":1,"TimeDelay":3.0,"SignalPayload":{"StreamId":{"Category":"Gameplay","Name":"OnGameEnds","Custom":false},"SignalValueType":0,"IntegerValue":0,"BooleanValue":false,"FloatValue":0.0,"StringValue":"","ColorValue":{"r":0.0,"g":0.0,"b":0.0,"a":0.0},"Vector2Value":{"x":0.0,"y":0.0},"Vector3Value":{"x":0.0,"y":0.0,"z":0.0},"Vector4Value":{"x":0.0,"y":0.0,"z":0.0,"w":0.0}},"ButtonId":{"Category":"None","Name":"None","Custom":false},"ToggleId":{"Category":"None","Name":"None","Custom":false},"CommandToggle":2,"ViewId":{"Category":"None","Name":"None","Custom":false},"CommandShowHide":0}'
+    ValueTypeQualifiedName: Doozy.Runtime.UIManager.Nodes.PortData.UIOutputPortData,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     CanBeDeleted: 0
     CanBeReordered: 0
   RunUpdate: 0
@@ -189,20 +191,12 @@ MonoBehaviour:
   RunLateUpdate: 0
   NodeState: 0
   CanBeDeleted: 1
-  Passthrough: 1
+  Passthrough: 0
   ClearGraphHistory: 0
-  Position: {x: 243.68431, y: 0.000022888184}
-  Payload:
-    StreamId:
-      Category: Gameplay
-      Name: OnGameEnds
-      Custom: 0
-    SignalValueType: 0
-    IntegerValue: 0
-    BooleanValue: 0
-    FloatValue: 0
-    StringValue: 
-    ColorValue: {r: 0, g: 0, b: 0, a: 0}
-    Vector2Value: {x: 0, y: 0}
-    Vector3Value: {x: 0, y: 0, z: 0}
-    Vector4Value: {x: 0, y: 0, z: 0, w: 0}
+  Position: {x: 226.31013, y: 0.000015258789}
+  OnEnterShowViews: []
+  OnEnterHideViews: []
+  OnExitShowViews: []
+  OnExitHideViews: []
+  OnEnterHideAllViews: 0
+  OnExitHideAllViews: 0
