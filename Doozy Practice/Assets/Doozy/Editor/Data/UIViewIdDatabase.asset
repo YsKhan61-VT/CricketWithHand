@@ -23,8 +23,14 @@ MonoBehaviour:
     - Category: Bootstrap
       Name: Settings
     - Category: Gameplay
+      Name: ChooseBatOrBallView
+    - Category: Gameplay
       Name: GameplayView
     - Category: Gameplay
       Name: GameResultView
+    - Category: Gameplay
+      Name: TossResultView
+    - Category: Gameplay
+      Name: TossView
     - Category: None
       Name: None

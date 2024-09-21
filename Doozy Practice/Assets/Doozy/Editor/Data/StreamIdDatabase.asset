@@ -16,6 +16,10 @@ MonoBehaviour:
     Items:
     - Category: Gameplay
       Name: OnGameEnds
+    - Category: Gameplay
+      Name: OnOwnerWinToss
+    - Category: Gameplay
+      Name: OnPublishTossResult
     - Category: None
       Name: None
     - Category: OnLoginSuccess

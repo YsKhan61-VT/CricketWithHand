@@ -59,20 +59,32 @@ namespace DoozyPractice.Gameplay
         private float _timeElapsedSinceTurnCountdownStarted;
 
         private bool _isOutOnThisTurn;
-        private bool _pauseCountdown = false;
+        private bool _pauseCountdown = true;
 
-        private void Start()
-        {
-            if (!PassPreChecks()) return;
-
-            ResetAtStart();
-            _gameStateManager.ChangeGameState(GameStateCategory.Owner_Batting);
-            StartNextTurn();
-        }
 
         private void Update()
         {
             TryExecuteNextTurn();
+        }
+
+        public void ChangeBatsman(bool isOwnerBatting)
+        {
+            if (isOwnerBatting)
+            {
+                _gameStateManager.ChangeGameState(GameStateCategory.Owner_Batting);
+            }
+            else
+            {
+                _gameStateManager.ChangeGameState(GameStateCategory.Other_Batting);
+            }
+        }
+
+        public void StartGameplay()
+        {
+            if (!PassPreChecks()) return;
+
+            ResetAtStart();
+            StartNextTurn();
         }
 
         public void RegisterOwnerInput(int scoreValue) =>

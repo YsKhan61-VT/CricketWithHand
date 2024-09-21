@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Database:
     Items:
+    - Category: ChooseBatOrBallView
+      Name: Ball
+    - Category: ChooseBatOrBallView
+      Name: Bat
     - Category: DisplayName
       Name: Save
     - Category: GameResultView
@@ -44,3 +48,9 @@ MonoBehaviour:
       Name: LogOut
     - Category: Settings
       Name: Back
+    - Category: TossResultView
+      Name: StartGame
+    - Category: TossView
+      Name: Head
+    - Category: TossView
+      Name: Tail
