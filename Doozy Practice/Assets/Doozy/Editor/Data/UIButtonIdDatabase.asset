@@ -18,6 +18,14 @@ MonoBehaviour:
       Name: Ball
     - Category: ChooseBatOrBallView
       Name: Bat
+    - Category: ChooseOverView
+      Name: FourOver
+    - Category: ChooseOverView
+      Name: OneOver
+    - Category: ChooseOverView
+      Name: SixOver
+    - Category: ChooseOverView
+      Name: TwoOver
     - Category: DisplayName
       Name: Save
     - Category: GameResultView

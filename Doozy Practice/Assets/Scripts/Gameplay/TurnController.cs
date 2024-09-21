@@ -5,16 +5,6 @@ using UnityEngine.Events;
 
 namespace DoozyPractice.Gameplay
 {
-    public enum InputScore : int
-    {
-        One = 1,
-        Two = 2,
-        Three = 3,
-        Four = 4,
-        Five = 5,
-        Six = 6
-    }
-
     public class TurnController : MonoBehaviour
     {
         /// <summary>
@@ -61,10 +51,22 @@ namespace DoozyPractice.Gameplay
         private bool _isOutOnThisTurn;
         private bool _pauseCountdown = true;
 
+        private void Start()
+        {
+            ResetUIs();
+        }
+
 
         private void Update()
         {
             TryExecuteNextTurn();
+        }
+
+        public void SetTotalOvers(int totalOvers)
+        {
+            _totalOvers = totalOvers;
+            _gameplayUIMediator.UpdateOwnerTotalOversUI(0, 0, _totalOvers);
+            _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, _totalOvers);
         }
 
         public void ChangeBatsman(bool isOwnerBatting)
@@ -208,12 +210,12 @@ namespace DoozyPractice.Gameplay
             if (IsOwnerBatting)
             {
                 _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore);
-                _gameplayUIMediator.UpdateOwnerTotalOversUI(_currentOverCount, _currentBallCount);
+                _gameplayUIMediator.UpdateOwnerTotalOversUI(_currentOverCount, _currentBallCount, _totalOvers);
             }
             else
             {
                 _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore);
-                _gameplayUIMediator.UpdateOtherTotalOversUI(_currentOverCount, _currentBallCount);
+                _gameplayUIMediator.UpdateOtherTotalOversUI(_currentOverCount, _currentBallCount, _totalOvers);
             }
 
             _gameplayUIMediator.UpdateOverScoreUI(_currentBallCount, _turnScore, _isOutOnThisTurn);
@@ -239,6 +241,15 @@ namespace DoozyPractice.Gameplay
                 return false;
             }
             return true;
+        }
+
+        void ResetUIs()
+        {
+            _gameplayUIMediator.ResetOverScoreUI();
+            _gameplayUIMediator.UpdateOwnerTotalScoreUI(0);
+            _gameplayUIMediator.UpdateOtherTotalScoreUI(0);
+            _gameplayUIMediator.UpdateOwnerTotalOversUI(0, 0, 0);
+            _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, 0);
         }
     }
 }

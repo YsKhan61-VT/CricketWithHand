@@ -25,15 +25,6 @@ namespace DoozyPractice.Gameplay
         [SerializeField]
         ResultUI _resultUI;
 
-        private void Start()
-        {
-            ResetOverScoreUI();
-            UpdateOwnerTotalScoreUI(0);
-            UpdateOtherTotalScoreUI(0);
-            UpdateOwnerTotalOversUI(0, 0);
-            UpdateOtherTotalOversUI(0, 0);
-        }
-
         public void UpdateTurnDurationSlider(float value)
         {
             if (_turnDurationSlider == null) return;
@@ -74,11 +65,11 @@ namespace DoozyPractice.Gameplay
         public void UpdateOtherTotalScoreUI(int score) =>
             _otherClientUI.UpdateTotalScore(score);
 
-        public void UpdateOwnerTotalOversUI(int over, int balls) =>
-            _ownerClientUI.UpdateTotalOversText(over, balls);
+        public void UpdateOwnerTotalOversUI(int over, int balls, int totalOvers) =>
+            _ownerClientUI.UpdateTotalOversText(over, balls, totalOvers);
 
-        public void UpdateOtherTotalOversUI(int over, int balls) =>
-            _otherClientUI.UpdateTotalOversText(over, balls);
+        public void UpdateOtherTotalOversUI(int over, int balls, int totalOvers) =>
+            _otherClientUI.UpdateTotalOversText(over, balls, totalOvers);
 
         public void ShowWinText() =>
             _resultUI.ShowWinText();

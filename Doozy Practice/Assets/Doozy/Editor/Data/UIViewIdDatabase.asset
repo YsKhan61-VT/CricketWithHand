@@ -25,6 +25,8 @@ MonoBehaviour:
     - Category: Gameplay
       Name: ChooseBatOrBallView
     - Category: Gameplay
+      Name: ChooseOverView
+    - Category: Gameplay
       Name: GameplayView
     - Category: Gameplay
       Name: GameResultView

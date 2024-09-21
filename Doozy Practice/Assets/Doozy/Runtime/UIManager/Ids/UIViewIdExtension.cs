@@ -39,6 +39,7 @@ namespace Doozy.Runtime.UIManager
         public enum Gameplay
         {
             ChooseBatOrBallView,
+            ChooseOverView,
             GameplayView,
             GameResultView,
             HalfTimeView,

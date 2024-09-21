@@ -42,7 +42,7 @@ namespace DoozyPractice.UI
         public void UpdateTotalScore(int score) =>
             _totalScoreText.text = score.ToString();
 
-        public void UpdateTotalOversText(int over, int balls) =>
-            _totalOversText.text = $"{over}.{balls}";
+        public void UpdateTotalOversText(int over, int balls, int totalOvers) =>
+            _totalOversText.text = $"{over}.{balls} / {totalOvers}";
     }
 }
