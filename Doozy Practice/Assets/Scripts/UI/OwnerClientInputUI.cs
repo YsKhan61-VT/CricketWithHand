@@ -5,28 +5,27 @@ using UnityEngine;
 namespace DoozyPractice.UI
 {
 
-
     public class OwnerClientInputUI : MonoBehaviour
     {
         [SerializeField]
         TurnController _turnController;
 
         public void OnScoreOneButtonClicked() =>
-            _turnController.OwnerGaveInput((int)InputScore.One);
+            _turnController.RegisterOwnerInput((int)InputScore.One);
 
         public void OnScoreTwoButtonClicked() =>
-            _turnController.OwnerGaveInput((int)InputScore.Two);
+            _turnController.RegisterOwnerInput((int)InputScore.Two);
 
         public void OnScoreThreeButtonClicked() =>
-            _turnController.OwnerGaveInput((int)InputScore.Three);
+            _turnController.RegisterOwnerInput((int)InputScore.Three);
 
         public void OnScoreFourButtonClicked() =>
-            _turnController.OwnerGaveInput((int)InputScore.Four);
+            _turnController.RegisterOwnerInput((int)InputScore.Four);
 
         public void OnScoreFiveButtonClicked() =>
-            _turnController.OwnerGaveInput((int)InputScore.Five);
+            _turnController.RegisterOwnerInput((int)InputScore.Five);
 
         public void OnScoreSixButtonClicked() =>
-            _turnController.OwnerGaveInput((int)InputScore.Six);
+            _turnController.RegisterOwnerInput((int)InputScore.Six);
     }
 }
