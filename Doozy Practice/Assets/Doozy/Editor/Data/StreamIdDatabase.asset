@@ -17,6 +17,8 @@ MonoBehaviour:
     - Category: Gameplay
       Name: OnGameEnds
     - Category: Gameplay
+      Name: OnHalfTime
+    - Category: Gameplay
       Name: OnOwnerWinToss
     - Category: Gameplay
       Name: OnPublishTossResult

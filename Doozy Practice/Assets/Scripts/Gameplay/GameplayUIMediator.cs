@@ -30,6 +30,8 @@ namespace DoozyPractice.Gameplay
             ResetOverScoreUI();
             UpdateOwnerTotalScoreUI(0);
             UpdateOtherTotalScoreUI(0);
+            UpdateOwnerTotalOversUI(0, 0);
+            UpdateOtherTotalOversUI(0, 0);
         }
 
         public void UpdateTurnDurationSlider(float value)
@@ -71,6 +73,12 @@ namespace DoozyPractice.Gameplay
 
         public void UpdateOtherTotalScoreUI(int score) =>
             _otherClientUI.UpdateTotalScore(score);
+
+        public void UpdateOwnerTotalOversUI(int over, int balls) =>
+            _ownerClientUI.UpdateTotalOversText(over, balls);
+
+        public void UpdateOtherTotalOversUI(int over, int balls) =>
+            _otherClientUI.UpdateTotalOversText(over, balls);
 
         public void ShowWinText() =>
             _resultUI.ShowWinText();

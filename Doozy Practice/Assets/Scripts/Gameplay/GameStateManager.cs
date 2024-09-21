@@ -7,6 +7,7 @@ namespace DoozyPractice.Gameplay
     public enum GameStateCategory
     {
         Owner_Batting,
+        HalfTime,
         Other_Batting,
         GameEnd
     }
@@ -24,6 +25,11 @@ namespace DoozyPractice.Gameplay
         public UnityEvent OnOtherBattingStateStarted;
 
         /// <summary>
+        /// Invoked when half time is started.
+        /// </summary>
+        public UnityEvent OnHalfTimeStarted;
+
+        /// <summary>
         /// Invoked when both the players finished batting.
         /// </summary>
         public UnityEvent OnGameEnds;
@@ -39,12 +45,14 @@ namespace DoozyPractice.Gameplay
         public bool OtherDidBatting { get; set; } = false;
 
         private GameState _ownerBattingState;
+        private GameState _halfTimeState;
         private GameState _otherBattingState;
         private GameState _gameEndState;
 
         private void Awake()
         {
             _ownerBattingState = new OwnerBattingState(this, _gameplayUIMediator);
+            _halfTimeState = new HalfTimeState(this);
             _otherBattingState = new OtherBattingState(this, _gameplayUIMediator);
             _gameEndState = new GameEndState(this, _turnController, _gameplayUIMediator);
         }
@@ -62,6 +70,9 @@ namespace DoozyPractice.Gameplay
             {
                 case GameStateCategory.Owner_Batting:
                     return _ownerBattingState;
+
+                case GameStateCategory.HalfTime:
+                    return _halfTimeState;
 
                 case GameStateCategory.Other_Batting:
                     return _otherBattingState;

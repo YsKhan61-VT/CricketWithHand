@@ -24,6 +24,8 @@ MonoBehaviour:
       Name: MainMenu
     - Category: GameResultView
       Name: PlayAgain
+    - Category: HalfTimeView
+      Name: Start
     - Category: Login
       Name: LoginWithEmail
     - Category: Login

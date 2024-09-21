@@ -29,6 +29,8 @@ MonoBehaviour:
     - Category: Gameplay
       Name: GameResultView
     - Category: Gameplay
+      Name: HalfTimeView
+    - Category: Gameplay
       Name: TossResultView
     - Category: Gameplay
       Name: TossView

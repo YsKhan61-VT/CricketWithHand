@@ -16,6 +16,9 @@ namespace DoozyPractice.UI
         TMP_Text _totalScoreText;
 
         [SerializeField]
+        TMP_Text _totalOversText;
+
+        [SerializeField]
         string _battingText = "Batting";
 
         [SerializeField]
@@ -38,5 +41,8 @@ namespace DoozyPractice.UI
 
         public void UpdateTotalScore(int score) =>
             _totalScoreText.text = score.ToString();
+
+        public void UpdateTotalOversText(int over, int balls) =>
+            _totalOversText.text = $"{over}.{balls}";
     }
 }

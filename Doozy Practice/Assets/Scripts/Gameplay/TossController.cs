@@ -22,11 +22,14 @@ namespace DoozyPractice.Gameplay
         [SerializeField]
         TossResultUI _tossResultUI;
 
+        [SerializeField, Range(0f, 1f)]
+        float _ownerWinningChance;
+
         private bool _ownerWonToss;
 
         public void Toss()
         {
-            _ownerWonToss = Random.Range(0f, 1f) > 0.5;
+            _ownerWonToss = Random.Range(0f, 1f) <= _ownerWinningChance;
             if (_ownerWonToss)
             {
                 OnOwnerOwnToss?.Invoke();

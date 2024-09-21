@@ -6,9 +6,10 @@
         
         private GameplayUIMediator _gameplayUIMediator;
 
-        public OwnerBattingState(GameStateManager stateManager, GameplayUIMediator gameplayUIMediator)
+        public OwnerBattingState(
+            GameStateManager stateManager, 
+            GameplayUIMediator gameplayUIMediator) : base(stateManager)
         {
-            StateManager = stateManager;
             _gameplayUIMediator = gameplayUIMediator;
         }
 

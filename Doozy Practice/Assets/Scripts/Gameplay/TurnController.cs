@@ -45,7 +45,7 @@ namespace DoozyPractice.Gameplay
         [SerializeField, Tooltip("Wait for seconds, before starting next turn")]
         int _waitBeforeNextTurn;
 
-        public bool IsOwnerBatting => _gameStateManager.CurrentGameState.StateCategory == GameStateCategory.Owner_Batting;
+        public bool IsOwnerBatting { get; private set; }
         public int OwnerTotalScore { get; private set; }
         public int OtherTotalScore { get; private set; }
 
@@ -69,6 +69,8 @@ namespace DoozyPractice.Gameplay
 
         public void ChangeBatsman(bool isOwnerBatting)
         {
+            IsOwnerBatting = isOwnerBatting;
+
             if (isOwnerBatting)
             {
                 _gameStateManager.ChangeGameState(GameStateCategory.Owner_Batting);
@@ -93,6 +95,15 @@ namespace DoozyPractice.Gameplay
         public void RegisterOtherInput(int scoreValue) =>
             _otherInputScore = scoreValue;
 
+        public void StartNextHalf()
+        {
+            ChangeBatsman(!IsOwnerBatting);
+            _currentOverCount = 0;
+            _gameplayUIMediator.ResetOverScoreUI();
+            _currentBallCount = 0;
+            StartNextTurn();
+        }
+
         async void TryExecuteNextTurn()
         {
             if (!HasTurnCountdownEnded())
@@ -103,7 +114,7 @@ namespace DoozyPractice.Gameplay
             _currentBallCount++;
 
             CalculateScore();
-            UpdateScoreUI();
+            UpdateScoresAndOversUI();
 
             await Task.Delay(_waitBeforeNextTurn * 1000);
 
@@ -119,15 +130,25 @@ namespace DoozyPractice.Gameplay
                         return;
                     }
 
-                    ChangeBatsman();
-                    _currentOverCount = 0;
+                    ExecuteHalfTIme();
+                    return;
                 }
 
-                _gameplayUIMediator.ResetOverScoreUI();
-                _currentBallCount = 0;
+                ResetOver();
             }
 
             StartNextTurn();
+        }
+
+        void ResetOver()
+        {
+            _gameplayUIMediator.ResetOverScoreUI();
+            _currentBallCount = 0;
+        }
+
+        void ExecuteHalfTIme()
+        {
+            _gameStateManager.ChangeGameState(GameStateCategory.HalfTime);
         }
 
         bool HasTurnCountdownEnded()
@@ -157,18 +178,6 @@ namespace DoozyPractice.Gameplay
             OnNextTurnCountdownStarted?.Invoke();
         }
 
-        void ChangeBatsman()
-        {
-            if (IsOwnerBatting)
-            {
-                _gameStateManager.ChangeGameState(GameStateCategory.Other_Batting);
-            }
-            else
-            {
-                _gameStateManager.ChangeGameState(GameStateCategory.Owner_Batting);
-            }
-        }
-
         void EndGame()
         {
             _gameStateManager.ChangeGameState(GameStateCategory.GameEnd);
@@ -191,7 +200,7 @@ namespace DoozyPractice.Gameplay
             }
         }
 
-        void UpdateScoreUI()
+        void UpdateScoresAndOversUI()
         {
             _gameplayUIMediator.UpdateOwnerInputScoreUI(_ownerInputScore);
             _gameplayUIMediator.UpdateOtherInputScoreUI(_otherInputScore);
@@ -199,11 +208,12 @@ namespace DoozyPractice.Gameplay
             if (IsOwnerBatting)
             {
                 _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore);
-                
+                _gameplayUIMediator.UpdateOwnerTotalOversUI(_currentOverCount, _currentBallCount);
             }
             else
             {
                 _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore);
+                _gameplayUIMediator.UpdateOtherTotalOversUI(_currentOverCount, _currentBallCount);
             }
 
             _gameplayUIMediator.UpdateOverScoreUI(_currentBallCount, _turnScore, _isOutOnThisTurn);

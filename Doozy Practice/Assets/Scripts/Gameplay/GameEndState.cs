@@ -12,9 +12,8 @@ namespace DoozyPractice.Gameplay
         public GameEndState(
             GameStateManager gameStateManager, 
             TurnController turnController,
-            GameplayUIMediator gameplayUIMediator)
+            GameplayUIMediator gameplayUIMediator) : base(gameStateManager)
         {
-            StateManager = gameStateManager;
             _turnController = turnController;
             _gameplayUIMediator = gameplayUIMediator;
         }

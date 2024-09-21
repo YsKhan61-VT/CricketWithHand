@@ -11,6 +11,10 @@ namespace DoozyPractice.Gameplay
         [SerializeField]
         TossController _tossController;
 
+        [SerializeField, Range(0f, 1f)]
+        float _aiBattingChance;
+
+
         public void GiveRandomInput()
         {
             int score = Random.Range(1, 7);
@@ -19,7 +23,7 @@ namespace DoozyPractice.Gameplay
 
         public void ChooseBatOrBall()
         {
-            bool willBat = Random.Range(0f, 1f) > 0.5f;
+            bool willBat = Random.Range(0f, 1f) <= _aiBattingChance;
             _tossController.ChooseBatOrBallFirst(false, willBat);
         }
     }

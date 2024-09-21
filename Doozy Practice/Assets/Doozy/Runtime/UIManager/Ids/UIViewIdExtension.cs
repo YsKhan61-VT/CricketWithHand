@@ -41,6 +41,7 @@ namespace Doozy.Runtime.UIManager
             ChooseBatOrBallView,
             GameplayView,
             GameResultView,
+            HalfTimeView,
             TossResultView,
             TossView
         }    
