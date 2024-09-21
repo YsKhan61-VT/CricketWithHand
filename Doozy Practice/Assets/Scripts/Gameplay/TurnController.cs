@@ -141,7 +141,7 @@ namespace DoozyPractice.Gameplay
 
             await Task.Delay(_waitBeforeNextTurn * 1000);
 
-            if (TargetScoreReached() || HasWholeGameOverEnded() || IsLastTeamAllOut())
+            if (TargetScoreReached() || HasLastTeamTotalOversEnded() || IsLastTeamAllOut())
             {
                 EndGame();
                 return;
@@ -153,7 +153,7 @@ namespace DoozyPractice.Gameplay
                 ResetOver();
             }
 
-            if (HasOverEnded() || IsAllOut())
+            if (HasTotalOversEnded() || IsAllOut())
             {
                 ExecuteHalfTIme();
                 return;
@@ -252,9 +252,9 @@ namespace DoozyPractice.Gameplay
 
         bool IsOverComplete() => _currentBallCount == _ballsPerOver;
 
-        bool HasOverEnded() => HasLimitedOver() && IsThisLastOver();
+        bool HasTotalOversEnded() => HasLimitedOver() && IsThisLastOver();
 
-        bool HasWholeGameOverEnded() => HaveBothPlayersBatted() && HasOverEnded();
+        bool HasLastTeamTotalOversEnded() => HaveBothPlayersBatted() && HasTotalOversEnded();
 
         bool HasLimitedOver() => _totalOvers != (int)OverCategory.AllOut;
 
