@@ -6751,8 +6751,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5eb4571abd2f4468cb6c4d65375be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameStateManager: {fileID: 0}
-  _gameplayUIMediator: {fileID: 0}
+  _gameStateManager: {fileID: 2115737126}
+  _gameplayUIMediator: {fileID: 1519460131}
   _totalOvers: 1
   _turnDuration: 3
 --- !u!1 &2036587076
