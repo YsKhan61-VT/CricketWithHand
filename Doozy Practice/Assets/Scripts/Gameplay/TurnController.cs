@@ -5,6 +5,15 @@ using UnityEngine.Events;
 
 namespace DoozyPractice.Gameplay
 {
+    public enum OverCategory : int
+    {
+        One = 1,
+        Two = 2,
+        Four = 4,
+        Six = 6,
+        AllOut = -1     // To denote that there is no over limit
+    }
+
     public class TurnController : MonoBehaviour
     {
         /// <summary>
@@ -29,6 +38,9 @@ namespace DoozyPractice.Gameplay
         [SerializeField]
         int _totalOvers;
 
+        [SerializeField]
+        int _totalWickets;
+
         [SerializeField, Tooltip("Duration for each turn in seconds")]
         int _turnDuration;
 
@@ -40,31 +52,34 @@ namespace DoozyPractice.Gameplay
         public int OtherTotalScore { get; private set; }
 
 
-        private int _currentBallCount;
-        private int _currentOverCount;
-        private int _ownerInputScore;
-        private int _otherInputScore;
-        private int _turnScore;
+        int _currentBallCount = 0;
+        int _currentOverCount = 0;
+        int _ownerInputScore = 0;
+        int _otherInputScore = 0;
+        int _turnScore = 0;
+        int _ownerOutCount = 0;
+        int _otherOutCount = 0;
 
-        private float _timeElapsedSinceTurnCountdownStarted;
+        float _timeElapsedSinceTurnCountdownStarted = 0;
 
-        private bool _isOutOnThisTurn;
-        private bool _pauseCountdown = true;
+        bool _isOutOnThisTurn = false;
+        bool _pauseCountdown = true;
 
-        private void Start()
+        void Start()
         {
             ResetUIs();
         }
 
 
-        private void Update()
+        void Update()
         {
             TryExecuteNextTurn();
         }
 
-        public void SetTotalOvers(int totalOvers)
+        public void SetTotalOvers(OverCategory overCategory)
         {
-            _totalOvers = totalOvers;
+            _totalOvers = (int)overCategory;     // 
+
             _gameplayUIMediator.UpdateOwnerTotalOversUI(0, 0, _totalOvers);
             _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, _totalOvers);
         }
@@ -86,8 +101,6 @@ namespace DoozyPractice.Gameplay
         public void StartGameplay()
         {
             if (!PassPreChecks()) return;
-
-            ResetAtStart();
             StartNextTurn();
         }
 
@@ -115,7 +128,7 @@ namespace DoozyPractice.Gameplay
 
             _currentBallCount++;
 
-            CalculateScore();
+            CalculateScoreAndWicket();
             UpdateScoresAndOversUI();
 
             await Task.Delay(_waitBeforeNextTurn * 1000);
@@ -177,6 +190,7 @@ namespace DoozyPractice.Gameplay
             _turnScore = 0;
             _ownerInputScore = 0;
             _otherInputScore = 0;
+            _isOutOnThisTurn = false;
             OnNextTurnCountdownStarted?.Invoke();
         }
 
@@ -185,21 +199,27 @@ namespace DoozyPractice.Gameplay
             _gameStateManager.ChangeGameState(GameStateCategory.GameEnd);
         }
 
-        void CalculateScore()
+        void CalculateScoreAndWicket()
         {
-            _isOutOnThisTurn = (_ownerInputScore == _otherInputScore);
+            // Check if is out
+            _isOutOnThisTurn = _ownerInputScore == _otherInputScore;
 
-            _turnScore = (_ownerInputScore == _otherInputScore) ? 0 :
-                IsOwnerBatting ? _ownerInputScore : _otherInputScore;
+            _turnScore = _isOutOnThisTurn ? 0 : IsOwnerBatting ? _ownerInputScore : _otherInputScore;
 
+            // Calculate score
             if (IsOwnerBatting)
-            {
                 OwnerTotalScore += _turnScore;
-            }
             else
-            {
                 OtherTotalScore += _turnScore;
-            }
+
+            if (!_isOutOnThisTurn)
+                return;
+
+            // Calculate wicket
+            if (IsOwnerBatting)
+                _ownerOutCount++;
+            else
+                _otherOutCount++;
         }
 
         void UpdateScoresAndOversUI()
@@ -209,12 +229,12 @@ namespace DoozyPractice.Gameplay
 
             if (IsOwnerBatting)
             {
-                _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore);
+                _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore, _ownerOutCount);
                 _gameplayUIMediator.UpdateOwnerTotalOversUI(_currentOverCount, _currentBallCount, _totalOvers);
             }
             else
             {
-                _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore);
+                _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore, _otherOutCount);
                 _gameplayUIMediator.UpdateOtherTotalOversUI(_currentOverCount, _currentBallCount, _totalOvers);
             }
 
@@ -222,16 +242,12 @@ namespace DoozyPractice.Gameplay
         }
 
         bool IsOverComplete() => _currentBallCount == _ballsPerOver;
-        bool IsBattingComplete() => _currentOverCount == _totalOvers;
-        bool HaveBothPlayersBatted() => _gameStateManager.OwnerDidBatting && _gameStateManager.OtherDidBatting;
 
-        void ResetAtStart()
-        {
-            OwnerTotalScore = 0;
-            OtherTotalScore = 0;
-            _currentBallCount = 0;
-            _currentOverCount = 0;
-        }
+        bool IsBattingComplete() => _totalOvers != (int)OverCategory.AllOut ? _currentOverCount == _totalOvers : IsAllOut();
+
+        bool IsAllOut() => IsOwnerBatting ? _ownerOutCount == _totalWickets : _otherOutCount == _totalWickets;
+
+        bool HaveBothPlayersBatted() => _gameStateManager.OwnerDidBatting && _gameStateManager.OtherDidBatting;
 
         bool PassPreChecks()
         {
@@ -246,8 +262,8 @@ namespace DoozyPractice.Gameplay
         void ResetUIs()
         {
             _gameplayUIMediator.ResetOverScoreUI();
-            _gameplayUIMediator.UpdateOwnerTotalScoreUI(0);
-            _gameplayUIMediator.UpdateOtherTotalScoreUI(0);
+            _gameplayUIMediator.UpdateOwnerTotalScoreUI(0, 0);
+            _gameplayUIMediator.UpdateOtherTotalScoreUI(0, 0);
             _gameplayUIMediator.UpdateOwnerTotalOversUI(0, 0, 0);
             _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, 0);
         }

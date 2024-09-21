@@ -19,6 +19,8 @@ MonoBehaviour:
     - Category: ChooseBatOrBallView
       Name: Bat
     - Category: ChooseOverView
+      Name: AllOut
+    - Category: ChooseOverView
       Name: FourOver
     - Category: ChooseOverView
       Name: OneOver

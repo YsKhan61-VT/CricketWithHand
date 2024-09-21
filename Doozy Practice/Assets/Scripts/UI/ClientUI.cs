@@ -39,10 +39,13 @@ namespace DoozyPractice.UI
         public void ShowInputScore(int score) =>
             _inputScoreText.text = score.ToString();
 
-        public void UpdateTotalScore(int score) =>
-            _totalScoreText.text = score.ToString();
+        public void UpdateTotalScoreAndWicket(int score, int wicket) =>
+            _totalScoreText.text = $"{score} / {wicket}";
 
-        public void UpdateTotalOversText(int over, int balls, int totalOvers) =>
-            _totalOversText.text = $"{over}.{balls} / {totalOvers}";
+        public void UpdateTotalOversText(int over, int balls, int totalOvers)
+        {
+            string totalOversText = totalOvers != -1 ? totalOvers.ToString() : "-";
+            _totalOversText.text = $"{over}.{balls} / {totalOversText}";
+        }
     }
 }
