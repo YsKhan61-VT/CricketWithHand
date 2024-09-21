@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 namespace DoozyPractice.Gameplay
@@ -18,6 +19,16 @@ namespace DoozyPractice.Gameplay
     {
         private const int BALLS_PER_OVER = 6;
 
+        /// <summary>
+        /// Called when the next turn is starting. User input panel needs to be activated.
+        /// </summary>
+        public UnityEvent OnNextTurnCountdownStarted;
+
+        /// <summary>
+        /// Called when the next turn duration ends. User input panel needs to be deactivated.
+        /// </summary>
+        public UnityEvent OnNextTurnCountdownEnded;
+
         [SerializeField]
         GameStateManager _gameStateManager;
 
@@ -29,6 +40,9 @@ namespace DoozyPractice.Gameplay
 
         [SerializeField, Tooltip("Duration for each turn in seconds")]
         int _turnDuration;
+
+        [SerializeField, Tooltip("Wait for seconds, before starting next turn")]
+        int _waitBeforeNextTurn;
 
         public bool IsOwnerBatting => _gameStateManager.CurrentGameState.StateCategory == GameStateCategory.Owner_Batting;
 
@@ -46,57 +60,68 @@ namespace DoozyPractice.Gameplay
         {
             ResetAtStart();
             _gameStateManager.ChangeGameState(GameStateCategory.Owner_Batting);
+            StartNextTurn();
         }
 
         private void Update()
         {
-            TryExecuteTurn();
+            TryExecuteNextTurn();
         }
 
-        public void OwnerGaveInput(int scoreValue)
-        {
+        public void RegisterOwnerInput(int scoreValue) =>
             _ownerTurnScore = scoreValue;
-        }
 
-        public void OtherGaveInput(int scoreValue)
-        {
+        public void RegisterOtherInput(int scoreValue) =>
             _otherTurnScore = scoreValue;
-        }
 
-        async void TryExecuteTurn()
+        async void TryExecuteNextTurn()
         {
-            _timeElapsedSinceLastTurn += Time.deltaTime;
-            _gameplayUIMediator.UpdateTurnDurationSlider(1 - (_timeElapsedSinceLastTurn/ _turnDuration));
-            if (_timeElapsedSinceLastTurn < _turnDuration)
+            if (!CanExecuteNextTurn()) 
                 return;
+
+            OnNextTurnCountdownEnded?.Invoke();
 
             CalculateScore();
             UpdateScoreUI();
 
-            await Task.Delay(1000);
+            await Task.Delay(_waitBeforeNextTurn * 1000);
 
             if (HaveBothPlayersBatted())
             {
                 EndGame();
             }
 
-            ResetForNextTurn();
+            if (HaveWholeOversEnded())
+            {
+                ChangeBatsman();
+            }
+
 
             if (HasCurrentOverEnded())
             {
                 ResetForNextOver();
             }
 
-            if (HaveWholeOversEnded())
-            {
-                ChangeBatsman();
-            }
+            StartNextTurn();
         }
 
-        void ResetForNextTurn()
+        bool CanExecuteNextTurn()
+        {
+            _timeElapsedSinceLastTurn += Time.deltaTime;
+            _gameplayUIMediator.UpdateTurnDurationSlider(1 - (_timeElapsedSinceLastTurn / _turnDuration));
+
+            if (_timeElapsedSinceLastTurn < _turnDuration)
+                return false;
+            else
+                return true;
+        }
+
+        void StartNextTurn()
         {
             _timeElapsedSinceLastTurn = 0;
             _gameplayUIMediator.UpdateTurnDurationSlider(1);
+
+            OnNextTurnCountdownStarted?.Invoke();
         }
 
         void ResetForNextOver()
@@ -165,10 +190,8 @@ namespace DoozyPractice.Gameplay
             OtherTotalScore = 0;
             _currentBallCount = 0;
             _currentOverCount = 0;
-            _timeElapsedSinceLastTurn = 0;
             _ownerTurnScore = 0;
             _otherTurnScore = 0;
-            _gameplayUIMediator.UpdateTurnDurationSlider(1);
         }
     }
 }
