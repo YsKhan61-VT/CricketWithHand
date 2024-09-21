@@ -84,11 +84,19 @@ namespace DoozyPractice.Gameplay
             _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, _totalOvers);
         }
 
+        public void SetTotalWickets(int count)
+        {
+            _totalWickets = count;
+
+            _gameplayUIMediator.UpdateOwnerTotalWicketsUI(0, _totalWickets);
+            _gameplayUIMediator.UpdateOtherTotalWicketsUI(0, _totalWickets);
+        }
+
         public void ChangeBatsman(bool isOwnerBatting)
         {
             IsOwnerBatting = isOwnerBatting;
 
-            if (isOwnerBatting)
+            if (IsOwnerBatting)
             {
                 _gameStateManager.ChangeGameState(GameStateCategory.Owner_Batting);
             }
@@ -128,28 +136,27 @@ namespace DoozyPractice.Gameplay
 
             _currentBallCount++;
 
-            CalculateScoreAndWicket();
-            UpdateScoresAndOversUI();
+            CalculateScoreAndWicketsLost();
+            UpdateScoreboardUIs();
 
             await Task.Delay(_waitBeforeNextTurn * 1000);
+
+            if (TargetScoreReached() || HasWholeGameOverEnded() || IsLastTeamAllOut())
+            {
+                EndGame();
+                return;
+            }
 
             if (IsOverComplete())
             {
                 _currentOverCount++;
-
-                if (IsBattingComplete())
-                {
-                    if (HaveBothPlayersBatted())
-                    {
-                        EndGame();
-                        return;
-                    }
-
-                    ExecuteHalfTIme();
-                    return;
-                }
-
                 ResetOver();
+            }
+
+            if (HasOverEnded() || IsAllOut())
+            {
+                ExecuteHalfTIme();
+                return;
             }
 
             StartNextTurn();
@@ -199,7 +206,7 @@ namespace DoozyPractice.Gameplay
             _gameStateManager.ChangeGameState(GameStateCategory.GameEnd);
         }
 
-        void CalculateScoreAndWicket()
+        void CalculateScoreAndWicketsLost()
         {
             // Check if is out
             _isOutOnThisTurn = _ownerInputScore == _otherInputScore;
@@ -222,19 +229,21 @@ namespace DoozyPractice.Gameplay
                 _otherOutCount++;
         }
 
-        void UpdateScoresAndOversUI()
+        void UpdateScoreboardUIs()
         {
             _gameplayUIMediator.UpdateOwnerInputScoreUI(_ownerInputScore);
             _gameplayUIMediator.UpdateOtherInputScoreUI(_otherInputScore);
 
             if (IsOwnerBatting)
             {
-                _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore, _ownerOutCount);
+                _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore);
+                _gameplayUIMediator.UpdateOwnerTotalWicketsUI(_ownerOutCount, _totalWickets);
                 _gameplayUIMediator.UpdateOwnerTotalOversUI(_currentOverCount, _currentBallCount, _totalOvers);
             }
             else
             {
-                _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore, _otherOutCount);
+                _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore);
+                _gameplayUIMediator.UpdateOtherTotalWicketsUI(_otherOutCount, _totalWickets);
                 _gameplayUIMediator.UpdateOtherTotalOversUI(_currentOverCount, _currentBallCount, _totalOvers);
             }
 
@@ -243,9 +252,23 @@ namespace DoozyPractice.Gameplay
 
         bool IsOverComplete() => _currentBallCount == _ballsPerOver;
 
-        bool IsBattingComplete() => _totalOvers != (int)OverCategory.AllOut ? _currentOverCount == _totalOvers : IsAllOut();
+        bool HasOverEnded() => HasLimitedOver() && IsThisLastOver();
+
+        bool HasWholeGameOverEnded() => HaveBothPlayersBatted() && HasOverEnded();
+
+        bool HasLimitedOver() => _totalOvers != (int)OverCategory.AllOut;
+
+        bool IsThisLastOver() => _currentOverCount == _totalOvers;
 
         bool IsAllOut() => IsOwnerBatting ? _ownerOutCount == _totalWickets : _otherOutCount == _totalWickets;
+
+        bool IsLastTeamAllOut() => HaveBothPlayersBatted() && IsAllOut();
+
+        bool TargetScoreReached() => HaveBothPlayersBatted() && (HasOwnerReachedOtherTarget() || HasOtherReachedOwnerTarget());
+
+        bool HasOwnerReachedOtherTarget() => IsOwnerBatting && OwnerTotalScore >= OtherTotalScore;
+
+        bool HasOtherReachedOwnerTarget() => !IsOwnerBatting && OtherTotalScore >= OwnerTotalScore;
 
         bool HaveBothPlayersBatted() => _gameStateManager.OwnerDidBatting && _gameStateManager.OtherDidBatting;
 
@@ -262,8 +285,10 @@ namespace DoozyPractice.Gameplay
         void ResetUIs()
         {
             _gameplayUIMediator.ResetOverScoreUI();
-            _gameplayUIMediator.UpdateOwnerTotalScoreUI(0, 0);
-            _gameplayUIMediator.UpdateOtherTotalScoreUI(0, 0);
+            _gameplayUIMediator.UpdateOwnerTotalScoreUI(0);
+            _gameplayUIMediator.UpdateOtherTotalScoreUI(0);
+            _gameplayUIMediator.UpdateOwnerTotalWicketsUI(0, 0);
+            _gameplayUIMediator.UpdateOtherTotalWicketsUI(0, 0);
             _gameplayUIMediator.UpdateOwnerTotalOversUI(0, 0, 0);
             _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, 0);
         }

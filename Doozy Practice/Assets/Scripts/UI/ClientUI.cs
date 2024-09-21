@@ -16,6 +16,9 @@ namespace DoozyPractice.UI
         TMP_Text _totalScoreText;
 
         [SerializeField]
+        TMP_Text _totalWicketsText;
+
+        [SerializeField]
         TMP_Text _totalOversText;
 
         [SerializeField]
@@ -39,8 +42,11 @@ namespace DoozyPractice.UI
         public void ShowInputScore(int score) =>
             _inputScoreText.text = score.ToString();
 
-        public void UpdateTotalScoreAndWicket(int score, int wicket) =>
-            _totalScoreText.text = $"{score} / {wicket}";
+        public void UpdateTotalScoreAndWicket(int score) =>
+            _totalScoreText.text = score.ToString();
+
+        public void UpdateTotalWickets(int wicketsLost, int totalWickets) =>
+            _totalWicketsText.text = $"{wicketsLost} / {totalWickets}";
 
         public void UpdateTotalOversText(int over, int balls, int totalOvers)
         {

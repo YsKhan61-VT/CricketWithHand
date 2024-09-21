@@ -28,6 +28,16 @@ MonoBehaviour:
       Name: SixOver
     - Category: ChooseOverView
       Name: TwoOver
+    - Category: ChooseWicketView
+      Name: Eight
+    - Category: ChooseWicketView
+      Name: Four
+    - Category: ChooseWicketView
+      Name: One
+    - Category: ChooseWicketView
+      Name: Six
+    - Category: ChooseWicketView
+      Name: Two
     - Category: DisplayName
       Name: Save
     - Category: GameResultView

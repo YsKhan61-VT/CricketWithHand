@@ -59,11 +59,17 @@ namespace DoozyPractice.Gameplay
         public void UpdateOtherInputScoreUI(int score) =>
             _otherClientUI.ShowInputScore(score);
 
-        public void UpdateOwnerTotalScoreUI(int score, int wicket) =>
-            _ownerClientUI.UpdateTotalScoreAndWicket(score, wicket);
+        public void UpdateOwnerTotalScoreUI(int score) =>
+            _ownerClientUI.UpdateTotalScoreAndWicket(score);
 
-        public void UpdateOtherTotalScoreUI(int score, int wicket) =>
-            _otherClientUI.UpdateTotalScoreAndWicket(score, wicket);
+        public void UpdateOtherTotalScoreUI(int score) =>
+            _otherClientUI.UpdateTotalScoreAndWicket(score);
+
+        public void UpdateOwnerTotalWicketsUI(int wicketLost, int totalWickets) =>
+            _ownerClientUI.UpdateTotalWickets(wicketLost, totalWickets);
+
+        public void UpdateOtherTotalWicketsUI(int wicketLost, int totalWickets) =>
+            _otherClientUI.UpdateTotalWickets(wicketLost, totalWickets);
 
         public void UpdateOwnerTotalOversUI(int over, int balls, int totalOvers) =>
             _ownerClientUI.UpdateTotalOversText(over, balls, totalOvers);
