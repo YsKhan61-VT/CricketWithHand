@@ -4061,7 +4061,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 795090461}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4249,9 +4249,9 @@ MonoBehaviour:
         Vibration: 8
         Elasticity: 1
         FadeOutShake: 0
-      FromValue: {x: -790, y: 50, z: 0}
+      FromValue: {x: 0, y: 0, z: 0}
       ToValue: {x: 0, y: 50, z: 0}
-      CurrentValue: {x: 0, y: 0, z: 0}
+      CurrentValue: {x: 0, y: 50, z: 0}
       Enabled: 0
       AnimationType: 0
       StartPosition: {x: 0, y: 50, z: 0}
@@ -4318,7 +4318,7 @@ MonoBehaviour:
         FadeOutShake: 0
       FromValue: {x: 0, y: 0, z: 0}
       ToValue: {x: 0, y: 0, z: 0}
-      CurrentValue: {x: 0, y: 0, z: 0}
+      CurrentValue: {x: -0, y: 0, z: 0}
       Enabled: 0
       StartRotation: {x: -0, y: 0, z: 0}
       FromReferenceValue: 0
@@ -4380,9 +4380,9 @@ MonoBehaviour:
         Vibration: 8
         Elasticity: 1
         FadeOutShake: 0
-      FromValue: {x: 1, y: 1, z: 1}
+      FromValue: {x: 0, y: 0, z: 0}
       ToValue: {x: 1, y: 1, z: 1}
-      CurrentValue: {x: 0, y: 0, z: 0}
+      CurrentValue: {x: 1, y: 1, z: 1}
       Enabled: 0
       StartScale: {x: 1, y: 1, z: 1}
       FromReferenceValue: 2
@@ -4444,9 +4444,9 @@ MonoBehaviour:
         Vibration: 8
         Elasticity: 1
         FadeOutShake: 0
-      FromValue: 1
+      FromValue: 0
       ToValue: 1
-      CurrentValue: 0
+      CurrentValue: 1
       Enabled: 1
       StartAlpha: 1
       FromReferenceValue: 2
@@ -7862,6 +7862,7 @@ MonoBehaviour:
         m_CallState: 2
   _gameStateManager: {fileID: 2115737126}
   _gameplayUIMediator: {fileID: 1519460131}
+  _ballsPerOver: 2
   _totalOvers: 1
   _turnDuration: 3
   _waitBeforeNextTurn: 3
@@ -8200,7 +8201,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1593171174}
         m_TargetAssemblyTypeName: Doozy.Runtime.Reactor.Animators.UIAnimator, Assembly-CSharp
@@ -8212,7 +8213,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1519460131}
         m_TargetAssemblyTypeName: DoozyPractice.Gameplay.GameplayUIMediator, Assembly-CSharp
@@ -8251,7 +8252,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1593171174}
         m_TargetAssemblyTypeName: Doozy.Runtime.Reactor.Animators.UIAnimator, Assembly-CSharp
@@ -8263,7 +8264,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1519460131}
         m_TargetAssemblyTypeName: DoozyPractice.Gameplay.GameplayUIMediator, Assembly-CSharp

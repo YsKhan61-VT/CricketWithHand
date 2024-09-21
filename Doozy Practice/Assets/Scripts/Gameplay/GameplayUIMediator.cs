@@ -42,8 +42,8 @@ namespace DoozyPractice.Gameplay
         public void ResetOverScoreUI() =>
             _overScoreUI.ResetBallUIs();
 
-        public void UpdateOverScoreUI(int currentBall, int score) =>
-            _overScoreUI.UpdateScoreOnBallUI(currentBall, score);
+        public void UpdateOverScoreUI(int currentBall, int score, bool isOut) =>
+            _overScoreUI.UpdateScoreOnBallUI(currentBall, score, isOut);
 
         public void ToggleUserInputInteraction(bool enable) =>
             _ownerClientInputUI.ToggleActiveInputButtons(enable);
@@ -55,10 +55,10 @@ namespace DoozyPractice.Gameplay
             _ownerClientUI.UpdatePlayingStateText(false);
 
         public void UpdateUIToOtherIsBatting() =>
-            _ownerClientUI.UpdatePlayingStateText(true);
+            _otherClientUI.UpdatePlayingStateText(true);
 
         public void UpdateUIToOtherIsBalling() =>
-            _ownerClientUI.UpdatePlayingStateText(false);
+            _otherClientUI.UpdatePlayingStateText(false);
 
         public void UpdateOwnerInputScoreUI(int score) =>
             _ownerClientUI.ShowInputScore(score);

@@ -17,8 +17,6 @@ namespace DoozyPractice.Gameplay
 
     public class TurnController : MonoBehaviour
     {
-        private const int BALLS_PER_OVER = 6;
-
         /// <summary>
         /// Called when the next turn is starting. User input panel needs to be activated.
         /// </summary>
@@ -34,6 +32,9 @@ namespace DoozyPractice.Gameplay
 
         [SerializeField]
         GameplayUIMediator _gameplayUIMediator;
+
+        [SerializeField]
+        int _ballsPerOver;
 
         [SerializeField]
         int _totalOvers;
@@ -57,10 +58,13 @@ namespace DoozyPractice.Gameplay
 
         private float _timeElapsedSinceTurnCountdownStarted;
 
+        private bool _isOutOnThisTurn;
         private bool _pauseCountdown = false;
 
         private void Start()
         {
+            if (!PassPreChecks()) return;
+
             ResetAtStart();
             _gameStateManager.ChangeGameState(GameStateCategory.Owner_Batting);
             StartNextTurn();
@@ -79,7 +83,7 @@ namespace DoozyPractice.Gameplay
 
         async void TryExecuteNextTurn()
         {
-            if (!HasTurnCountdownEnded()) 
+            if (!HasTurnCountdownEnded())
                 return;
 
             OnNextTurnCountdownEnded?.Invoke();
@@ -91,26 +95,22 @@ namespace DoozyPractice.Gameplay
 
             await Task.Delay(_waitBeforeNextTurn * 1000);
 
-            if (HaveBothPlayersBatted())
-            {
-                EndGame();
-                return;
-            }
-
-            if (HaveWholeOversEnded())
-            {
-                ChangeBatsman();
-
-                // Reset
-                _currentOverCount = 0;
-                _currentBallCount = 0;
-            }
-
-            if (HasCurrentOverEnded())
+            if (IsOverComplete())
             {
                 _currentOverCount++;
 
-                // Reset
+                if (IsBattingComplete())
+                {
+                    if (HaveBothPlayersBatted())
+                    {
+                        EndGame();
+                        return;
+                    }
+
+                    ChangeBatsman();
+                    _currentOverCount = 0;
+                }
+
                 _gameplayUIMediator.ResetOverScoreUI();
                 _currentBallCount = 0;
             }
@@ -155,8 +155,6 @@ namespace DoozyPractice.Gameplay
             {
                 _gameStateManager.ChangeGameState(GameStateCategory.Owner_Batting);
             }
-
-            _currentOverCount = 0;
         }
 
         void EndGame()
@@ -166,6 +164,8 @@ namespace DoozyPractice.Gameplay
 
         void CalculateScore()
         {
+            _isOutOnThisTurn = (_ownerInputScore == _otherInputScore);
+
             _turnScore = (_ownerInputScore == _otherInputScore) ? 0 :
                 IsOwnerBatting ? _ownerInputScore : _otherInputScore;
 
@@ -194,14 +194,12 @@ namespace DoozyPractice.Gameplay
                 _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore);
             }
 
-            _gameplayUIMediator.UpdateOverScoreUI(_currentBallCount, _turnScore);
+            _gameplayUIMediator.UpdateOverScoreUI(_currentBallCount, _turnScore, _isOutOnThisTurn);
         }
 
-        bool HasCurrentOverEnded() => _currentBallCount == BALLS_PER_OVER;
-
-        bool HaveWholeOversEnded() => _currentOverCount == _totalOvers;
-
-        bool HaveBothPlayersBatted() => _gameStateManager.OwnerDidBat && _gameStateManager.OtherDidbat;
+        bool IsOverComplete() => _currentBallCount == _ballsPerOver;
+        bool IsBattingComplete() => _currentOverCount == _totalOvers;
+        bool HaveBothPlayersBatted() => _gameStateManager.OwnerDidBatting && _gameStateManager.OtherDidBatting;
 
         void ResetAtStart()
         {
@@ -209,6 +207,16 @@ namespace DoozyPractice.Gameplay
             OtherTotalScore = 0;
             _currentBallCount = 0;
             _currentOverCount = 0;
+        }
+
+        bool PassPreChecks()
+        {
+            if (_ballsPerOver == 0 || _totalOvers == 0)
+            {
+                gameObject.SetActive(false);
+                return false;
+            }
+            return true;
         }
     }
 }

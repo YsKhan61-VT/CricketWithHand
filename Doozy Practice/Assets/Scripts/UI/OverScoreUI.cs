@@ -36,7 +36,7 @@ namespace DoozyPractice.UI
             }
         }
 
-        public void UpdateScoreOnBallUI(int ballCount, int score)
+        public void UpdateScoreOnBallUI(int ballCount, int score, bool isOut)
         {
             int index = ballCount - 1;
             if (index < 0 || index >= _ballScoreUIs.Length)
@@ -45,7 +45,7 @@ namespace DoozyPractice.UI
                 return;
             }
 
-            if (score == 0)
+            if (score == 0 && isOut)
             {
                 _ballScoreUIs[index].BackgroundImage.color = _wicketColor;
                 _ballScoreUIs[index].ScoreText.text = "W";

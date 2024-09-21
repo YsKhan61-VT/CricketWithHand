@@ -14,17 +14,8 @@
 
         public override void Enter()
         {
+            StateManager.OtherDidBatting = true;
             StateManager.OnOtherBattingStateStarted?.Invoke();
-        }
-
-        public override void Update()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Exit()
-        {
-            StateManager.OtherDidbat = true;
         }
     }
 

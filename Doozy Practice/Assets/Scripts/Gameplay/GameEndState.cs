@@ -25,16 +25,6 @@ namespace DoozyPractice.Gameplay
             ProcessResult();
         }
 
-        public override void Exit()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Update()
-        {
-            throw new System.NotImplementedException();
-        }
-
         void ProcessResult()
         {
             int scoreDiff = _turnController.OtherTotalScore - _turnController.OwnerTotalScore;

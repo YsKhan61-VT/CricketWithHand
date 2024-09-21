@@ -35,8 +35,8 @@ namespace DoozyPractice.Gameplay
         TurnController _turnController;
 
         public GameState CurrentGameState { get; private set; }
-        public bool OwnerDidBat { get; set; } = false;
-        public bool OtherDidbat { get; set; } = false;
+        public bool OwnerDidBatting { get; set; } = false;
+        public bool OtherDidBatting { get; set; } = false;
 
         private GameState _ownerBattingState;
         private GameState _otherBattingState;
@@ -65,6 +65,9 @@ namespace DoozyPractice.Gameplay
 
                 case GameStateCategory.Other_Batting:
                     return _otherBattingState;
+
+                case GameStateCategory.GameEnd:
+                    return _gameEndState;
             }
 
             Debug.LogError("This should not happen!");
