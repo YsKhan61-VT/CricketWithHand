@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ccf9294157d4eff8294a3c67883318a, type: 3}
-  m_Name: ReactorSettings
+  m_Script: {fileID: 11500000, guid: 3944ae617f49e644e8f61fe8130d6581, type: 3}
+  m_Name: OtherTotalScore
   m_EditorClassIdentifier: 
-  EditorFPS: 60
-  CustomEditorFPS: 20
-  RuntimeFPS: 60
-  CustomRuntimeFPS: 20

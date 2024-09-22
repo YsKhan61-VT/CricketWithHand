@@ -36,13 +36,46 @@ namespace CricketWithHand.Gameplay
         /// Called everytime owner is playing a new over
         /// </summary>
         [SerializeField]
-        IntDataContainerSO _ownerOverCount;
+        IntDataContainerSO _ownerOverCountContainer;
 
         /// <summary>
         /// Called everytime other player is playing a new over
         /// </summary>
         [SerializeField]
-        IntDataContainerSO _otherOverCount;
+        IntDataContainerSO _otherOverCountContainer;
+
+        /// <summary>
+        /// Called everytime owner played a new ball
+        /// </summary>
+        [SerializeField]
+        BallDataContainerSO _ownerBallDataContainer;
+
+        /// <summary>
+        /// Called everytime other played a new ball
+        /// </summary>
+        [SerializeField]
+        BallDataContainerSO _otherBallDataContainer;
+
+        /// <summary>
+        /// Called everytime the owner total score gets updated.
+        /// </summary>
+        [SerializeField]
+        IntDataContainerSO _ownerTotalScoreContainer;
+
+        /// <summary>
+        /// Called everytime the other player's total score gets updated.
+        /// </summary>
+        [SerializeField]
+        IntDataContainerSO _otherTotalScoreContainer;
+
+        [SerializeField]
+        IntDataContainerSO _totalOversContainer;
+
+        /*[SerializeField]
+        GameStatsSO _ownerGameStats;
+
+        [SerializeField]
+        GameStatsSO _otherGameStats;*/
 
         [SerializeField]
         GameStateManager _gameStateManager;
@@ -55,8 +88,7 @@ namespace CricketWithHand.Gameplay
 
         /*[SerializeField]
         int _totalOvers;*/
-        [SerializeField]
-        IntDataContainerSO _totalOversContainer;
+        
 
         [SerializeField]
         int _totalWickets;
@@ -87,7 +119,7 @@ namespace CricketWithHand.Gameplay
 
         void Start()
         {
-            ResetUIs();
+            ResetAtStart();
         }
 
 
@@ -132,7 +164,9 @@ namespace CricketWithHand.Gameplay
         public void StartGameplay()
         {
             if (!PassPreChecks()) return;
-            IncrementOverCount();
+
+            IncreaseOverCount();
+
             StartNextTurn();
         }
 
@@ -148,6 +182,7 @@ namespace CricketWithHand.Gameplay
             _currentOverCount = 0;
             _gameplayUIMediator.ResetOverScoreUI();
             _currentBallCount = 0;
+            IncreaseOverCount();
             StartNextTurn();
         }
 
@@ -171,30 +206,39 @@ namespace CricketWithHand.Gameplay
                 return;
             }
 
-            if (IsCurrentOverComplete())
-            {
-                // _currentOverCount++;
-                IncrementOverCount();
-                ResetOver();
-            }
-
             if (HasTotalOversOfThisHalfEnded() || IsCurrentHalfBattingTeamAllOut())
             {
                 ExecuteHalfTIme();
                 return;
             }
 
+            if (IsCurrentOverComplete() && !HasTotalOversOfThisHalfEnded())
+            {
+                // _currentOverCount++;
+                IncreaseOverCount();
+            }
+
             StartNextTurn();
         }
 
-        void IncrementOverCount()
+        void IncreaseOverCount()
         {
             _currentOverCount++;
-            if (IsOwnerBatting) _ownerOverCount.UpdateData(_ownerOverCount.Value + 1);
-            else _otherOverCount.UpdateData(_otherOverCount.Value + 1);
+            if (IsOwnerBatting)
+            {
+                _ownerOverCountContainer.UpdateData(_ownerOverCountContainer.Value + 1);
+                // _ownerGameStats.AddNewOver();
+            }
+            else
+            {
+                _otherOverCountContainer.UpdateData(_otherOverCountContainer.Value + 1);
+                // _otherGameStats.AddNewOver();
+            }
+
+            ResetForNewOver();
         }
 
-        void ResetOver()
+        void ResetForNewOver()
         {
             _gameplayUIMediator.ResetOverScoreUI();
             _currentBallCount = 0;
@@ -247,9 +291,30 @@ namespace CricketWithHand.Gameplay
 
             // Calculate score
             if (IsOwnerBatting)
+            {
                 OwnerTotalScore += _turnScore;
+                _ownerTotalScoreContainer.UpdateData(OwnerTotalScore);
+                _ownerBallDataContainer.UpdateData(new BallData
+                {
+                    OverNumber = _ownerOverCountContainer.Value,
+                    BallNumber = _currentBallCount,
+                    Score = _turnScore,
+                    IsWicketLost = _isOutOnThisTurn,
+                });
+            }
+                
             else
+            {
                 OtherTotalScore += _turnScore;
+                _otherTotalScoreContainer.UpdateData(OtherTotalScore);
+                _otherBallDataContainer.UpdateData(new BallData
+                {
+                    OverNumber = _otherOverCountContainer.Value,
+                    BallNumber = _currentBallCount,
+                    Score = _turnScore,
+                    IsWicketLost = _isOutOnThisTurn,
+                });
+            }
 
             if (!_isOutOnThisTurn)
                 return;
@@ -268,13 +333,13 @@ namespace CricketWithHand.Gameplay
 
             if (IsOwnerBatting)
             {
-                _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore);
+                // _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore);
                 _gameplayUIMediator.UpdateOwnerTotalWicketsUI(_ownerOutCount, _totalWickets);
                 _gameplayUIMediator.UpdateOwnerTotalOversUI(_currentOverCount-1, _currentBallCount, _totalOversContainer.Value);
             }
             else
             {
-                _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore);
+                // _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore);
                 _gameplayUIMediator.UpdateOtherTotalWicketsUI(_otherOutCount, _totalWickets);
                 _gameplayUIMediator.UpdateOtherTotalOversUI(_currentOverCount-1, _currentBallCount, _totalOversContainer.Value);
             }
@@ -293,11 +358,6 @@ namespace CricketWithHand.Gameplay
         bool HasLimitedOver() => _totalOversContainer.Value != (int)OverCategory.AllOut;
 
         /// <summary>
-        /// Is the current over the last over of this half(1st half or 2nd half)
-        /// </summary>
-        bool IsLastOverOfThisHalf() => _currentOverCount > _totalOversContainer.Value;
-
-        /// <summary>
         /// Has the current half batting team lost all wickets.
         /// </summary>
         bool IsCurrentHalfBattingTeamAllOut() => IsOwnerBatting ? _ownerOutCount == _totalWickets : _otherOutCount == _totalWickets;
@@ -306,6 +366,11 @@ namespace CricketWithHand.Gameplay
         /// Have both the teams started to bat?. The second half batting team might be still batting.
         /// </summary>
         bool HaveBothPlayersStartedBat() => _gameStateManager.OwnerStartedBat && _gameStateManager.OtherStartedBat;
+
+        /// <summary>
+        /// Is the current over the last over of this half(1st half or 2nd half)
+        /// </summary>
+        bool IsLastOverOfThisHalf() => IsCurrentOverComplete() && _currentOverCount == _totalOversContainer.Value;
 
         /// <summary>
         /// Both teams started batting and Has the owner's score crossed the other's score
@@ -361,18 +426,21 @@ namespace CricketWithHand.Gameplay
             return true;
         }
 
-        void ResetUIs()
+        void ResetAtStart()
         {
             _gameplayUIMediator.ResetOverScoreUI();
-            _gameplayUIMediator.UpdateOwnerTotalScoreUI(0);
-            _gameplayUIMediator.UpdateOtherTotalScoreUI(0);
+            // _gameplayUIMediator.UpdateOwnerTotalScoreUI(0);
+            // _gameplayUIMediator.UpdateOtherTotalScoreUI(0);
             _gameplayUIMediator.UpdateOwnerTotalWicketsUI(0, 0);
             _gameplayUIMediator.UpdateOtherTotalWicketsUI(0, 0);
             _gameplayUIMediator.UpdateOwnerTotalOversUI(0, 0, 0);
             _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, 0);
 
-            _ownerOverCount.UpdateData(0);
-            _otherOverCount.UpdateData(0);
+            _ownerOverCountContainer.UpdateData(0);
+            _otherOverCountContainer.UpdateData(0);
+
+            _ownerTotalScoreContainer.UpdateData(0);
+            _otherTotalScoreContainer.UpdateData(0);
         }
     }
 }

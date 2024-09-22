@@ -42,7 +42,7 @@ namespace CricketWithHand.UI
         public void ShowInputScore(int score) =>
             _inputScoreText.text = score.ToString();
 
-        public void UpdateTotalScoreAndWicket(int score) =>
+        public void UpdateTotalScore(int score) =>
             _totalScoreText.text = score.ToString();
 
         public void UpdateTotalWickets(int wicketsLost, int totalWickets) =>

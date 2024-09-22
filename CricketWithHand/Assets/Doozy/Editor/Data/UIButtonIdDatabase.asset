@@ -41,9 +41,15 @@ MonoBehaviour:
     - Category: DisplayName
       Name: Save
     - Category: GameResultView
+      Name: GameStats
+    - Category: GameResultView
       Name: MainMenu
     - Category: GameResultView
       Name: PlayAgain
+    - Category: GameStatsView
+      Name: Back
+    - Category: HalfTimeView
+      Name: GameStats
     - Category: HalfTimeView
       Name: Start
     - Category: Login
@@ -68,8 +74,6 @@ MonoBehaviour:
       Name: LinkAccount
     - Category: Profile
       Name: LogOut
-    - Category: ScoreboardView
-      Name: Close
     - Category: Settings
       Name: Back
     - Category: TossResultView

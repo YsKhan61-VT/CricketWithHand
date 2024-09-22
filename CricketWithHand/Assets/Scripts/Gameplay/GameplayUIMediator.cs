@@ -3,6 +3,7 @@ using CricketWithHand.UI;
 using UnityEngine;
 using CricketWithHand.Utility;
 using System;
+using UnityEngine.SocialPlatforms.Impl;
 
 
 namespace CricketWithHand.Gameplay
@@ -11,6 +12,18 @@ namespace CricketWithHand.Gameplay
     {
         [SerializeField]
         IntDataContainerSO _totalOversDataContainer;
+
+        /// <summary>
+        /// Called everytime the owner total score gets updated.
+        /// </summary>
+        [SerializeField]
+        IntDataContainerSO _ownerTotalScoreContainer;
+
+        /// <summary>
+        /// Called everytime the other player's total score gets updated.
+        /// </summary>
+        [SerializeField]
+        IntDataContainerSO _otherTotalScoreContainer;
 
         [SerializeField]
         UISlider _turnDurationSlider;
@@ -33,17 +46,15 @@ namespace CricketWithHand.Gameplay
         private void OnEnable()
         {
             _totalOversDataContainer.OnValueUpdated += OnTotalOversUpdated;
+            _ownerTotalScoreContainer.OnValueUpdated += OnOwnerTotalScoreUpdated;
+            _otherTotalScoreContainer.OnValueUpdated += OnOtherTotalScoreUpdated;
         }
 
         private void OnDisable()
         {
             _totalOversDataContainer.OnValueUpdated -= OnTotalOversUpdated;
-        }
-
-        private void OnTotalOversUpdated()
-        {
-            _ownerClientUI.UpdateTotalOversText(0, 0, _totalOversDataContainer.Value);
-            _otherClientUI.UpdateTotalOversText(0, 0, _totalOversDataContainer.Value);
+            _ownerTotalScoreContainer.OnValueUpdated -= OnOwnerTotalScoreUpdated;
+            _otherTotalScoreContainer.OnValueUpdated -= OnOtherTotalScoreUpdated;
         }
 
         public void UpdateTurnDurationSlider(float value)
@@ -81,10 +92,10 @@ namespace CricketWithHand.Gameplay
             _otherClientUI.ShowInputScore(score);
 
         public void UpdateOwnerTotalScoreUI(int score) =>
-            _ownerClientUI.UpdateTotalScoreAndWicket(score);
+            _ownerClientUI.UpdateTotalScore(score);
 
         public void UpdateOtherTotalScoreUI(int score) =>
-            _otherClientUI.UpdateTotalScoreAndWicket(score);
+            _otherClientUI.UpdateTotalScore(score);
 
         public void UpdateOwnerTotalWicketsUI(int wicketLost, int totalWickets) =>
             _ownerClientUI.UpdateTotalWickets(wicketLost, totalWickets);
@@ -106,5 +117,21 @@ namespace CricketWithHand.Gameplay
 
         public void ShowDrawText() =>
             _resultUI.ShowDrawText();
+
+        private void OnOwnerTotalScoreUpdated()
+        {
+            _ownerClientUI.UpdateTotalScore(_ownerTotalScoreContainer.Value);
+        }
+
+        private void OnOtherTotalScoreUpdated()
+        {
+            _otherClientUI.UpdateTotalScore(_ownerTotalScoreContainer.Value);
+        }
+
+        private void OnTotalOversUpdated()
+        {
+            _ownerClientUI.UpdateTotalOversText(0, 0, _totalOversDataContainer.Value);
+            _otherClientUI.UpdateTotalOversText(0, 0, _totalOversDataContainer.Value);
+        }
     }
 }
