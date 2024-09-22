@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bd14fc30d004417a423cfdef2bd9ccf, type: 3}
+  m_Name: UIButtonIdDatabase
+  m_EditorClassIdentifier: 
+  Database:
+    Items:
+    - Category: ChooseBatOrBallView
+      Name: Ball
+    - Category: ChooseBatOrBallView
+      Name: Bat
+    - Category: ChooseOverView
+      Name: AllOut
+    - Category: ChooseOverView
+      Name: FourOver
+    - Category: ChooseOverView
+      Name: OneOver
+    - Category: ChooseOverView
+      Name: SixOver
+    - Category: ChooseOverView
+      Name: TwoOver
+    - Category: ChooseWicketView
+      Name: Eight
+    - Category: ChooseWicketView
+      Name: Four
+    - Category: ChooseWicketView
+      Name: One
+    - Category: ChooseWicketView
+      Name: Six
+    - Category: ChooseWicketView
+      Name: Two
+    - Category: DisplayName
+      Name: Save
+    - Category: GameResultView
+      Name: MainMenu
+    - Category: GameResultView
+      Name: PlayAgain
+    - Category: HalfTimeView
+      Name: Start
+    - Category: Login
+      Name: LoginWithEmail
+    - Category: Login
+      Name: LoginWithFacebook
+    - Category: Login
+      Name: LoginWithGoogle
+    - Category: Login
+      Name: PlayAsGuest
+    - Category: Login
+      Name: Quit
+    - Category: Login
+      Name: Register
+    - Category: MainMenu
+      Name: Login
+    - Category: MainMenu
+      Name: Settings
+    - Category: None
+      Name: None
+    - Category: Profile
+      Name: LinkAccount
+    - Category: Profile
+      Name: LogOut
+    - Category: Settings
+      Name: Back
+    - Category: TossResultView
+      Name: StartGame
+    - Category: TossView
+      Name: Head
+    - Category: TossView
+      Name: Tail
