@@ -29,15 +29,15 @@ MonoBehaviour:
     - Category: ChooseOverView
       Name: TwoOver
     - Category: ChooseWicketView
-      Name: Eight
+      Name: EightWickets
     - Category: ChooseWicketView
-      Name: Four
+      Name: FourWickets
     - Category: ChooseWicketView
-      Name: One
+      Name: OneWicket
     - Category: ChooseWicketView
-      Name: Six
+      Name: SixWickets
     - Category: ChooseWicketView
-      Name: Two
+      Name: TwoWickets
     - Category: DisplayName
       Name: Save
     - Category: GameResultView
