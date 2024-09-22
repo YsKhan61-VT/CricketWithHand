@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-namespace DoozyPractice.Gameplay
+namespace CricketWithHand.Gameplay
 {
     public enum OverCategory : int
     {

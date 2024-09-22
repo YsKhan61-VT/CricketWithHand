@@ -1,8 +1,8 @@
-﻿using DoozyPractice.Gameplay;
+﻿using CricketWithHand.Gameplay;
 using UnityEngine;
 
 
-namespace DoozyPractice.UI
+namespace CricketWithHand.UI
 {
     public class ChooseWicketUI : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace DoozyPractice.Gameplay
+namespace CricketWithHand.Gameplay
 {
     public class AIController : MonoBehaviour
     {

@@ -1,4 +1,4 @@
-using DoozyPractice.PlayFab;
+using CricketWithHand.PlayFab;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using YSK.Utilities;
 
 
-namespace DoozyPractice.UI
+namespace CricketWithHand.UI
 {
     public class Register_LoginUIMediator : MonoBehaviour
     {

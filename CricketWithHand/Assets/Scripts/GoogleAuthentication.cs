@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YSK.Utilities;
 
-namespace DoozyPractice.PlayFab.Google
+namespace CricketWithHand.PlayFab.Google
 {
     public class GoogleAuthentication
     {

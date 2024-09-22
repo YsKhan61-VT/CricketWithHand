@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-namespace DoozyPractice.UI
+namespace CricketWithHand.UI
 {
     public class DisplayNameUI : MonoBehaviour
     {

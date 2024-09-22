@@ -1,9 +1,9 @@
 ﻿using Doozy.Runtime.UIManager.Components;
-using DoozyPractice.UI;
+using CricketWithHand.UI;
 using UnityEngine;
 
 
-namespace DoozyPractice.Gameplay
+namespace CricketWithHand.Gameplay
 {
     public class GameplayUIMediator : MonoBehaviour
     {

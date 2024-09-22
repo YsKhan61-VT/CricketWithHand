@@ -1,9 +1,9 @@
-﻿using DoozyPractice.UI;
+﻿using CricketWithHand.UI;
 using UnityEngine;
 using UnityEngine.Events;
 
 
-namespace DoozyPractice.Gameplay
+namespace CricketWithHand.Gameplay
 {
     public class TossController : MonoBehaviour
     {

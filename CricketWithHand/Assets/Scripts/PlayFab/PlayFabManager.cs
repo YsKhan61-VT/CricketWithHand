@@ -12,7 +12,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 
 
-namespace DoozyPractice.PlayFab
+namespace CricketWithHand.PlayFab
 {
     public static class PlayFabManager
     {

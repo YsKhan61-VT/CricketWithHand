@@ -4,7 +4,7 @@ using UnityEngine;
 using YSK.Utilities;
 
 
-namespace DoozyPractice.UI
+namespace CricketWithHand.UI
 {
     public class LoginUI : MonoBehaviour
     {

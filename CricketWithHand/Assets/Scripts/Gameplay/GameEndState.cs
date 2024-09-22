@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DoozyPractice.Gameplay
+namespace CricketWithHand.Gameplay
 {
     public class GameEndState : GameState
     {

@@ -1,9 +1,9 @@
-using DoozyPractice.Gameplay;
+using CricketWithHand.Gameplay;
 using UnityEngine;
 using UnityEngine.Events;
 
 
-namespace DoozyPractice.UI
+namespace CricketWithHand.UI
 {
 
     public class OwnerClientInputUI : MonoBehaviour

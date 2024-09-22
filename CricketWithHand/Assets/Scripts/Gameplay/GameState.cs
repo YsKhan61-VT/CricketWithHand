@@ -1,4 +1,4 @@
-﻿namespace DoozyPractice.Gameplay
+﻿namespace CricketWithHand.Gameplay
 {
     public abstract class GameState
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace DoozyPractice.UI
+namespace CricketWithHand.UI
 {
     public class OverScoreUI : MonoBehaviour
     {

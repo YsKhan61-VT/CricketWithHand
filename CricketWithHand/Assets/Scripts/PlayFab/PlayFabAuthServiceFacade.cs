@@ -12,11 +12,11 @@ using PlayFab.ClientModels;
 using LoginResult = PlayFab.ClientModels.LoginResult;
 using System;
 using YSK.Utilities;
-using DoozyPractice.PlayFab.Google;
+using CricketWithHand.PlayFab.Google;
 using Google;
 
 
-namespace DoozyPractice.PlayFab
+namespace CricketWithHand.PlayFab
 {
     /// <summary>
     /// Supported Authentication types
