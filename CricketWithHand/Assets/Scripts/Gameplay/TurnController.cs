@@ -141,19 +141,19 @@ namespace DoozyPractice.Gameplay
 
             await Task.Delay(_waitBeforeNextTurn * 1000);
 
-            if (TargetScoreReached() || HasLastTeamTotalOversEnded() || IsLastTeamAllOut())
+            if (IsGameEndConditionsMatching())
             {
                 EndGame();
                 return;
             }
 
-            if (IsOverComplete())
+            if (IsCurrentOverComplete())
             {
                 _currentOverCount++;
                 ResetOver();
             }
 
-            if (HasTotalOversEnded() || IsAllOut())
+            if (HasTotalOversOfThisHalfEnded() || IsCurrentHalfBattingTeamAllOut())
             {
                 ExecuteHalfTIme();
                 return;
@@ -250,27 +250,74 @@ namespace DoozyPractice.Gameplay
             _gameplayUIMediator.UpdateOverScoreUI(_currentBallCount, _turnScore, _isOutOnThisTurn);
         }
 
-        bool IsOverComplete() => _currentBallCount == _ballsPerOver;
+        /// <summary>
+        /// Is the total balls of the current over completed playing.
+        /// </summary>
+        bool IsCurrentOverComplete() => _currentBallCount == _ballsPerOver;
 
-        bool HasTotalOversEnded() => HasLimitedOver() && IsThisLastOver();
-
-        bool HasLastTeamTotalOversEnded() => HaveBothPlayersBatted() && HasTotalOversEnded();
-
+        /// <summary>
+        /// Does the game have limited overs to play or until all wickets are lost.
+        /// </summary>
         bool HasLimitedOver() => _totalOvers != (int)OverCategory.AllOut;
 
-        bool IsThisLastOver() => _currentOverCount == _totalOvers;
+        /// <summary>
+        /// Is the current over the last over of this half(1st half or 2nd half)
+        /// </summary>
+        bool IsLastOverOfThisHalf() => _currentOverCount == _totalOvers;
 
-        bool IsAllOut() => IsOwnerBatting ? _ownerOutCount == _totalWickets : _otherOutCount == _totalWickets;
+        /// <summary>
+        /// Has the current half batting team lost all wickets.
+        /// </summary>
+        bool IsCurrentHalfBattingTeamAllOut() => IsOwnerBatting ? _ownerOutCount == _totalWickets : _otherOutCount == _totalWickets;
 
-        bool IsLastTeamAllOut() => HaveBothPlayersBatted() && IsAllOut();
+        /// <summary>
+        /// Have both the teams started to bat?. The second half batting team might be still batting.
+        /// </summary>
+        bool HaveBothPlayersStartedBat() => _gameStateManager.OwnerStartedBat && _gameStateManager.OtherStartedBat;
 
-        bool TargetScoreReached() => HaveBothPlayersBatted() && (HasOwnerReachedOtherTarget() || HasOtherReachedOwnerTarget());
+        /// <summary>
+        /// Both teams started batting and Has the owner's score crossed the other's score
+        /// </summary>
+        bool HasOwnerWon() => HaveBothPlayersStartedBat() && IsOwnerBatting && OwnerTotalScore > OtherTotalScore;
 
-        bool HasOwnerReachedOtherTarget() => IsOwnerBatting && OwnerTotalScore >= OtherTotalScore;
+        /// <summary>
+        /// Both teams started batting and Has the other team's score crossed the owner's score
+        /// </summary>
+        bool HasOtherWon() => HaveBothPlayersStartedBat() && !IsOwnerBatting && OtherTotalScore > OwnerTotalScore;
 
-        bool HasOtherReachedOwnerTarget() => !IsOwnerBatting && OtherTotalScore >= OwnerTotalScore;
+        /// <summary>
+        /// [ If the second half batting team is all out OR
+        /// If the total overs to be played is limited, then total overs is finished ] AND
+        /// Both team scores are same.
+        /// </summary>
+        bool IsTargetDraw() => (IsSecondHalfBattingTeamAllOut() || HasSecondHalfTotalOversEnded()) && OwnerTotalScore == OtherTotalScore;
 
-        bool HaveBothPlayersBatted() => _gameStateManager.OwnerDidBatting && _gameStateManager.OtherDidBatting;
+        /// <summary>
+        /// If both teams have batted AND second half batting team is all out.
+        /// </summary>
+        bool IsSecondHalfBattingTeamAllOut() => HaveBothPlayersStartedBat() && IsCurrentHalfBattingTeamAllOut();
+
+        /// <summary>
+        /// If the game is with limited overs,
+        /// Checks if the total overs ended for the current half team, 
+        /// </summary>
+        bool HasTotalOversOfThisHalfEnded() => HasLimitedOver() && IsLastOverOfThisHalf();
+
+        /// <summary>
+        /// If both teams started to bat,
+        /// Has the second half batting team finished the total overs to be played.
+        /// </summary>
+        bool HasSecondHalfTotalOversEnded() => HaveBothPlayersStartedBat() && HasTotalOversOfThisHalfEnded();
+
+        /// <summary>
+        /// If this conditions match, we end the game.
+        /// </summary>
+        bool IsGameEndConditionsMatching() =>
+            IsTargetDraw() ||
+            HasOwnerWon() ||
+            HasOtherWon() ||
+            HasSecondHalfTotalOversEnded() ||
+            IsSecondHalfBattingTeamAllOut();
 
         bool PassPreChecks()
         {

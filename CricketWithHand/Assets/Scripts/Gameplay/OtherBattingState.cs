@@ -15,7 +15,7 @@
 
         public override void Enter()
         {
-            StateManager.OtherDidBatting = true;
+            StateManager.OtherStartedBat = true;
             StateManager.OnOtherBattingStateStarted?.Invoke();
         }
     }

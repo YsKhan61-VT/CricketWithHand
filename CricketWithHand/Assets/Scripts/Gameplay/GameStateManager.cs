@@ -41,8 +41,8 @@ namespace DoozyPractice.Gameplay
         TurnController _turnController;
 
         public GameState CurrentGameState { get; private set; }
-        public bool OwnerDidBatting { get; set; } = false;
-        public bool OtherDidBatting { get; set; } = false;
+        public bool OwnerStartedBat { get; set; } = false;
+        public bool OtherStartedBat { get; set; } = false;
 
         private GameState _ownerBattingState;
         private GameState _halfTimeState;

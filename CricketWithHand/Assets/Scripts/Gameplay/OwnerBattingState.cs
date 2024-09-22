@@ -15,7 +15,7 @@
 
         public override void Enter()
         {
-            StateManager.OwnerDidBatting = true;
+            StateManager.OwnerStartedBat = true;
             StateManager.OnOwnerBattingStateStarted?.Invoke();
         }
     }
