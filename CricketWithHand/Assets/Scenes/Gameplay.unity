@@ -7383,7 +7383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _turnController: {fileID: 1988157923}
   _tossController: {fileID: 1988157924}
-  _aiBattingChance: 0
+  _aiBattingChance: 0.5
 --- !u!4 &842129734
 Transform:
   m_ObjectHideFlags: 0
@@ -14203,7 +14203,7 @@ MonoBehaviour:
     type: 2}
   _gameStateManager: {fileID: 2115737126}
   _gameplayUIMediator: {fileID: 1519460131}
-  _ballsPerOver: 3
+  _ballsPerOver: 6
   _totalWickets: 2
   _turnDuration: 3
   _waitBeforeNextTurn: 3
@@ -14268,7 +14268,7 @@ MonoBehaviour:
         m_CallState: 2
   _turnController: {fileID: 1988157923}
   _tossResultUI: {fileID: 1010356368}
-  _ownerWinningChance: 0
+  _ownerWinningChance: 0.5
 --- !u!114 &1988157925
 MonoBehaviour:
   m_ObjectHideFlags: 0
