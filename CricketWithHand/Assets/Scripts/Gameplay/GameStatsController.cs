@@ -94,7 +94,7 @@ namespace CricketWithHand.Gameplay
         {
             if (_otherOverCount.Value > 0 &&
                 _otherOverStatsUIs != null &&
-                _otherOverStatsUIs.Count ==_ownerOverCount.Value - 1)
+                _otherOverStatsUIs.Count ==_otherOverCount.Value - 1)
             {
                 OverStatsUI overStatsUI = SpawnOverStatsUI(false);
                 _otherOverStatsUIs.Add(overStatsUI);

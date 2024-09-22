@@ -125,7 +125,7 @@ namespace CricketWithHand.Gameplay
 
         private void OnOtherTotalScoreUpdated()
         {
-            _otherClientUI.UpdateTotalScore(_ownerTotalScoreContainer.Value);
+            _otherClientUI.UpdateTotalScore(_otherTotalScoreContainer.Value);
         }
 
         private void OnTotalOversUpdated()
