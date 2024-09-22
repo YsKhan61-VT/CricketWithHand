@@ -68,6 +68,8 @@ MonoBehaviour:
       Name: LinkAccount
     - Category: Profile
       Name: LogOut
+    - Category: ScoreboardView
+      Name: Close
     - Category: Settings
       Name: Back
     - Category: TossResultView
