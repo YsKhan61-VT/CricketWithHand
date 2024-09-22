@@ -1,3 +1,4 @@
+using CricketWithHand.Utility;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -26,6 +27,23 @@ namespace CricketWithHand.Gameplay
         /// </summary>
         public UnityEvent OnNextTurnCountdownEnded;
 
+        /*/// <summary>
+        /// Called when the total overs to be played in each half is set first time.
+        /// </summary>
+        public UnityEvent<int> OnTotalGameOversSet;*/
+
+        /// <summary>
+        /// Called everytime owner is playing a new over
+        /// </summary>
+        [SerializeField]
+        IntDataContainerSO _ownerOverCount;
+
+        /// <summary>
+        /// Called everytime other player is playing a new over
+        /// </summary>
+        [SerializeField]
+        IntDataContainerSO _otherOverCount;
+
         [SerializeField]
         GameStateManager _gameStateManager;
 
@@ -35,8 +53,10 @@ namespace CricketWithHand.Gameplay
         [SerializeField]
         int _ballsPerOver;
 
+        /*[SerializeField]
+        int _totalOvers;*/
         [SerializeField]
-        int _totalOvers;
+        IntDataContainerSO _totalOversContainer;
 
         [SerializeField]
         int _totalWickets;
@@ -78,10 +98,13 @@ namespace CricketWithHand.Gameplay
 
         public void SetTotalOvers(OverCategory overCategory)
         {
-            _totalOvers = (int)overCategory;     // 
+            // _totalOvers = (int)overCategory;
+            _totalOversContainer.UpdateData((int)overCategory);
 
-            _gameplayUIMediator.UpdateOwnerTotalOversUI(0, 0, _totalOvers);
-            _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, _totalOvers);
+            // OnTotalGameOversSet?.Invoke(_totalOvers);
+
+            // _gameplayUIMediator.UpdateOwnerTotalOversUI(0, 0, _totalOvers);
+            // _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, _totalOvers);
         }
 
         public void SetTotalWickets(int count)
@@ -109,6 +132,7 @@ namespace CricketWithHand.Gameplay
         public void StartGameplay()
         {
             if (!PassPreChecks()) return;
+            IncrementOverCount();
             StartNextTurn();
         }
 
@@ -149,7 +173,8 @@ namespace CricketWithHand.Gameplay
 
             if (IsCurrentOverComplete())
             {
-                _currentOverCount++;
+                // _currentOverCount++;
+                IncrementOverCount();
                 ResetOver();
             }
 
@@ -160,6 +185,13 @@ namespace CricketWithHand.Gameplay
             }
 
             StartNextTurn();
+        }
+
+        void IncrementOverCount()
+        {
+            _currentOverCount++;
+            if (IsOwnerBatting) _ownerOverCount.UpdateData(_ownerOverCount.Value + 1);
+            else _otherOverCount.UpdateData(_otherOverCount.Value + 1);
         }
 
         void ResetOver()
@@ -238,13 +270,13 @@ namespace CricketWithHand.Gameplay
             {
                 _gameplayUIMediator.UpdateOwnerTotalScoreUI(OwnerTotalScore);
                 _gameplayUIMediator.UpdateOwnerTotalWicketsUI(_ownerOutCount, _totalWickets);
-                _gameplayUIMediator.UpdateOwnerTotalOversUI(_currentOverCount, _currentBallCount, _totalOvers);
+                _gameplayUIMediator.UpdateOwnerTotalOversUI(_currentOverCount-1, _currentBallCount, _totalOversContainer.Value);
             }
             else
             {
                 _gameplayUIMediator.UpdateOtherTotalScoreUI(OtherTotalScore);
                 _gameplayUIMediator.UpdateOtherTotalWicketsUI(_otherOutCount, _totalWickets);
-                _gameplayUIMediator.UpdateOtherTotalOversUI(_currentOverCount, _currentBallCount, _totalOvers);
+                _gameplayUIMediator.UpdateOtherTotalOversUI(_currentOverCount-1, _currentBallCount, _totalOversContainer.Value);
             }
 
             _gameplayUIMediator.UpdateOverScoreUI(_currentBallCount, _turnScore, _isOutOnThisTurn);
@@ -258,12 +290,12 @@ namespace CricketWithHand.Gameplay
         /// <summary>
         /// Does the game have limited overs to play or until all wickets are lost.
         /// </summary>
-        bool HasLimitedOver() => _totalOvers != (int)OverCategory.AllOut;
+        bool HasLimitedOver() => _totalOversContainer.Value != (int)OverCategory.AllOut;
 
         /// <summary>
         /// Is the current over the last over of this half(1st half or 2nd half)
         /// </summary>
-        bool IsLastOverOfThisHalf() => _currentOverCount == _totalOvers;
+        bool IsLastOverOfThisHalf() => _currentOverCount > _totalOversContainer.Value;
 
         /// <summary>
         /// Has the current half batting team lost all wickets.
@@ -321,7 +353,7 @@ namespace CricketWithHand.Gameplay
 
         bool PassPreChecks()
         {
-            if (_ballsPerOver == 0 || _totalOvers == 0)
+            if (_ballsPerOver == 0 || _totalOversContainer.Value == 0)
             {
                 gameObject.SetActive(false);
                 return false;
@@ -338,6 +370,9 @@ namespace CricketWithHand.Gameplay
             _gameplayUIMediator.UpdateOtherTotalWicketsUI(0, 0);
             _gameplayUIMediator.UpdateOwnerTotalOversUI(0, 0, 0);
             _gameplayUIMediator.UpdateOtherTotalOversUI(0, 0, 0);
+
+            _ownerOverCount.UpdateData(0);
+            _otherOverCount.UpdateData(0);
         }
     }
 }

@@ -1,12 +1,17 @@
 ﻿using Doozy.Runtime.UIManager.Components;
 using CricketWithHand.UI;
 using UnityEngine;
+using CricketWithHand.Utility;
+using System;
 
 
 namespace CricketWithHand.Gameplay
 {
     public class GameplayUIMediator : MonoBehaviour
     {
+        [SerializeField]
+        IntDataContainerSO _totalOversDataContainer;
+
         [SerializeField]
         UISlider _turnDurationSlider;
 
@@ -24,6 +29,22 @@ namespace CricketWithHand.Gameplay
 
         [SerializeField]
         ResultUI _resultUI;
+
+        private void OnEnable()
+        {
+            _totalOversDataContainer.OnValueUpdated += OnTotalOversUpdated;
+        }
+
+        private void OnDisable()
+        {
+            _totalOversDataContainer.OnValueUpdated -= OnTotalOversUpdated;
+        }
+
+        private void OnTotalOversUpdated()
+        {
+            _ownerClientUI.UpdateTotalOversText(0, 0, _totalOversDataContainer.Value);
+            _otherClientUI.UpdateTotalOversText(0, 0, _totalOversDataContainer.Value);
+        }
 
         public void UpdateTurnDurationSlider(float value)
         {

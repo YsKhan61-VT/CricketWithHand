@@ -1277,6 +1277,58 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 133807148}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &138285980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 138285981}
+  - component: {fileID: 138285982}
+  m_Layer: 0
+  m_Name: ScoreBoardController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &138285981
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138285980}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &138285982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138285980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eddbaa805d01bde4dbf0a312f839caa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ownerOverCount: {fileID: 11400000, guid: 4a59e8dda3148f543ad6af26d2f5ef85, type: 2}
+  _otherOverCount: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1, type: 2}
+  _ownerStats: {fileID: 11400000, guid: 945f5f421a0302c4698be927804a9240, type: 2}
+  _otherStats: {fileID: 11400000, guid: 0194a968b0baa134e9bf7cd8b7a9e288, type: 2}
+  _overStatsUIPrefab: {fileID: 4675969165670686943, guid: 4a2914723b76a4a41a5e76f34c4240b1,
+    type: 3}
+  _ownerOverStatsSpawnParent: {fileID: 1082275427}
+  _otherOverStatsSpawnParent: {fileID: 1610121639}
 --- !u!1001 &166718472
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8706,6 +8758,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1056735065}
   m_CullTransparentMesh: 1
+--- !u!224 &1082275427 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5582452785060029890, guid: 3c244f64e59a8264a9a7667cc108e5c6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4775341448253160732}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1175752425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10401,7 +10459,7 @@ PrefabInstance:
     - target: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
         type: 3}
       propertyPath: m_Name
-      value: View - ScoreboardView
+      value: View - GameStatsView
       objectReference: {fileID: 0}
     - target: {fileID: 2951246982249616007, guid: ba5426fee7e7e6745b4d29bb89a71139,
         type: 3}
@@ -10506,7 +10564,7 @@ PrefabInstance:
     - target: {fileID: 5730376199227158291, guid: ba5426fee7e7e6745b4d29bb89a71139,
         type: 3}
       propertyPath: Id.Name
-      value: ScoreboardView
+      value: GameStatsView
       objectReference: {fileID: 0}
     - target: {fileID: 5730376199227158291, guid: ba5426fee7e7e6745b4d29bb89a71139,
         type: 3}
@@ -10634,11 +10692,7 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1740905843}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1380761431}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba5426fee7e7e6745b4d29bb89a71139, type: 3}
 --- !u!224 &1380761429 stripped
 RectTransform:
@@ -10646,28 +10700,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1380761428}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1380761430 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
-    type: 3}
-  m_PrefabInstance: {fileID: 1380761428}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1380761431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380761430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09dec4e4ce5fd8c4599fc4a7a0a264c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _resultMessageText: {fileID: 0}
-  _winMessage: YOU WON
-  _lossMessage: YOU LOST
-  _drawMessage: YOU DREW
 --- !u!1 &1413660387
 GameObject:
   m_ObjectHideFlags: 0
@@ -11587,6 +11619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6307072ec30555a4eb9189d2dd4d37a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _totalOversDataContainer: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9,
+    type: 2}
   _turnDurationSlider: {fileID: 2102637317}
   _ownerClientUI: {fileID: 330036699}
   _otherClientUI: {fileID: 579993607}
@@ -11896,6 +11930,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3404386253243524562, guid: 3c244f64e59a8264a9a7667cc108e5c6,
+        type: 3}
+      propertyPath: m_Spacing
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3540061529292324888, guid: 3c244f64e59a8264a9a7667cc108e5c6,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -12184,6 +12223,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b71aa88e9bf8432f89217a09c5a0b21c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1610121639 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5582452785060029890, guid: 3c244f64e59a8264a9a7667cc108e5c6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1610121636}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1625774498
 GameObject:
   m_ObjectHideFlags: 0
@@ -13858,10 +13903,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _ownerOverCount: {fileID: 11400000, guid: 4a59e8dda3148f543ad6af26d2f5ef85, type: 2}
+  _otherOverCount: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1, type: 2}
   _gameStateManager: {fileID: 2115737126}
   _gameplayUIMediator: {fileID: 1519460131}
   _ballsPerOver: 6
-  _totalOvers: 1
+  _totalOversContainer: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9,
+    type: 2}
   _totalWickets: 2
   _turnDuration: 3
   _waitBeforeNextTurn: 3
@@ -17272,6 +17320,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3404386253243524562, guid: 3c244f64e59a8264a9a7667cc108e5c6,
+        type: 3}
+      propertyPath: m_Spacing
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3540061529292324888, guid: 3c244f64e59a8264a9a7667cc108e5c6,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -19232,3 +19285,4 @@ SceneRoots:
   - {fileID: 2115737125}
   - {fileID: 1519460130}
   - {fileID: 842129734}
+  - {fileID: 138285981}
