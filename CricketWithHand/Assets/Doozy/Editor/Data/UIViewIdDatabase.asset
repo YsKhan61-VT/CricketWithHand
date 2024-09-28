@@ -40,5 +40,9 @@ MonoBehaviour:
       Name: TossResultView
     - Category: Gameplay
       Name: TossView
+    - Category: MainMenu
+      Name: Login
+    - Category: MainMenu
+      Name: Registration
     - Category: None
       Name: None

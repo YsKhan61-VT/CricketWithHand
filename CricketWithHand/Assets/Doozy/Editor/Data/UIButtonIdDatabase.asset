@@ -74,6 +74,8 @@ MonoBehaviour:
       Name: LinkAccount
     - Category: Profile
       Name: LogOut
+    - Category: RegistrationView
+      Name: Register
     - Category: Settings
       Name: Back
     - Category: TossResultView
