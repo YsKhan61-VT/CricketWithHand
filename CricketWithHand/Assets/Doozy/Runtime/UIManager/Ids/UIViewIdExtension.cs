@@ -34,10 +34,7 @@ namespace Doozy.Runtime.UIManager
     {
         public enum Bootstrap
         {
-            DisplayName,
-            Login,
-            Profile,
-            Settings
+            LoadingView
         }
 
         public enum Gameplay
@@ -55,8 +52,10 @@ namespace Doozy.Runtime.UIManager
 
         public enum MainMenu
         {
-            Login,
-            Registration
+            DisplayNameView,
+            LoginView,
+            ProfileView,
+            RegistrationView
         }    
     }
 }

@@ -38,7 +38,7 @@ MonoBehaviour:
       Name: SixWickets
     - Category: ChooseWicketView
       Name: TwoWickets
-    - Category: DisplayName
+    - Category: DisplayNameView
       Name: Save
     - Category: GameResultView
       Name: GameStats
@@ -64,22 +64,16 @@ MonoBehaviour:
       Name: PlayAsGuest
     - Category: LoginView
       Name: Quit
-    - Category: MainMenu
-      Name: Login
-    - Category: MainMenu
-      Name: Settings
     - Category: None
       Name: None
-    - Category: Profile
-      Name: LinkAccount
-    - Category: Profile
+    - Category: ProfileView
       Name: LogOut
+    - Category: ProfileView
+      Name: ManageAccount
     - Category: RegistrationView
       Name: Back
     - Category: RegistrationView
       Name: Register
-    - Category: Settings
-      Name: Back
     - Category: TossResultView
       Name: StartGame
     - Category: TossView

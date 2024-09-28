@@ -1,9 +1,7 @@
 ﻿//--------------------------------------------------------------------------------------
-// PlayFabAuthService.cs
+// PlayFabAuthServiceFacade.cs
 //
-// Advanced Technology Group (ATG)
-// Copyright (C) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// A Facade to simplify and abstract PlayFab API for authentication services
 //--------------------------------------------------------------------------------------
 
 using UnityEngine;
@@ -14,6 +12,10 @@ using System;
 using YSK.Utilities;
 using CricketWithHand.PlayFab.Google;
 using Google;
+using CricketWithHand.UI;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager;
+
 
 
 namespace CricketWithHand.PlayFab
@@ -28,31 +30,61 @@ namespace CricketWithHand.PlayFab
         Silent,
         UsernameAndPassword,
         EmailAndPassword,
-        RegisterPlayFabAccount,
         GooglePlay
     }
 
     public class PlayFabAuthServiceFacade
     {
+        #region Events
+
+        // Events to subscribe to for this service
+        /// <summary>
+        /// Invoked when no authentication type is selected, and yet forced to login or register.
+        /// This should not happen at any cost.
+        /// </summary>
+        public event Action OnNoAuthTypeSelected;
+
+        /// <summary>
+        /// Invoked when user can successfully login with Playfab 
+        /// (using either 3rd party authentication or silently).
+        /// This will be invoked either with or without the UserDisplayName.
+        /// LoginResult stores all the login related informations.
+        /// </summary>
+        public event Action<LoginResult> OnPlayFabLoginSuccess;
+
+        /// <summary>
+        /// Invoked when there is some error in the process of authentications.
+        /// PlayFabError contains the error data.
+        /// </summary>
+        public event Action<PlayFabError> OnPlayFabError;
+
+        /// <summary>
+        /// Invoked when the user display name is set to playfab.
+        /// string contains the User Display Name
+        /// </summary>
+        public event Action<string> OnUserDisplayNameSet;
+
+        #endregion
+
+
+        #region Constants
+
         private const string _LoginRememberKey = "PlayFabLoginRemember";
         private const string _PlayFabRememberMeIdKey = "PlayFabIdPassGuid";
         private const string _PlayFabAuthTypeKey = "PlayFabAuthType";
 
-        // Events to subscribe to for this service
-        public event Action OnNoAuthTypeSelected;
-        public event Action<LoginResult> OnLoginSuccess;
-        public event Action<PlayFabError> OnPlayFabError;
-        public event Action<string> OnDisplayNameSet;
+        #endregion
 
         // These are fields that we set when we are using the service.
-        public string Email;
-        public string Username;
-        public string Password;
-        public string AuthTicket;
-        public GetPlayerCombinedInfoRequestParams InfoRequestParams;
+        public string Email { get; private set; }
+        public string Username { get; private set; }
+        public string Password { get; private set; }
+        public string AuthTicket { get; private set; }
+
+        public GetPlayerCombinedInfoRequestParams InfoRequestParams { get; private set; }
 
         // This is a force link flag for custom ids for demoing
-        public bool ForceLink = false;
+        public bool ForceLink { get; private set; } = false;
 
         // Accessbility for PlayFab ID & Session Tickets
         public bool IsLoggedIn => PlayFabClientAPI.IsClientLoggedIn();
@@ -104,7 +136,7 @@ namespace CricketWithHand.PlayFab
             {
                 return (Authtypes)PlayerPrefs.GetInt(_PlayFabAuthTypeKey, 0);
             }
-            set
+            private set
             {
                 PlayerPrefs.SetInt(_PlayFabAuthTypeKey, (int)value);
             }
@@ -127,46 +159,37 @@ namespace CricketWithHand.PlayFab
             }
         }
 
-        public void ClearRememberMe()
+        public void ClearCache()
         {
+            AuthType = Authtypes.None;
+
             PlayerPrefs.DeleteKey(_LoginRememberKey);
             PlayerPrefs.DeleteKey(_PlayFabRememberMeIdKey);
             PlayerPrefs.DeleteKey(_PlayFabAuthTypeKey);
         }
 
-        /// <summary>
-        /// Kick off the authentication process by specific authtype.
-        /// </summary>
-        /// <param name="authType"></param>
-        public void Authenticate(Authtypes authType)
+        public void AuthenticateWithEmailAndPassword(
+            string email, 
+            string password, 
+            GetPlayerCombinedInfoRequestParams infoRequestParams,
+            bool createAccount)
         {
-            AuthType = authType;
-            Authenticate();
+            AuthType = Authtypes.EmailAndPassword;
+            Email = email;
+            Password = password;
+            InfoRequestParams = infoRequestParams;
+            // Authenticate(Authtypes.RegisterPlayFabAccount, createAccount);
+
+            if (createAccount)
+                RegisterAccountWithEmailAndPassword();
+            else
+                AuthenticateEmailPassword();
         }
 
-        /// <summary>
-        /// Authenticate the user by the Auth Type that was defined.
-        /// </summary>
-        public void Authenticate()
+        public void AuthenticateAsAGuest()
         {
-            switch (AuthType)
-            {
-                case Authtypes.None:
-                    OnNoAuthTypeSelected?.Invoke();
-                    break;
-
-                case Authtypes.Silent:
-                    SilentlyAuthenticate();
-                    break;
-
-                case Authtypes.EmailAndPassword:
-                    AuthenticateEmailPassword();
-                    break;
-
-                case Authtypes.RegisterPlayFabAccount:
-                    AddAccountAndPassword();
-                    break;
-            }
+            AuthType = Authtypes.Silent;
+            SilentlyAuthenticate();
         }
 
         public void AuthenticateWithGoogle(string webClientId)
@@ -174,6 +197,7 @@ namespace CricketWithHand.PlayFab
             AuthType = Authtypes.GooglePlay;
             _googleAuth ??= new();
             _googleAuth.OnSignInSuccess += OnSignInSuccessWithGoogle;
+            _googleAuth.OnSignInFailure += OnSignInFailureWithGoogle;
             _googleAuth.SignInWithGoogle(webClientId);
         }
 
@@ -182,19 +206,20 @@ namespace CricketWithHand.PlayFab
             PlayFabClientAPI.UpdateUserTitleDisplayName(
                 new UpdateUserTitleDisplayNameRequest
                 {
-                    DisplayName = UserDisplayName
+                    DisplayName = displayName
                 },
 
                 (UpdateUserTitleDisplayNameResult result) =>
                 {
                     UserDisplayName = result.DisplayName;
                     LogUI.instance.AddStatusText($"Display name set to: . {UserDisplayName}");
-                    OnDisplayNameSet?.Invoke(result.DisplayName);
+                    OnUserDisplayNameSet?.Invoke(UserDisplayName);
                 },
 
                 (PlayFabError error) =>
                 {
                     LogUI.instance.AddStatusText(error.GenerateErrorReport());
+                    OnPlayFabError?.Invoke(error);
                 });
         }
 
@@ -221,11 +246,7 @@ namespace CricketWithHand.PlayFab
                         PlayFabId = result.PlayFabId;
                         SessionTicket = result.SessionTicket;
 
-                        if (OnLoginSuccess != null)
-                        {
-                            //report login result back to subscriber
-                            OnLoginSuccess.Invoke(result);
-                        }
+                        OnPlayFabLoginSuccess?.Invoke(result);
                     },
 
                     // Failure
@@ -233,7 +254,8 @@ namespace CricketWithHand.PlayFab
                     {
                         //report error back to subscriber
                         OnPlayFabError?.Invoke(error);
-                    });
+                    }
+                );
             }
         }
 
@@ -262,13 +284,6 @@ namespace CricketWithHand.PlayFab
         /// </summary>
         private void AuthenticateEmailPassword()
         {
-            // If username & password is empty, then do not continue, and Call back to Authentication UI Display 
-            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
-            {
-                OnNoAuthTypeSelected.Invoke();
-                return;
-            }
-
             // We have not opted for remember me in a previous session, so now we have to login the user with email & password.
             PlayFabClientAPI.LoginWithEmailAddress(
                 new LoginWithEmailAddressRequest()
@@ -306,7 +321,7 @@ namespace CricketWithHand.PlayFab
                     }
 
                     //report login result back to subscriber
-                    OnLoginSuccess?.Invoke(result);
+                    OnPlayFabLoginSuccess?.Invoke(result);
                 },
 
                 // Failure
@@ -321,7 +336,7 @@ namespace CricketWithHand.PlayFab
         /// Register a user with an Email & Password
         /// Note: We are not using the RegisterPlayFab API
         /// </summary>
-        private void AddAccountAndPassword()
+        private void RegisterAccountWithEmailAndPassword()
         {
             // Any time we attempt to register a player, first silently authenticate the player.
             // This will retain the players True Origination (Android, iOS, Desktop)
@@ -331,7 +346,7 @@ namespace CricketWithHand.PlayFab
                     if (result == null)
                     {
                         //something went wrong with Silent Authentication, Check the debug console.
-                        OnPlayFabError.Invoke(new PlayFabError()
+                        OnPlayFabError?.Invoke(new PlayFabError()
                         {
                             Error = PlayFabErrorCode.UnknownError,
                             ErrorMessage = "Silent Authentication by Device failed"
@@ -354,36 +369,35 @@ namespace CricketWithHand.PlayFab
                         // Success
                         (AddUsernamePasswordResult addResult) =>
                         {
-                            if (OnLoginSuccess != null)
+                            // Store identity and session
+                            PlayFabId = result.PlayFabId;
+                            SessionTicket = result.SessionTicket;
+
+                            // If they opted to be remembered on next login.
+                            if (RememberMe)
                             {
-                                // Store identity and session
-                                PlayFabId = result.PlayFabId;
-                                SessionTicket = result.SessionTicket;
+                                // Generate a new Guid 
+                                RememberMeId = Guid.NewGuid().ToString();
 
-                                // If they opted to be remembered on next login.
-                                if (RememberMe)
-                                {
-                                    // Generate a new Guid 
-                                    RememberMeId = Guid.NewGuid().ToString();
-
-                                    // Fire and forget, but link the custom ID to this PlayFab Account.
-                                    PlayFabClientAPI.LinkCustomID(
-                                        new LinkCustomIDRequest()
-                                        {
-                                            CustomId = RememberMeId,
-                                            ForceLink = ForceLink
-                                        },
-                                        null,
-                                        null
-                                        );
-                                }
-
-                                // Override the auth type to ensure next login is using this auth type.
-                                AuthType = Authtypes.EmailAndPassword;
-
-                                // Report login result back to subscriber.
-                                OnLoginSuccess.Invoke(result);
+                                // Fire and forget, but link the custom ID to this PlayFab Account.
+                                PlayFabClientAPI.LinkCustomID(
+                                    new LinkCustomIDRequest()
+                                    {
+                                        CustomId = RememberMeId,
+                                        ForceLink = ForceLink
+                                    },
+                                    // success
+                                    null,
+                                    // error
+                                    null
+                                    );
                             }
+
+                            // Override the auth type to ensure next login is using this auth type.
+                            AuthType = Authtypes.EmailAndPassword;
+
+                            // Report login result back to subscriber.
+                            OnPlayFabLoginSuccess?.Invoke(result);
                         },
 
                         // Failure
@@ -395,135 +409,12 @@ namespace CricketWithHand.PlayFab
                 });
         }
 
-        private void SilentlyAuthenticate(System.Action<LoginResult> callback = null)
+        private void SilentlyAuthenticate(
+            System.Action<LoginResult> successCallback = null, 
+            System.Action<PlayFabError> errorCallback = null)
         {
-#if UNITY_ANDROID && !UNITY_EDITOR
+// #if UNITY_ANDROID && !UNITY_EDITOR
 
-        //Get the device id from native android
-        AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject>("currentActivity");
-        AndroidJavaObject contentResolver = currentActivity.Call<AndroidJavaObject>("getContentResolver");
-        AndroidJavaClass secure = new AndroidJavaClass("android.provider.Settings$Secure");
-        string deviceId = secure.CallStatic<string>("getString", contentResolver, "android_id");
-
-        //Login with the android device ID
-        PlayFabClientAPI.LoginWithAndroidDeviceID(new LoginWithAndroidDeviceIDRequest() {
-            TitleId = PlayFabSettings.TitleId,
-            AndroidDevice = SystemInfo.deviceModel,
-            OS = SystemInfo.operatingSystem,
-            AndroidDeviceId = deviceId,
-            CreateAccount = true,
-            InfoRequestParameters = InfoRequestParams
-        }, (result) => {
-            
-            //Store Identity and session
-            PlayFabId = result.PlayFabId;
-            SessionTicket = result.SessionTicket;
-
-            //check if we want to get this callback directly or send to event subscribers.
-            if (callback == null && OnLoginSuccess != null)
-            {
-                //report login result back to the subscriber
-                OnLoginSuccess.Invoke(result);
-            }else if (callback != null)
-            {
-                //report login result back to the caller
-                callback.Invoke(result);
-            }
-        }, (error) => {
-
-            //report errro back to the subscriber
-            if(callback == null && OnPlayFabError != null){
-                OnPlayFabError.Invoke(error);
-            }else{
-                //make sure the loop completes, callback with null
-                callback.Invoke(null);
-                //Output what went wrong to the console.
-                Debug.LogError(error.GenerateErrorReport());
-            }
-        });
-
-#elif UNITY_IPHONE || UNITY_IOS && !UNITY_EDITOR
-        PlayFabClientAPI.LoginWithIOSDeviceID(new LoginWithIOSDeviceIDRequest() {
-            TitleId = PlayFabSettings.TitleId,
-            DeviceModel = SystemInfo.deviceModel, 
-            OS = SystemInfo.operatingSystem,
-            DeviceId = SystemInfo.deviceUniqueIdentifier,
-            CreateAccount = true,
-            InfoRequestParameters = InfoRequestParams
-        }, (result) => {
-            //Store Identity and session
-            PlayFabId = result.PlayFabId;
-            SessionTicket = result.SessionTicket;
-
-            //check if we want to get this callback directly or send to event subscribers.
-            if (callback == null && OnLoginSuccess != null)
-            {
-                //report login result back to the subscriber
-                OnLoginSuccess.Invoke(result);
-            }else if (callback != null)
-            {
-                //report login result back to the caller
-                callback.Invoke(result);
-            }
-        }, (error) => {
-            //report errro back to the subscriber
-            if(callback == null && OnPlayFabError != null){
-                OnPlayFabError.Invoke(error);
-            }else{
-                //make sure the loop completes, callback with null
-                callback.Invoke(null);
-                //Output what went wrong to the console.
-                Debug.LogError(error.GenerateErrorReport());
-            }
-        });
-#else
-            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest()
-            {
-                TitleId = PlayFabSettings.TitleId,
-                CustomId = SystemInfo.deviceUniqueIdentifier,
-                CreateAccount = true,
-                InfoRequestParameters = InfoRequestParams
-            }, (result) => {
-                //Store Identity and session
-                PlayFabId = result.PlayFabId;
-                SessionTicket = result.SessionTicket;
-
-                //check if we want to get this callback directly or send to event subscribers.
-                if (callback == null && OnLoginSuccess != null)
-                {
-                    //report login result back to the subscriber
-                    OnLoginSuccess.Invoke(result);
-                }
-                else if (callback != null)
-                {
-                    //report login result back to the caller
-                    callback.Invoke(result);
-                }
-            }, (error) => {
-                //report errro back to the subscriber
-                if (callback == null && OnPlayFabError != null)
-                {
-                    OnPlayFabError.Invoke(error);
-                }
-                else
-                {
-                    //make sure the loop completes, callback with null
-                    callback.Invoke(null);
-                    //Output what went wrong to the console.
-                    Debug.LogError(error.GenerateErrorReport());
-                }
-
-            });
-#endif
-        }
-
-        void UnlinkSilentAuth()
-        {
-            SilentlyAuthenticate((result) =>
-            {
-
-#if UNITY_ANDROID && !UNITY_EDITOR
             //Get the device id from native android
             AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject>("currentActivity");
@@ -531,52 +422,210 @@ namespace CricketWithHand.PlayFab
             AndroidJavaClass secure = new AndroidJavaClass("android.provider.Settings$Secure");
             string deviceId = secure.CallStatic<string>("getString", contentResolver, "android_id");
 
-            //Fire and forget, unlink this android device.
-            PlayFabClientAPI.UnlinkAndroidDeviceID(new UnlinkAndroidDeviceIDRequest() {
-                AndroidDeviceId = deviceId
-            }, null, null);
-
-#elif UNITY_IPHONE || UNITY_IOS && !UNITY_EDITOR
-            PlayFabClientAPI.UnlinkIOSDeviceID(new UnlinkIOSDeviceIDRequest()
-            {
-                DeviceId = SystemInfo.deviceUniqueIdentifier
-            }, null, null);
-#else
-                PlayFabClientAPI.UnlinkCustomID(new UnlinkCustomIDRequest()
+            //Login with the android device ID
+            PlayFabClientAPI.LoginWithAndroidDeviceID(
+                new LoginWithAndroidDeviceIDRequest() 
                 {
-                    CustomId = SystemInfo.deviceUniqueIdentifier
-                }, null, null);
-#endif
+                    TitleId = PlayFabSettings.TitleId,
+                    AndroidDevice = SystemInfo.deviceModel,
+                    OS = SystemInfo.operatingSystem,
+                    AndroidDeviceId = deviceId,
+                    CreateAccount = true,
+                    InfoRequestParameters = InfoRequestParams
+                }, 
+                
+                (result) => {            
+            
+                    //Store Identity and session
+                    PlayFabId = result.PlayFabId;
+                    SessionTicket = result.SessionTicket;
 
-            });
+                    //report login result back to the subscriber
+                    OnPlayFabLoginSuccess?.Invoke(result);
+                    //report login result back to the caller
+                    successCallback?.Invoke(result);
+
+                }, 
+                
+                (error) => {
+
+                    //report errro back to the subscriber
+                    OnPlayFabError?.Invoke(error);
+                    //make sure the loop completes, callback with null
+                    errorCallback?.Invoke(null);
+                    //Output what went wrong to the console.
+                    Debug.LogError(error.GenerateErrorReport());
+
+                }
+            );
+
+// #elif UNITY_IPHONE || UNITY_IOS && !UNITY_EDITOR
+            PlayFabClientAPI.LoginWithIOSDeviceID(
+                new LoginWithIOSDeviceIDRequest() 
+                {
+                    TitleId = PlayFabSettings.TitleId,
+                    DeviceModel = SystemInfo.deviceModel, 
+                    OS = SystemInfo.operatingSystem,
+                    DeviceId = SystemInfo.deviceUniqueIdentifier,
+                    CreateAccount = true,
+                    InfoRequestParameters = InfoRequestParams
+
+                }, 
+                
+                (result) => 
+                {
+
+                    //Store Identity and session
+                    PlayFabId = result.PlayFabId;
+                    SessionTicket = result.SessionTicket;
+
+                    //report login result back to the subscriber
+                    OnPlayFabLoginSuccess?.Invoke(result);
+                    //report login result back to the caller
+                    successCallback?.Invoke(result);
+                
+                }, 
+                
+                (error) => 
+                {
+
+                    OnPlayFabError?.Invoke(error);
+                    //make sure the loop completes, callback with null
+                    errorCallback?.Invoke(null);
+                    //Output what went wrong to the console.
+                    Debug.LogError(error.GenerateErrorReport());
+
+                }
+            );
+// #else
+            PlayFabClientAPI.LoginWithCustomID(
+                new LoginWithCustomIDRequest()
+                {
+                    TitleId = PlayFabSettings.TitleId,
+                    CustomId = SystemInfo.deviceUniqueIdentifier,
+                    CreateAccount = true,
+                    InfoRequestParameters = InfoRequestParams
+                }, 
+                
+                (result) => {
+
+                    //Store Identity and session
+                    PlayFabId = result.PlayFabId;
+                    SessionTicket = result.SessionTicket;
+
+                    successCallback?.Invoke(result);
+                    OnPlayFabLoginSuccess?.Invoke(result);
+
+                }, 
+                
+                (error) => {
+
+                    OnPlayFabError?.Invoke(error);
+                    //make sure the loop completes, callback with null
+                    errorCallback?.Invoke(null);
+                    //Output what went wrong to the console.
+                    Debug.LogError(error.GenerateErrorReport());
+
+                }
+            );
+// #endif
         }
 
-        void OnSignInSuccessWithGoogle(GoogleSignInUser user)
+        private void UnlinkSilentAuth()
+        {
+            SilentlyAuthenticate(
+                (LoginResult result) =>
+                {
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+                    //Get the device id from native android
+                    AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+                    AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject>("currentActivity");
+                    AndroidJavaObject contentResolver = currentActivity.Call<AndroidJavaObject>("getContentResolver");
+                    AndroidJavaClass secure = new AndroidJavaClass("android.provider.Settings$Secure");
+                    string deviceId = secure.CallStatic<string>("getString", contentResolver, "android_id");
+
+                    //Fire and forget, unlink this android device.
+                    PlayFabClientAPI.UnlinkAndroidDeviceID(
+                        new UnlinkAndroidDeviceIDRequest() 
+                        {
+                            AndroidDeviceId = deviceId
+                        }, 
+                        // success
+                        null, 
+                        // error
+                        null
+                    );
+
+#elif UNITY_IPHONE || UNITY_IOS && !UNITY_EDITOR
+                    PlayFabClientAPI.UnlinkIOSDeviceID(
+                        new UnlinkIOSDeviceIDRequest()
+                        {
+                            DeviceId = SystemInfo.deviceUniqueIdentifier
+                        },
+                        // success
+                        null, 
+                        // error
+                        null
+                    );
+#else
+                    PlayFabClientAPI.UnlinkCustomID(
+                        new UnlinkCustomIDRequest()
+                        {
+                            CustomId = SystemInfo.deviceUniqueIdentifier
+                        }, 
+                        // success
+                        null, 
+                        // error
+                        null
+                    );
+#endif
+                }
+            );
+        }
+
+        private void OnSignInSuccessWithGoogle(GoogleSignInUser user)
         {
             _googleAuth.OnSignInSuccess -= OnSignInSuccessWithGoogle;
             UserDisplayName = user.DisplayName;
-            LoginWithGoogleAccountRequest request = new()
-            {
-                CreateAccount = true,
-                InfoRequestParameters = InfoRequestParams,
-                ServerAuthCode = user.AuthCode,
-            };
 
             PlayFabClientAPI.LoginWithGoogleAccount(
-                request,
+                new LoginWithGoogleAccountRequest()
+                {
+                    CreateAccount = true,
+                    InfoRequestParameters = InfoRequestParams,
+                    ServerAuthCode = user.AuthCode,
+                },
+
                 (result) =>
                 {
                     LogUI.instance.AddStatusText("PlayFab login with google success!");
                     SetDisplayName(UserDisplayName);
-                    
-                    // OnLoginSuccess?.Invoke(result); - it will invoke after display name is set.
                 },
+
                 (error) =>
                 {
                     LogUI.instance.AddStatusText($"PlayFab error: {error.GenerateErrorReport()}");
                     OnPlayFabError?.Invoke(error);
                 }
             );
+        }
+
+        private void OnSignInFailureWithGoogle(GoogleSignIn.SignInException error)
+        {
+            switch (error.Status)
+            {
+                default:
+                    break;
+                case GoogleSignInStatusCode.InvalidAccount:
+                    OnPlayFabError?.Invoke(
+                        new PlayFabError() 
+                        {
+                            Error = PlayFabErrorCode.InvalidAccount,
+                        }
+                    );
+                    break;
+            }
         }
     }
 }

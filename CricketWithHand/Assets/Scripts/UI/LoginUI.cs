@@ -28,6 +28,12 @@ namespace CricketWithHand.UI
             _registerLoginUIMediator.LoginWithEmailAndPassword(_email.name, _password.name);
         }
 
+        public void LoginAsGuest()
+        {
+            LogUI.instance.AddStatusText("$Loging in as a guest user!...");
+            _registerLoginUIMediator.LoginAsAGuest();
+        }
+
         public void LoginWithGoogle()
         {
             _registerLoginUIMediator.LoginWithGoogleAccount();

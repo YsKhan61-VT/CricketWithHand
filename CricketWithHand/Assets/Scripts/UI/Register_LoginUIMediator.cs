@@ -10,6 +10,19 @@ namespace CricketWithHand.UI
 {
     public class Register_LoginUIMediator : MonoBehaviour
     {
+        #region Events
+
+        [SerializeField]
+        UnityEvent<string> _onLoggedInWithDisplayname;
+
+        [SerializeField]
+        UnityEvent _onLoggedInWithoutDisplayname;
+
+        [SerializeField]
+        UnityEvent _onNoAccountRemembered;
+
+        #endregion
+
         [SerializeField]
         RegisterUI _registerUI;
 
@@ -20,19 +33,10 @@ namespace CricketWithHand.UI
         bool _clearPlayerPrefs;
 
         [SerializeField]
-        GetPlayerCombinedInfoRequestParams InfoRequestParams;
+        GetPlayerCombinedInfoRequestParams _infoRequestParams;
 
         [SerializeField]
         string _googleWebClientId;
-
-        [SerializeField]
-        UnityEvent<string> m_OnLoggedInWithDisplayname;
-
-        [SerializeField]
-        UnityEvent m_OnLoggedInWithoutDisplayname;
-
-        [SerializeField]
-        UnityEvent m_OnNoAccountRemembered;
 
         PlayFabAuthServiceFacade _authServiceFacade = PlayFabAuthServiceFacade.Instance;
 
@@ -42,8 +46,7 @@ namespace CricketWithHand.UI
             {
                 _registerUI.Reset();
                 _loginUI.Reset();
-                _authServiceFacade.ClearRememberMe();
-                _authServiceFacade.AuthType = Authtypes.None;
+                _authServiceFacade.ClearCache();
             }
 
             _loginUI.SetRememberMeToRememberedState(_authServiceFacade.RememberMe);
@@ -51,22 +54,19 @@ namespace CricketWithHand.UI
 
         private void Start()
         {
-            PlayFabAuthServiceFacade.Instance.OnNoAuthTypeSelected += OnPlayFabNoAuthTypeSelected;
-            PlayFabAuthServiceFacade.Instance.OnLoginSuccess += OnLoginSuccess;
-            PlayFabAuthServiceFacade.Instance.OnPlayFabError += OnPlayFaberror;
-            PlayFabAuthServiceFacade.Instance.OnDisplayNameSet += OnDisplayNameSet;
+            SubscribeToEvents();
 
-            _authServiceFacade.InfoRequestParams = InfoRequestParams;
+            // _authServiceFacade.InfoRequestParams = InfoRequestParams;
             // _authServiceFacade.Authenticate();
 
             // TryLoginWithRememberedAccount();
         }
 
-        void TryLoginWithRememberedAccount()
+        private void TryLoginWithRememberedAccount()
         {
             if (!_authServiceFacade.RememberMe)
             {
-                m_OnNoAccountRemembered?.Invoke();
+                _onNoAccountRemembered?.Invoke();
                 return;
             }
 
@@ -75,33 +75,23 @@ namespace CricketWithHand.UI
 
         private void OnDestroy()
         {
-            PlayFabAuthServiceFacade.Instance.OnNoAuthTypeSelected -= OnPlayFabNoAuthTypeSelected;
-            PlayFabAuthServiceFacade.Instance.OnLoginSuccess -= OnLoginSuccess;
-            PlayFabAuthServiceFacade.Instance.OnPlayFabError -= OnPlayFaberror;
-            PlayFabAuthServiceFacade.Instance.OnDisplayNameSet -= OnDisplayNameSet;
+            UnSubscribeFromEvents();
         }
 
-        public void RegisterWithEmailAndPassword(string email, string password)
-        {
-            _authServiceFacade.Email = email;
-            _authServiceFacade.Password = password;
-            _authServiceFacade.Authenticate(Authtypes.RegisterPlayFabAccount);
-        }
+        public void RegisterWithEmailAndPassword(string email, string password, string confirmPassword) =>
+            _authServiceFacade.AuthenticateWithEmailAndPassword(email, password, _infoRequestParams, true);
 
-        public void LoginWithEmailAndPassword(string email, string password)
-        {
-            _authServiceFacade.Email = email;
-            _authServiceFacade.Password = password;
-            _authServiceFacade.Authenticate(Authtypes.EmailAndPassword);
-        }
+        public void LoginWithEmailAndPassword(string email, string password) =>
+            _authServiceFacade.AuthenticateWithEmailAndPassword(email, password, _infoRequestParams, false);
 
-        public void LoginWithGoogleAccount()
-        {
+        public void LoginAsAGuest() =>
+            _authServiceFacade.AuthenticateAsAGuest();
+
+        public void LoginWithGoogleAccount() =>
             _authServiceFacade.AuthenticateWithGoogle(_googleWebClientId);
-        }
 
         public void PlayAsGuest() =>
-            _authServiceFacade.Authenticate(Authtypes.Silent);
+            _authServiceFacade.AuthenticateAsAGuest();
 
         public void LogOut() =>
             _authServiceFacade.LogOut();
@@ -109,7 +99,7 @@ namespace CricketWithHand.UI
         public void ToggleRememberMe(bool toggle) =>
             _authServiceFacade.RememberMe = toggle;
 
-        private void OnLoginSuccess(LoginResult result)
+        private void OnPlayFabLoginSuccess(LoginResult result)
         {
             LogUI.instance.AddStatusText("Logged In as: {0}" + result.PlayFabId);
 
@@ -117,19 +107,19 @@ namespace CricketWithHand.UI
             if (displayName != null)
             {
                 LogUI.instance.AddStatusText($"Welcome: {displayName}");
-                m_OnLoggedInWithDisplayname?.Invoke(displayName);
+                _onLoggedInWithDisplayname?.Invoke(displayName);
             }
             else
             {
                 LogUI.instance.AddStatusText("No Display name found!");
-                m_OnLoggedInWithoutDisplayname?.Invoke();
+                _onLoggedInWithoutDisplayname?.Invoke();
             }
         }
 
         public void SetDisplayName(string displayName) =>
             _authServiceFacade.SetDisplayName(displayName);
 
-        void OnPlayFaberror(PlayFabError error)
+        private void OnPlayFaberror(PlayFabError error)
         {
             //There are more cases which can be caught, below are some
             //of the basic ones.
@@ -138,18 +128,19 @@ namespace CricketWithHand.UI
                 case PlayFabErrorCode.InvalidEmailAddress:
                 case PlayFabErrorCode.InvalidPassword:
                 case PlayFabErrorCode.InvalidEmailOrPassword:
-                    LogUI.instance.AddStatusText("Invalid Email or Password");
-                    break;
-
+                case PlayFabErrorCode.InvalidParams:
                 case PlayFabErrorCode.AccountNotFound:
-                    return;
+                case PlayFabErrorCode.InvalidAccount:
+                    LogUI.instance.AddStatusText("Invalid Email or Password");
+                    PopupUI.instance.ShowMessage("Authentication Error:", "No account found with the Email. \n Make sure the email address you provided is correct. \n If yes, register with that email address first!");
+                    break;
                 default:
                     LogUI.instance.AddStatusText(error.GenerateErrorReport());
                     break;
             }
         }
 
-        void OnPlayFabNoAuthTypeSelected()
+        private void OnPlayFabNoAuthTypeSelected()
         {
             //Here we have choses what to do when AuthType is None.
             /*
@@ -163,7 +154,23 @@ namespace CricketWithHand.UI
              */
         }
 
-        void OnDisplayNameSet(string displayName) =>
-            m_OnLoggedInWithDisplayname?.Invoke(displayName);
+        private void OnUserDisplayNameSet(string displayName) =>
+            _onLoggedInWithDisplayname?.Invoke(displayName);
+
+        private void SubscribeToEvents()
+        {
+            PlayFabAuthServiceFacade.Instance.OnNoAuthTypeSelected += OnPlayFabNoAuthTypeSelected;
+            PlayFabAuthServiceFacade.Instance.OnPlayFabLoginSuccess += OnPlayFabLoginSuccess;
+            PlayFabAuthServiceFacade.Instance.OnPlayFabError += OnPlayFaberror;
+            PlayFabAuthServiceFacade.Instance.OnUserDisplayNameSet += OnUserDisplayNameSet;
+        }
+
+        private void UnSubscribeFromEvents()
+        {
+            PlayFabAuthServiceFacade.Instance.OnNoAuthTypeSelected -= OnPlayFabNoAuthTypeSelected;
+            PlayFabAuthServiceFacade.Instance.OnPlayFabLoginSuccess -= OnPlayFabLoginSuccess;
+            PlayFabAuthServiceFacade.Instance.OnPlayFabError -= OnPlayFaberror;
+            PlayFabAuthServiceFacade.Instance.OnUserDisplayNameSet -= OnUserDisplayNameSet;
+        }
     }
 }

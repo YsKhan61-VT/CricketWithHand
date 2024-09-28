@@ -15,13 +15,7 @@ MonoBehaviour:
   Database:
     Items:
     - Category: Bootstrap
-      Name: DisplayName
-    - Category: Bootstrap
-      Name: Login
-    - Category: Bootstrap
-      Name: Profile
-    - Category: Bootstrap
-      Name: Settings
+      Name: LoadingView
     - Category: Gameplay
       Name: ChooseBatOrBallView
     - Category: Gameplay
@@ -41,8 +35,12 @@ MonoBehaviour:
     - Category: Gameplay
       Name: TossView
     - Category: MainMenu
-      Name: Login
+      Name: DisplayNameView
     - Category: MainMenu
-      Name: Registration
+      Name: LoginView
+    - Category: MainMenu
+      Name: ProfileView
+    - Category: MainMenu
+      Name: RegistrationView
     - Category: None
       Name: None

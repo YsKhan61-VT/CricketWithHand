@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YSK.Utilities;
 
+
 namespace CricketWithHand.PlayFab.Google
 {
     public class GoogleAuthentication
     {
         public event Action<GoogleSignInUser> OnSignInSuccess;
+        public event Action<GoogleSignIn.SignInException> OnSignInFailure;
 
         public bool IsLoggedIn { get; private set; } = false;
 
@@ -23,7 +25,7 @@ namespace CricketWithHand.PlayFab.Google
                 UseGameSignIn = false,
             };
 
-            LogUI.instance.AddStatusText("Calling sign in google account!");
+            LogUI.instance.AddStatusText("Calling sign in google account...");
 
             GoogleSignIn.DefaultInstance.SignIn().ContinueWith(
               OnAuthenticationFinished, TaskScheduler.Default);
@@ -97,15 +99,18 @@ namespace CricketWithHand.PlayFab.Google
                     GoogleSignIn.SignInException error =
                             (GoogleSignIn.SignInException)enumerator.Current;
                     LogUI.instance.AddStatusText("Got Error: " + error.Status + " " + error.Message);
+                    OnSignInFailure?.Invoke(error);
                 }
                 else
                 {
                     LogUI.instance.AddStatusText("Got Unexpected Exception?!?" + task.Exception);
+                    OnSignInFailure?.Invoke(null);
                 }
             }
             else if (task.IsCanceled)
             {
-                LogUI.instance.AddStatusText("Canceled");
+                LogUI.instance.AddStatusText("Sign In with Google Canceled");
+                OnSignInFailure?.Invoke(null);
             }
             else
             {
