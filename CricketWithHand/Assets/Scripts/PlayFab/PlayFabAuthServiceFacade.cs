@@ -29,7 +29,7 @@ namespace CricketWithHand.PlayFab
         UsernameAndPassword,
         EmailAndPassword,
         RegisterPlayFabAccount,
-        Google
+        GooglePlay
     }
 
     public class PlayFabAuthServiceFacade
@@ -39,7 +39,7 @@ namespace CricketWithHand.PlayFab
         private const string _PlayFabAuthTypeKey = "PlayFabAuthType";
 
         // Events to subscribe to for this service
-        public event Action OnDisplayAuthentication;
+        public event Action OnNoAuthTypeSelected;
         public event Action<LoginResult> OnLoginSuccess;
         public event Action<PlayFabError> OnPlayFabError;
         public event Action<string> OnDisplayNameSet;
@@ -152,7 +152,7 @@ namespace CricketWithHand.PlayFab
             switch (AuthType)
             {
                 case Authtypes.None:
-                    OnDisplayAuthentication?.Invoke();
+                    OnNoAuthTypeSelected?.Invoke();
                     break;
 
                 case Authtypes.Silent:
@@ -171,7 +171,7 @@ namespace CricketWithHand.PlayFab
 
         public void AuthenticateWithGoogle(string webClientId)
         {
-            AuthType = Authtypes.Google;
+            AuthType = Authtypes.GooglePlay;
             _googleAuth ??= new();
             _googleAuth.OnSignInSuccess += OnSignInSuccessWithGoogle;
             _googleAuth.SignInWithGoogle(webClientId);
@@ -247,7 +247,7 @@ namespace CricketWithHand.PlayFab
 
             switch (AuthType)
             {
-                case Authtypes.Google:
+                case Authtypes.GooglePlay:
                     if (_googleAuth == null || !_googleAuth.IsLoggedIn)
                         return;
                     _googleAuth.SignOut();
@@ -265,7 +265,7 @@ namespace CricketWithHand.PlayFab
             // If username & password is empty, then do not continue, and Call back to Authentication UI Display 
             if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
             {
-                OnDisplayAuthentication.Invoke();
+                OnNoAuthTypeSelected.Invoke();
                 return;
             }
 

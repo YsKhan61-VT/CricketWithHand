@@ -75,6 +75,8 @@ MonoBehaviour:
     - Category: Profile
       Name: LogOut
     - Category: RegistrationView
+      Name: Back
+    - Category: RegistrationView
       Name: Register
     - Category: Settings
       Name: Back

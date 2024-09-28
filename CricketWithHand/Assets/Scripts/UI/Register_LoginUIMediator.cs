@@ -51,7 +51,7 @@ namespace CricketWithHand.UI
 
         private void Start()
         {
-            PlayFabAuthServiceFacade.Instance.OnDisplayAuthentication += OnDisplayAuthentication;
+            PlayFabAuthServiceFacade.Instance.OnNoAuthTypeSelected += OnPlayFabNoAuthTypeSelected;
             PlayFabAuthServiceFacade.Instance.OnLoginSuccess += OnLoginSuccess;
             PlayFabAuthServiceFacade.Instance.OnPlayFabError += OnPlayFaberror;
             PlayFabAuthServiceFacade.Instance.OnDisplayNameSet += OnDisplayNameSet;
@@ -75,7 +75,7 @@ namespace CricketWithHand.UI
 
         private void OnDestroy()
         {
-            PlayFabAuthServiceFacade.Instance.OnDisplayAuthentication -= OnDisplayAuthentication;
+            PlayFabAuthServiceFacade.Instance.OnNoAuthTypeSelected -= OnPlayFabNoAuthTypeSelected;
             PlayFabAuthServiceFacade.Instance.OnLoginSuccess -= OnLoginSuccess;
             PlayFabAuthServiceFacade.Instance.OnPlayFabError -= OnPlayFaberror;
             PlayFabAuthServiceFacade.Instance.OnDisplayNameSet -= OnDisplayNameSet;
@@ -149,7 +149,7 @@ namespace CricketWithHand.UI
             }
         }
 
-        void OnDisplayAuthentication()
+        void OnPlayFabNoAuthTypeSelected()
         {
             //Here we have choses what to do when AuthType is None.
             /*
