@@ -85,13 +85,10 @@ namespace CricketWithHand.UI
             _authServiceFacade.AuthenticateWithEmailAndPassword(email, password, _infoRequestParams, false);
 
         public void LoginAsAGuest() =>
-            _authServiceFacade.AuthenticateAsAGuest();
+            _authServiceFacade.AuthenticateAsAGuest(_infoRequestParams);
 
         public void LoginWithGoogleAccount() =>
-            _authServiceFacade.AuthenticateWithGoogle(_googleWebClientId);
-
-        public void PlayAsGuest() =>
-            _authServiceFacade.AuthenticateAsAGuest();
+            _authServiceFacade.AuthenticateWithGoogle(_googleWebClientId, _infoRequestParams);
 
         public void LogOut() =>
             _authServiceFacade.LogOut();
@@ -101,7 +98,7 @@ namespace CricketWithHand.UI
 
         private void OnPlayFabLoginSuccess(LoginResult result)
         {
-            LogUI.instance.AddStatusText("Logged In as: {0}" + result.PlayFabId);
+            LogUI.instance.AddStatusText($"Logged In as: {result.PlayFabId}");
 
             string displayName = result.InfoResultPayload.AccountInfo.TitleInfo.DisplayName;
             if (displayName != null)
@@ -140,26 +137,11 @@ namespace CricketWithHand.UI
             }
         }
 
-        private void OnPlayFabNoAuthTypeSelected()
-        {
-            //Here we have choses what to do when AuthType is None.
-            /*
-             * Optionally we could Not do the above and force login silently
-             * 
-             * _AuthService.Authenticate(Authtypes.Silent);
-             * 
-             * This example, would auto log them in by device ID and they would
-             * never see any UI for Authentication.
-             * 
-             */
-        }
-
         private void OnUserDisplayNameSet(string displayName) =>
             _onLoggedInWithDisplayname?.Invoke(displayName);
 
         private void SubscribeToEvents()
         {
-            PlayFabAuthServiceFacade.Instance.OnNoAuthTypeSelected += OnPlayFabNoAuthTypeSelected;
             PlayFabAuthServiceFacade.Instance.OnPlayFabLoginSuccess += OnPlayFabLoginSuccess;
             PlayFabAuthServiceFacade.Instance.OnPlayFabError += OnPlayFaberror;
             PlayFabAuthServiceFacade.Instance.OnUserDisplayNameSet += OnUserDisplayNameSet;
@@ -167,7 +149,6 @@ namespace CricketWithHand.UI
 
         private void UnSubscribeFromEvents()
         {
-            PlayFabAuthServiceFacade.Instance.OnNoAuthTypeSelected -= OnPlayFabNoAuthTypeSelected;
             PlayFabAuthServiceFacade.Instance.OnPlayFabLoginSuccess -= OnPlayFabLoginSuccess;
             PlayFabAuthServiceFacade.Instance.OnPlayFabError -= OnPlayFaberror;
             PlayFabAuthServiceFacade.Instance.OnUserDisplayNameSet -= OnUserDisplayNameSet;

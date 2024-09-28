@@ -34,12 +34,6 @@ namespace CricketWithHand.UI
             _registerLoginUIMediator.RegisterWithEmailAndPassword(_email.text, _password.text, _confirmPassword.text);
         }
 
-        public void PlayAsGuest()
-        {
-            LogUI.instance.AddStatusText("Logging In As Guest ...");
-            _registerLoginUIMediator.PlayAsGuest();
-        }
-
         bool IsRegistrationCredentialsValid()
         {
             if (string.IsNullOrEmpty(_email.text))

@@ -14283,7 +14283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DontDestroyOnSceneChange: 0
   Flow: {fileID: 11400000, guid: fbd95d0a1000a1741bda9feae7e61d44, type: 2}
-  FlowType: 0
+  FlowType: 1
   OnEnableBehaviour: 1
   OnDisableBehaviour: 3
   OnStart:

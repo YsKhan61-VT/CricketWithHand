@@ -2235,7 +2235,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1854542322}
+      objectReference: {fileID: 1854542330}
     - target: {fileID: 86733671063742265, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -2244,7 +2244,7 @@ PrefabInstance:
     - target: {fileID: 86733671063742265, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoginWithEmailAndPassword
+      value: LoginAsGuest
       objectReference: {fileID: 0}
     - target: {fileID: 86733671063742265, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
@@ -2259,7 +2259,7 @@ PrefabInstance:
     - target: {fileID: 86733671063742265, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DoozyPractice.UI.LoginUI, Assembly-CSharp
+      value: CricketWithHand.UI.LoginUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 86733671063742265, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
@@ -3529,11 +3529,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1815928885}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 70, y: -186}
-  m_SizeDelta: {x: 1920, y: 72}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 530}
+  m_SizeDelta: {x: 600, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &311583950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3588,7 +3588,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -4017,7 +4017,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -64}
-  m_SizeDelta: {x: 0, y: 72}
+  m_SizeDelta: {x: 0, y: 120}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &420958473
 MonoBehaviour:
@@ -6263,7 +6263,7 @@ PrefabInstance:
     - target: {fileID: 86733671063742266, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 86733671063742266, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
@@ -6887,7 +6887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DontDestroyOnSceneChange: 0
   Flow: {fileID: 11400000, guid: 260ac4115c5703d418cfd6975ca29c50, type: 2}
-  FlowType: 0
+  FlowType: 1
   OnEnableBehaviour: 1
   OnDisableBehaviour: 3
   OnStart:
@@ -8078,7 +8078,7 @@ PrefabInstance:
     - target: {fileID: 86733671063742265, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
       propertyPath: Id.Category
-      value: Login
+      value: LoginView
       objectReference: {fileID: 0}
     - target: {fileID: 86733671063742265, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
@@ -8173,7 +8173,7 @@ PrefabInstance:
     - target: {fileID: 86733671063742265, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 86733671063742265, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
@@ -10721,7 +10721,7 @@ PrefabInstance:
     - target: {fileID: 86733671063742266, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 86733671063742266, guid: e95c9c85ce78bb745b6faa56d97143de,
         type: 3}
@@ -10800,6 +10800,7 @@ GameObject:
   - component: {fileID: 1815928887}
   - component: {fileID: 1815928886}
   - component: {fileID: 1815928889}
+  - component: {fileID: 1815928890}
   m_Layer: 5
   m_Name: View - ProfileView
   m_TagString: Untagged
@@ -10946,6 +10947,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _registerLoginUIMediator: {fileID: 2107564839}
   _displayName: {fileID: 311583950}
+--- !u!114 &1815928890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815928884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f19faa02a27f4ed0b94c0d61c476dfb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Callback:
+    EventName: Callback invoked every time the listener is triggered
+    Runners: []
+    Event:
+      m_PersistentCalls:
+        m_Calls: []
+  StreamId:
+    Category: MainMenu
+    Name: OnLoggedInWithDIsplayName
+    Custom: 0
+  OnSignal:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStringSignal:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1815928889}
+        m_TargetAssemblyTypeName: CricketWithHand.UI.ProfileUI, Assembly-CSharp
+        m_MethodName: ShowDisplayName
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1833447174
 PrefabInstance:
   m_ObjectHideFlags: 0

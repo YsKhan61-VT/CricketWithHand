@@ -12,6 +12,11 @@ namespace CricketWithHand.UI
         [SerializeField]
         TMP_Text _displayName;
 
+        private void Start()
+        {
+            ShowDisplayName("");
+        }
+
         public void LogOut()
         {
             _registerLoginUIMediator.LogOut();

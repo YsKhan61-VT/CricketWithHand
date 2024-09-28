@@ -12,9 +12,6 @@ using System;
 using YSK.Utilities;
 using CricketWithHand.PlayFab.Google;
 using Google;
-using CricketWithHand.UI;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 
 
 
@@ -36,13 +33,6 @@ namespace CricketWithHand.PlayFab
     public class PlayFabAuthServiceFacade
     {
         #region Events
-
-        // Events to subscribe to for this service
-        /// <summary>
-        /// Invoked when no authentication type is selected, and yet forced to login or register.
-        /// This should not happen at any cost.
-        /// </summary>
-        public event Action OnNoAuthTypeSelected;
 
         /// <summary>
         /// Invoked when user can successfully login with Playfab 
@@ -178,7 +168,6 @@ namespace CricketWithHand.PlayFab
             Email = email;
             Password = password;
             InfoRequestParams = infoRequestParams;
-            // Authenticate(Authtypes.RegisterPlayFabAccount, createAccount);
 
             if (createAccount)
                 RegisterAccountWithEmailAndPassword();
@@ -186,14 +175,19 @@ namespace CricketWithHand.PlayFab
                 AuthenticateEmailPassword();
         }
 
-        public void AuthenticateAsAGuest()
+        public void AuthenticateAsAGuest(
+            GetPlayerCombinedInfoRequestParams infoRequestParams)
         {
+            InfoRequestParams = infoRequestParams;
             AuthType = Authtypes.Silent;
             SilentlyAuthenticate();
         }
 
-        public void AuthenticateWithGoogle(string webClientId)
+        public void AuthenticateWithGoogle(
+            string webClientId,
+            GetPlayerCombinedInfoRequestParams infoRequestParams)
         {
+            InfoRequestParams = infoRequestParams;
             AuthType = Authtypes.GooglePlay;
             _googleAuth ??= new();
             _googleAuth.OnSignInSuccess += OnSignInSuccessWithGoogle;
@@ -252,7 +246,6 @@ namespace CricketWithHand.PlayFab
                     // Failure
                     (PlayFabError error) =>
                     {
-                        //report error back to subscriber
                         OnPlayFabError?.Invoke(error);
                     }
                 );
@@ -274,9 +267,18 @@ namespace CricketWithHand.PlayFab
                         return;
                     _googleAuth.SignOut();
                     break;
+
+                case Authtypes.Silent:
+                    LogUI.instance.AddStatusText($"Unlinking device ID...!");
+                    UnlinkSilentAuth();
+                    break;
+                case Authtypes.None:
+                    LogUI.instance.AddStatusText("THIS SHOULD NOT HAPPEN!");
+                    break;
             }
 
             PlayFabClientAPI.ForgetAllCredentials();
+            LogUI.instance.AddStatusText("Logged out of PlayFab!");
         }
 
         /// <summary>
@@ -297,7 +299,6 @@ namespace CricketWithHand.PlayFab
                 // Success
                 (LoginResult result) =>
                 {
-                    // Store identity and session
                     PlayFabId = result.PlayFabId;
                     SessionTicket = result.SessionTicket;
 
@@ -320,14 +321,12 @@ namespace CricketWithHand.PlayFab
                             );
                     }
 
-                    //report login result back to subscriber
                     OnPlayFabLoginSuccess?.Invoke(result);
                 },
 
                 // Failure
                 (PlayFabError error) =>
                 {
-                    //Report error back to subscriber
                     OnPlayFabError?.Invoke(error);
                 });
         }
@@ -413,7 +412,7 @@ namespace CricketWithHand.PlayFab
             System.Action<LoginResult> successCallback = null, 
             System.Action<PlayFabError> errorCallback = null)
         {
-// #if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID && !UNITY_EDITOR
 
             //Get the device id from native android
             AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -434,32 +433,25 @@ namespace CricketWithHand.PlayFab
                     InfoRequestParameters = InfoRequestParams
                 }, 
                 
-                (result) => {            
+                (result) => 
+                {            
             
-                    //Store Identity and session
                     PlayFabId = result.PlayFabId;
                     SessionTicket = result.SessionTicket;
 
-                    //report login result back to the subscriber
                     OnPlayFabLoginSuccess?.Invoke(result);
-                    //report login result back to the caller
                     successCallback?.Invoke(result);
-
                 }, 
                 
-                (error) => {
+                (error) => 
+                {
 
-                    //report errro back to the subscriber
                     OnPlayFabError?.Invoke(error);
-                    //make sure the loop completes, callback with null
                     errorCallback?.Invoke(null);
-                    //Output what went wrong to the console.
-                    Debug.LogError(error.GenerateErrorReport());
-
                 }
             );
 
-// #elif UNITY_IPHONE || UNITY_IOS && !UNITY_EDITOR
+#elif UNITY_IPHONE || UNITY_IOS && !UNITY_EDITOR
             PlayFabClientAPI.LoginWithIOSDeviceID(
                 new LoginWithIOSDeviceIDRequest() 
                 {
@@ -474,14 +466,10 @@ namespace CricketWithHand.PlayFab
                 
                 (result) => 
                 {
-
-                    //Store Identity and session
                     PlayFabId = result.PlayFabId;
                     SessionTicket = result.SessionTicket;
 
-                    //report login result back to the subscriber
                     OnPlayFabLoginSuccess?.Invoke(result);
-                    //report login result back to the caller
                     successCallback?.Invoke(result);
                 
                 }, 
@@ -490,14 +478,10 @@ namespace CricketWithHand.PlayFab
                 {
 
                     OnPlayFabError?.Invoke(error);
-                    //make sure the loop completes, callback with null
                     errorCallback?.Invoke(null);
-                    //Output what went wrong to the console.
-                    Debug.LogError(error.GenerateErrorReport());
-
                 }
             );
-// #else
+#else
             PlayFabClientAPI.LoginWithCustomID(
                 new LoginWithCustomIDRequest()
                 {
@@ -509,7 +493,6 @@ namespace CricketWithHand.PlayFab
                 
                 (result) => {
 
-                    //Store Identity and session
                     PlayFabId = result.PlayFabId;
                     SessionTicket = result.SessionTicket;
 
@@ -521,67 +504,57 @@ namespace CricketWithHand.PlayFab
                 (error) => {
 
                     OnPlayFabError?.Invoke(error);
-                    //make sure the loop completes, callback with null
                     errorCallback?.Invoke(null);
-                    //Output what went wrong to the console.
-                    Debug.LogError(error.GenerateErrorReport());
-
                 }
             );
-// #endif
+#endif
         }
 
         private void UnlinkSilentAuth()
         {
-            SilentlyAuthenticate(
-                (LoginResult result) =>
-                {
-
 #if UNITY_ANDROID && !UNITY_EDITOR
-                    //Get the device id from native android
-                    AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-                    AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject>("currentActivity");
-                    AndroidJavaObject contentResolver = currentActivity.Call<AndroidJavaObject>("getContentResolver");
-                    AndroidJavaClass secure = new AndroidJavaClass("android.provider.Settings$Secure");
-                    string deviceId = secure.CallStatic<string>("getString", contentResolver, "android_id");
+            //Get the device id from native android
+            AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject contentResolver = currentActivity.Call<AndroidJavaObject>("getContentResolver");
+            AndroidJavaClass secure = new AndroidJavaClass("android.provider.Settings$Secure");
+            string deviceId = secure.CallStatic<string>("getString", contentResolver, "android_id");
 
-                    //Fire and forget, unlink this android device.
-                    PlayFabClientAPI.UnlinkAndroidDeviceID(
-                        new UnlinkAndroidDeviceIDRequest() 
-                        {
-                            AndroidDeviceId = deviceId
-                        }, 
-                        // success
-                        null, 
-                        // error
-                        null
-                    );
+            //Fire and forget, unlink this android device.
+            PlayFabClientAPI.UnlinkAndroidDeviceID(
+                new UnlinkAndroidDeviceIDRequest() 
+                {
+                    AndroidDeviceId = deviceId
+                }, 
+                // success
+                null, 
+                // error
+                null
+            );
 
 #elif UNITY_IPHONE || UNITY_IOS && !UNITY_EDITOR
-                    PlayFabClientAPI.UnlinkIOSDeviceID(
-                        new UnlinkIOSDeviceIDRequest()
-                        {
-                            DeviceId = SystemInfo.deviceUniqueIdentifier
-                        },
-                        // success
-                        null, 
-                        // error
-                        null
-                    );
-#else
-                    PlayFabClientAPI.UnlinkCustomID(
-                        new UnlinkCustomIDRequest()
-                        {
-                            CustomId = SystemInfo.deviceUniqueIdentifier
-                        }, 
-                        // success
-                        null, 
-                        // error
-                        null
-                    );
-#endif
-                }
+            PlayFabClientAPI.UnlinkIOSDeviceID(
+                new UnlinkIOSDeviceIDRequest()
+                {
+                    DeviceId = SystemInfo.deviceUniqueIdentifier
+                },
+                // success
+                null, 
+                // error
+                null
             );
+#else
+            PlayFabClientAPI.UnlinkCustomID(
+                new UnlinkCustomIDRequest()
+                {
+                    CustomId = SystemInfo.deviceUniqueIdentifier
+                },
+                // success
+                null,
+                // error
+                null
+            );
+#endif
         }
 
         private void OnSignInSuccessWithGoogle(GoogleSignInUser user)
