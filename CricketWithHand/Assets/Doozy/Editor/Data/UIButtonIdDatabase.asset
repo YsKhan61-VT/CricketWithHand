@@ -52,18 +52,18 @@ MonoBehaviour:
       Name: GameStats
     - Category: HalfTimeView
       Name: Start
-    - Category: Login
+    - Category: LoginView
+      Name: DontHaveAnAccount
+    - Category: LoginView
       Name: LoginWithEmail
-    - Category: Login
+    - Category: LoginView
       Name: LoginWithFacebook
-    - Category: Login
+    - Category: LoginView
       Name: LoginWithGoogle
-    - Category: Login
+    - Category: LoginView
       Name: PlayAsGuest
-    - Category: Login
+    - Category: LoginView
       Name: Quit
-    - Category: Login
-      Name: Register
     - Category: MainMenu
       Name: Login
     - Category: MainMenu

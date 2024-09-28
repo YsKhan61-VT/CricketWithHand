@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Database:
     Items:
-    - Category: Login
+    - Category: LoginView
       Name: RememberMe
     - Category: None
       Name: None
