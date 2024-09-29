@@ -1,6 +1,5 @@
 using Google;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using YSK.Utilities;
 
@@ -9,12 +8,12 @@ namespace CricketWithHand.PlayFab.Google
 {
     public class GoogleAuthentication
     {
-        public event Action<GoogleSignInUser> OnSignInSuccess;
-        public event Action<GoogleSignIn.SignInException> OnSignInFailure;
-
         public bool IsLoggedIn { get; private set; } = false;
 
-        public void SignInWithGoogle(string webClientId)
+        public async void SignInAsync(
+            string webClientId, 
+            Action<GoogleSignInUser> onSuccess = null, 
+            Action<Exception> onFailure = null)
         {
             GoogleSignIn.Configuration = new GoogleSignInConfiguration
             {
@@ -27,11 +26,23 @@ namespace CricketWithHand.PlayFab.Google
 
             LogUI.instance.AddStatusText("Calling sign in google account...");
 
-            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(
-              OnAuthenticationFinished, TaskScheduler.Default);
+            try
+            {
+                GoogleSignInUser result = await GoogleSignIn.DefaultInstance.SignIn();
+                onSuccess?.Invoke(result);
+                IsLoggedIn = true;
+            }
+            catch (Exception ex)
+            {
+                LogUI.instance.AddStatusText("Sign in failed: " + ex.Message);
+                onFailure?.Invoke(ex);
+            }
         }
 
-        public void SignInSilently(string webClientId)
+        public async void SignInSilentlyAsync(
+            string webClientId, 
+            Action<GoogleSignInUser> onSuccess = null, 
+            Action<Exception> onFailure = null)
         {
             GoogleSignIn.Configuration = new GoogleSignInConfiguration
             {
@@ -43,11 +54,23 @@ namespace CricketWithHand.PlayFab.Google
 
             LogUI.instance.AddStatusText("Calling SignIn Silently");
 
-            GoogleSignIn.DefaultInstance.SignInSilently()
-                  .ContinueWith(OnAuthenticationFinished);
+            try
+            {
+                GoogleSignInUser user = await GoogleSignIn.DefaultInstance.SignInSilently();
+                onSuccess?.Invoke(user);
+                IsLoggedIn = true;
+            }
+            catch (Exception ex)
+            {
+                LogUI.instance.AddStatusText("Sign in failed: " + ex.Message);
+                onFailure?.Invoke(ex);
+            }
         }
 
-        public void SignInWithPlayGames(string webClientId)
+        public async void SignInWithPlayGamesAsync(
+            string webClientId, 
+            Action<GoogleSignInUser> onSuccess = null, 
+            Action<Exception> onFailure = null)
         {
             GoogleSignIn.Configuration = new GoogleSignInConfiguration
             {
@@ -59,11 +82,22 @@ namespace CricketWithHand.PlayFab.Google
 
             LogUI.instance.AddStatusText("Calling Games SignIn");
 
-            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(
-              OnAuthenticationFinished);
+            try
+            {
+                GoogleSignInUser user = await GoogleSignIn.DefaultInstance.SignIn();
+                onSuccess?.Invoke(user);
+                IsLoggedIn = true;
+            }
+            catch (Exception ex)
+            {
+                LogUI.instance.AddStatusText("Sign in failed: " + ex.Message);
+                onFailure?.Invoke(ex);
+            }
         }
 
-        public void SignOut()
+        public void SignOut(
+            Action onSuccess = null,
+            Action<Exception> onFailure = null)
         {
             LogUI.instance.AddStatusText("Calling sign out google account!");
             Task.Run(() =>
@@ -74,10 +108,17 @@ namespace CricketWithHand.PlayFab.Google
                 if (task.IsFaulted)
                 {
                     LogUI.instance.AddStatusText("Sign out failed: " + task.Exception?.Message);
+                    onFailure?.Invoke(task.Exception); // Pass the exception directly
                 }
                 else
                 {
                     LogUI.instance.AddStatusText("Sign out successful");
+
+                    // NOTE - not sure if need to call this or not.
+                    Disconnect();
+
+                    onSuccess?.Invoke();
+                    IsLoggedIn = false;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -86,38 +127,6 @@ namespace CricketWithHand.PlayFab.Google
         {
             LogUI.instance.AddStatusText("Calling Disconnect");
             GoogleSignIn.DefaultInstance.Disconnect();
-        }
-
-        void OnAuthenticationFinished(Task<GoogleSignInUser> task)
-        {
-            if (task.IsFaulted)
-            {
-                using IEnumerator<System.Exception> enumerator =
-                        task.Exception.InnerExceptions.GetEnumerator();
-                if (enumerator.MoveNext())
-                {
-                    GoogleSignIn.SignInException error =
-                            (GoogleSignIn.SignInException)enumerator.Current;
-                    LogUI.instance.AddStatusText("Got Error: " + error.Status + " " + error.Message);
-                    OnSignInFailure?.Invoke(error);
-                }
-                else
-                {
-                    LogUI.instance.AddStatusText("Got Unexpected Exception?!?" + task.Exception);
-                    OnSignInFailure?.Invoke(null);
-                }
-            }
-            else if (task.IsCanceled)
-            {
-                LogUI.instance.AddStatusText("Sign In with Google Canceled");
-                OnSignInFailure?.Invoke(null);
-            }
-            else
-            {
-                LogUI.instance.AddStatusText("Welcome: " + task.Result.DisplayName + "!");
-                IsLoggedIn = true;
-                OnSignInSuccess?.Invoke(task.Result);
-            }
         }
     }
 }
