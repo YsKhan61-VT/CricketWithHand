@@ -13,7 +13,7 @@ namespace CricketWithHand.PlayFab.Google
         public async void SignInAsync(
             string webClientId, 
             Action<GoogleSignInUser> onSuccess = null, 
-            Action<Exception> onFailure = null)
+            Action<GoogleSignIn.SignInException> onFailure = null)
         {
             GoogleSignIn.Configuration = new GoogleSignInConfiguration
             {
@@ -23,19 +23,15 @@ namespace CricketWithHand.PlayFab.Google
                 RequestAuthCode = true,
                 UseGameSignIn = false,
             };
-
-            LogUI.instance.AddStatusText("Calling sign in google account...");
-
             try
             {
                 GoogleSignInUser result = await GoogleSignIn.DefaultInstance.SignIn();
                 onSuccess?.Invoke(result);
                 IsLoggedIn = true;
             }
-            catch (Exception ex)
+            catch (GoogleSignIn.SignInException error)
             {
-                LogUI.instance.AddStatusText("Sign in failed: " + ex.Message);
-                onFailure?.Invoke(ex);
+                onFailure?.Invoke(error);
             }
         }
 
@@ -96,8 +92,8 @@ namespace CricketWithHand.PlayFab.Google
         }
 
         public void SignOut(
-            Action onSuccess = null,
-            Action<Exception> onFailure = null)
+            Action<string> onSuccess = null,
+            Action<string> onFailure = null)
         {
             LogUI.instance.AddStatusText("Calling sign out google account!");
             Task.Run(() =>
@@ -107,17 +103,14 @@ namespace CricketWithHand.PlayFab.Google
             {
                 if (task.IsFaulted)
                 {
-                    LogUI.instance.AddStatusText("Sign out failed: " + task.Exception?.Message);
-                    onFailure?.Invoke(task.Exception); // Pass the exception directly
+                    onFailure?.Invoke($"Sign out failed: {task.Exception?.Message} !");
                 }
                 else
                 {
-                    LogUI.instance.AddStatusText("Sign out successful");
-
                     // NOTE - not sure if need to call this or not.
                     Disconnect();
 
-                    onSuccess?.Invoke();
+                    onSuccess?.Invoke("Sign out successful");
                     IsLoggedIn = false;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());

@@ -47,8 +47,8 @@ namespace CricketWithHand.UI
         public void SetRememberMeToRememberedState(bool state) =>
             _rememberMeToggle.isOn = state;
 
-        public void ToggleRememberMe(bool toggle) =>
-            _registerLoginUIMediator.ToggleRememberMe(toggle);
+        public void ToggleRememberMe(bool toggle) { }
+            // _registerLoginUIMediator.ToggleRememberMe(toggle);
 
         public void Reset()
         {

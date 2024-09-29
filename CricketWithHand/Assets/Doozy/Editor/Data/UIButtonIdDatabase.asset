@@ -64,10 +64,12 @@ MonoBehaviour:
       Name: PlayAsGuest
     - Category: LoginView
       Name: Quit
+    - Category: ManageAccountView
+      Name: LinkWithGoogle
+    - Category: ManageAccountView
+      Name: LogOut
     - Category: None
       Name: None
-    - Category: ProfileView
-      Name: LogOut
     - Category: ProfileView
       Name: ManageAccount
     - Category: RegistrationView

@@ -54,6 +54,7 @@ namespace Doozy.Runtime.UIManager
         {
             DisplayNameView,
             LoginView,
+            ManageAccountView,
             ProfileView,
             RegistrationView
         }    

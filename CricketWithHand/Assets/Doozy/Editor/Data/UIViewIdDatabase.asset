@@ -39,6 +39,8 @@ MonoBehaviour:
     - Category: MainMenu
       Name: LoginView
     - Category: MainMenu
+      Name: ManageAccountView
+    - Category: MainMenu
       Name: ProfileView
     - Category: MainMenu
       Name: RegistrationView

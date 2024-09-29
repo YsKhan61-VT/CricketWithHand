@@ -17,12 +17,16 @@ namespace CricketWithHand.UI
         private UnityEvent<string> _onLoggedInWithDisplayname;
 
         [SerializeField]
-        private UnityEvent _onLoggedInWithoutDisplayname;
+        private UnityEvent _onLoggedInWithoutDisplayName;
 
         [SerializeField]
         private UnityEvent _onNoAccountRemembered;
 
+        [SerializeField]
+        private UnityEvent _onLinkAccountSuccess;
+
         #endregion
+
 
         [SerializeField]
         private RegisterUI _registerUI;
@@ -42,6 +46,8 @@ namespace CricketWithHand.UI
         [SerializeField]
         private UIView _loadingView;
 
+        public bool IsLoggedIn => _authServiceFacade.AuthData.IsLoggedIn;
+        public bool IsLinkedInWithGoogle => _authServiceFacade.IsLinkedWithGoogle;
 
         private PlayFabAuthServiceFacade _authServiceFacade = PlayFabAuthServiceFacade.Instance;
 
@@ -54,13 +60,11 @@ namespace CricketWithHand.UI
                 _authServiceFacade.ClearCache();
             }
 
-            _loginUI.SetRememberMeToRememberedState(_authServiceFacade.RememberMe);
+            _loginUI.SetRememberMeToRememberedState(_authServiceFacade.AuthData.RememberMe);
         }
 
         private void Start()
         {
-            SubscribeToEvents();
-
             // _authServiceFacade.InfoRequestParams = InfoRequestParams;
             // _authServiceFacade.Authenticate();
 
@@ -69,7 +73,7 @@ namespace CricketWithHand.UI
 
         private void TryLoginWithRememberedAccount()
         {
-            if (!_authServiceFacade.RememberMe)
+            if (!_authServiceFacade.AuthData.RememberMe)
             {
                 _onNoAccountRemembered?.Invoke();
                 return;
@@ -78,40 +82,129 @@ namespace CricketWithHand.UI
             _authServiceFacade.LoginRememberedAccount();
         }
 
-        private void OnDestroy()
-        {
-            UnSubscribeFromEvents();
-        }
-
         public void RegisterWithEmailAndPassword(string email, string password, string confirmPassword)
         {
             _loadingView.Show();
-            _authServiceFacade.AuthenticateWithEmailAndPassword(email, password, _infoRequestParams, true);
+            _authServiceFacade.RegisterWithEmailAndPassword(
+                email, 
+                password, 
+                _infoRequestParams,
+                (result) =>
+                {
+                    OnPlayFabLoginSuccess(result);
+                },
+                (error) =>
+                {
+                    OnPlayFabError(error);
+                }
+            );
         }
 
         public void LoginWithEmailAndPassword(string email, string password)
         {
             _loadingView.Show();
-            _authServiceFacade.AuthenticateWithEmailAndPassword(email, password, _infoRequestParams, false);
+            _authServiceFacade.AuthenticateEmailPassword(
+                email, 
+                password, 
+                _infoRequestParams,
+                (result) =>
+                {
+                    OnPlayFabLoginSuccess(result);
+                },
+                (error) =>
+                {
+                    OnPlayFabError(error);
+                }
+            );
         }
 
         public void LoginAsAGuest()
         {
             _loadingView.Show();
-            _authServiceFacade.AuthenticateAsAGuest(_infoRequestParams);
+            _authServiceFacade.SilentlyAuthenticate(
+                _infoRequestParams,
+                (result) =>
+                {
+                    OnPlayFabLoginSuccess(result);
+                },
+                (error) =>
+                {
+                    OnPlayFabError(error);
+                } 
+            );
         }
 
         public void LoginWithGoogleAccount()
         {
+            LogUI.instance.AddStatusText("Logging in with google account...");
+
             _loadingView.Show();
-            _authServiceFacade.AuthenticateWithGoogle(_googleWebClientId, _infoRequestParams);
+            _authServiceFacade.AuthenticateWithGoogle(
+                _googleWebClientId, 
+                _infoRequestParams,
+                (result) =>
+                {
+                    LogUI.instance.AddStatusText("PlayFab login with google success!");
+                    OnPlayFabLoginSuccess(result);
+                },
+                (error) =>
+                {
+                    OnPlayFabError(error);
+                }
+            );
         }
 
-        public void LogOut() =>
-            _authServiceFacade.LogOut();
+        public void LinkAccountWithGoogle()
+        {
+            LogUI.instance.AddStatusText("Linking with google ...");
 
-        public void ToggleRememberMe(bool toggle) =>
-            _authServiceFacade.RememberMe = toggle;
+            _loadingView.Show();
+            _authServiceFacade.LinkWithGoogle(
+                _googleWebClientId, 
+                _infoRequestParams,
+                (result) =>
+                {
+                    LogUI.instance.AddStatusText("PlayFab linked with google success!");
+                    OnLinkAccountWithGoogleSuccess();
+                },
+                (error) =>
+                {
+                    OnPlayFabError(error);
+                }
+            );
+        }
+
+        public void SetDisplayName(string displayName)
+        {
+            _loadingView.Show();
+            _authServiceFacade.SetDisplayName(
+                displayName,
+                (userName) => OnUserDisplayNameSet(userName),
+                (error) => OnPlayFabError(error)
+            );
+        }
+
+        /// <summary>
+        /// Rather than settting like this, directly set this bool value 
+        /// while calling actual authentication methods
+        /// </summary>
+        /// <param name="result"></param>
+        /*public void ToggleRememberMe(bool toggle) =>
+            _authServiceFacade.AuthData.RememberMe = toggle;*/
+
+        public void LogOut()
+        {
+            _authServiceFacade.LogOut(
+                (result) => 
+                {
+                    LogUI.instance.AddStatusText(result);
+                },
+                (error) =>
+                {
+                    LogUI.instance.AddStatusText(error);
+                }
+            );
+        }
 
         private void OnPlayFabLoginSuccess(LoginResult result)
         {
@@ -126,19 +219,13 @@ namespace CricketWithHand.UI
             else
             {
                 LogUI.instance.AddStatusText("User display name needs to be set!");
-                _onLoggedInWithoutDisplayname?.Invoke();
+                _onLoggedInWithoutDisplayName?.Invoke();
             }
 
             _loadingView.Hide();
         }
 
-        public void SetDisplayName(string displayName)
-        {
-            _loadingView.Show();
-            _authServiceFacade.SetDisplayName(displayName);
-        }
-
-        private void OnPlayFaberror(PlayFabError error)
+        private void OnPlayFabError(PlayFabError error)
         {
             /*//There are more cases which can be caught, below are some
             //of the basic ones.
@@ -173,21 +260,15 @@ namespace CricketWithHand.UI
         private void OnUserDisplayNameSet(string displayName)
         {
             _loadingView.Hide();
+            LogUI.instance.AddStatusText($"Display name set to: . {displayName}");
             _onLoggedInWithDisplayname?.Invoke(displayName);
         }
 
-        private void SubscribeToEvents()
+        private void OnLinkAccountWithGoogleSuccess()
         {
-            PlayFabAuthServiceFacade.Instance.OnPlayFabLoginSuccess += OnPlayFabLoginSuccess;
-            PlayFabAuthServiceFacade.Instance.OnPlayFabError += OnPlayFaberror;
-            PlayFabAuthServiceFacade.Instance.OnUserDisplayNameSet += OnUserDisplayNameSet;
-        }
-
-        private void UnSubscribeFromEvents()
-        {
-            PlayFabAuthServiceFacade.Instance.OnPlayFabLoginSuccess -= OnPlayFabLoginSuccess;
-            PlayFabAuthServiceFacade.Instance.OnPlayFabError -= OnPlayFaberror;
-            PlayFabAuthServiceFacade.Instance.OnUserDisplayNameSet -= OnUserDisplayNameSet;
+            _loadingView.Hide();
+            PopupUI.instance.ShowMessage("Link with Google Success", "You have successfully linked your account with google!");
+            _onLinkAccountSuccess?.Invoke();
         }
     }
 }

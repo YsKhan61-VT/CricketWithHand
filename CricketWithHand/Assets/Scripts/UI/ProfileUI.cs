@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using Doozy.Runtime.UIManager.Components;
+using System;
+using TMPro;
 using UnityEngine;
 
 
@@ -12,14 +14,10 @@ namespace CricketWithHand.UI
         [SerializeField]
         TMP_Text _displayName;
 
+
         private void Start()
         {
             ShowDisplayName("");
-        }
-
-        public void LogOut()
-        {
-            _registerLoginUIMediator.LogOut();
         }
 
         public void ShowDisplayName(string displayName) =>
