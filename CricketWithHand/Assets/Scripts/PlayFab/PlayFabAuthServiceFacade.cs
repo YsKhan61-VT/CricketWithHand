@@ -108,35 +108,6 @@ namespace CricketWithHand.PlayFab
 
     public class PlayFabAuthServiceFacade
     {
-        #region Events
-
-        /*/// <summary>
-        /// Invoked when user can successfully login with Playfab 
-        /// (using either 3rd party authentication or silently).
-        /// This will be invoked either with or without the UserDisplayName.
-        /// LoginResult stores all the login related informations.
-        /// </summary>
-        public event Action<LoginResult> OnPlayFabLoginSuccess;
-
-        /// <summary>
-        /// Invoked when there is some error in the process of authentications.
-        /// PlayFabError contains the error data.
-        /// </summary>
-        public event Action<PlayFabError> OnPlayFabError;
-
-        /// <summary>
-        /// Invoked when the user display name is set to playfab.
-        /// string contains the User Display Name
-        /// </summary>
-        public event Action<string> OnUserDisplayNameSet;
-
-        /// <summary>
-        /// Invoked when the user guest account successfully links with his chosen 3rd party account
-        /// </summary>
-        public event Action OnLinkAccountSuccess;*/
-
-        #endregion
-
         public bool IsLinkedWithGoogle => _googleAuth != null && _googleAuth.IsLoggedIn;
 
         public PlayFabAuthServiceData AuthData { get; private set; } = new();
@@ -177,8 +148,8 @@ namespace CricketWithHand.PlayFab
             string email,
             string password,
             GetPlayerCombinedInfoRequestParams infoRequestParams,
-            Action<AddUsernamePasswordResult> OnSuccess = null,
-            Action<PlayFabError> OnFailure = null)
+            Action<AddUsernamePasswordResult> onSuccess = null,
+            Action<PlayFabError> onFailure = null)
         {
             AuthData.AuthType = Authtypes.EmailAndPassword;
             AuthData.Email = email;
@@ -194,7 +165,7 @@ namespace CricketWithHand.PlayFab
                     if (result == null)
                     {
                         //something went wrong with Silent Authentication, Check the debug console.
-                        OnFailure?.Invoke(new PlayFabError()
+                        onFailure?.Invoke(new PlayFabError()
                         {
                             Error = PlayFabErrorCode.UnknownError,
                             ErrorMessage = "Silent Authentication by Device failed"
@@ -239,13 +210,13 @@ namespace CricketWithHand.PlayFab
                             }*/
 
                             AuthData.AuthType = Authtypes.EmailAndPassword;
-                            OnSuccess?.Invoke(addResult);
+                            onSuccess?.Invoke(addResult);
                         },
 
                         // Failure
                         (PlayFabError error) =>
                         {
-                            OnFailure?.Invoke(error);
+                            onFailure?.Invoke(error);
                         }
                     );
                 }
