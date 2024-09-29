@@ -5304,7 +5304,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -10435,6 +10435,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773772479}
   m_CullTransparentMesh: 1
+--- !u!1 &1775805899
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1775805901}
+  - component: {fileID: 1775805900}
+  m_Layer: 0
+  m_Name: DataContainerListeners
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1775805900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775805899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de841d0db680e0646be0a48a284aeaef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: UserDisplayNameDataContainer
+  _onContainerValueUpdated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1815928889}
+        m_TargetAssemblyTypeName: CricketWithHand.UI.ProfileUI, Assembly-CSharp
+        m_MethodName: ShowDisplayName
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _container: {fileID: 11400000, guid: 33ca2abee3b1d0d40aa625bf1e88f152, type: 2}
+--- !u!4 &1775805901
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775805899}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1777019233
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10800,7 +10861,6 @@ GameObject:
   - component: {fileID: 1815928887}
   - component: {fileID: 1815928886}
   - component: {fileID: 1815928889}
-  - component: {fileID: 1815928890}
   m_Layer: 5
   m_Name: View - ProfileView
   m_TagString: Untagged
@@ -10947,46 +11007,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _registerLoginUIMediator: {fileID: 2107564839}
   _displayName: {fileID: 311583950}
---- !u!114 &1815928890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1815928884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19faa02a27f4ed0b94c0d61c476dfb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Callback:
-    EventName: Callback invoked every time the listener is triggered
-    Runners: []
-    Event:
-      m_PersistentCalls:
-        m_Calls: []
-  StreamId:
-    Category: MainMenu
-    Name: OnLoggedInWithDIsplayName
-    Custom: 0
-  OnSignal:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStringSignal:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1815928889}
-        m_TargetAssemblyTypeName: CricketWithHand.UI.ProfileUI, Assembly-CSharp
-        m_MethodName: ShowDisplayName
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &1833447174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12642,7 +12662,7 @@ MonoBehaviour:
       Category: MainMenu
       Name: OnLoggedInWithDIsplayName
       Custom: 0
-    SignalValueType: 4
+    SignalValueType: 0
     IntegerValue: 0
     BooleanValue: 0
     FloatValue: 0
@@ -12675,6 +12695,19 @@ MonoBehaviour:
           Assembly-CSharp
         m_MethodName: SendSignal
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 33ca2abee3b1d0d40aa625bf1e88f152, type: 2}
+        m_TargetAssemblyTypeName: CricketWithHand.Utility.GenericDataContainerSO`1[[System.String,
+          mscorlib
+        m_MethodName: UpdateData
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12888,3 +12921,4 @@ SceneRoots:
   - {fileID: 2107564836}
   - {fileID: 570997755}
   - {fileID: 1372182155}
+  - {fileID: 1775805901}

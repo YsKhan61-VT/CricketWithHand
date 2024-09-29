@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CricketWithHand.Utility
 {
-    public abstract class GenericDataContainerSO<T> : ScriptableObject where T : struct
+    public abstract class GenericDataContainerSO<T> : ScriptableObject
     {
         public Action OnValueUpdated;
 

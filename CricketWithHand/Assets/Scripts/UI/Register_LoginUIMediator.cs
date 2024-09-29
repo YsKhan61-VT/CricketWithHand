@@ -13,32 +13,32 @@ namespace CricketWithHand.UI
         #region Events
 
         [SerializeField]
-        UnityEvent<string> _onLoggedInWithDisplayname;
+        private UnityEvent<string> _onLoggedInWithDisplayname;
 
         [SerializeField]
-        UnityEvent _onLoggedInWithoutDisplayname;
+        private UnityEvent _onLoggedInWithoutDisplayname;
 
         [SerializeField]
-        UnityEvent _onNoAccountRemembered;
+        private UnityEvent _onNoAccountRemembered;
 
         #endregion
 
         [SerializeField]
-        RegisterUI _registerUI;
+        private RegisterUI _registerUI;
 
         [SerializeField]
-        LoginUI _loginUI;
+        private LoginUI _loginUI;
 
         [SerializeField]
-        bool _clearPlayerPrefs;
+        private bool _clearPlayerPrefs;
 
         [SerializeField]
-        GetPlayerCombinedInfoRequestParams _infoRequestParams;
+        private GetPlayerCombinedInfoRequestParams _infoRequestParams;
 
         [SerializeField]
-        string _googleWebClientId;
+        private string _googleWebClientId;
 
-        PlayFabAuthServiceFacade _authServiceFacade = PlayFabAuthServiceFacade.Instance;
+        private PlayFabAuthServiceFacade _authServiceFacade = PlayFabAuthServiceFacade.Instance;
 
         private void Awake()
         {
@@ -114,7 +114,8 @@ namespace CricketWithHand.UI
         }
 
         public void SetDisplayName(string displayName) =>
-            _authServiceFacade.SetDisplayName(displayName);
+            _onLoggedInWithDisplayname?.Invoke(displayName);
+            // _authServiceFacade.SetDisplayName(displayName);
 
         private void OnPlayFaberror(PlayFabError error)
         {
