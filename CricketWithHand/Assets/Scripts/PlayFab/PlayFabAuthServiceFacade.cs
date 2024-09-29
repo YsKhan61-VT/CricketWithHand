@@ -214,7 +214,8 @@ namespace CricketWithHand.PlayFab
                 {
                     LogUI.instance.AddStatusText($"{error.Error}, {error.GenerateErrorReport()}");
                     OnPlayFabError?.Invoke(error);
-                });
+                }
+            );
         }
 
         public void LoginRememberedAccount()

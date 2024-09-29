@@ -616,6 +616,11 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2951246982249616002, guid: ba5426fee7e7e6745b4d29bb89a71139,
+        type: 3}
+      propertyPath: m_VertexColorAlwaysGammaSpace
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
         type: 3}
       propertyPath: m_Name

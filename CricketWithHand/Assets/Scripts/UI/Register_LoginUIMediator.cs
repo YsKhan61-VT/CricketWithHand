@@ -1,4 +1,5 @@
 using CricketWithHand.PlayFab;
+using Doozy.Runtime.UIManager.Containers;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
@@ -37,6 +38,10 @@ namespace CricketWithHand.UI
 
         [SerializeField]
         private string _googleWebClientId;
+
+        [SerializeField]
+        private UIView _loadingView;
+
 
         private PlayFabAuthServiceFacade _authServiceFacade = PlayFabAuthServiceFacade.Instance;
 
@@ -78,17 +83,29 @@ namespace CricketWithHand.UI
             UnSubscribeFromEvents();
         }
 
-        public void RegisterWithEmailAndPassword(string email, string password, string confirmPassword) =>
+        public void RegisterWithEmailAndPassword(string email, string password, string confirmPassword)
+        {
+            _loadingView.Show();
             _authServiceFacade.AuthenticateWithEmailAndPassword(email, password, _infoRequestParams, true);
+        }
 
-        public void LoginWithEmailAndPassword(string email, string password) =>
+        public void LoginWithEmailAndPassword(string email, string password)
+        {
+            _loadingView.Show();
             _authServiceFacade.AuthenticateWithEmailAndPassword(email, password, _infoRequestParams, false);
+        }
 
-        public void LoginAsAGuest() =>
+        public void LoginAsAGuest()
+        {
+            _loadingView.Show();
             _authServiceFacade.AuthenticateAsAGuest(_infoRequestParams);
+        }
 
-        public void LoginWithGoogleAccount() =>
+        public void LoginWithGoogleAccount()
+        {
+            _loadingView.Show();
             _authServiceFacade.AuthenticateWithGoogle(_googleWebClientId, _infoRequestParams);
+        }
 
         public void LogOut() =>
             _authServiceFacade.LogOut();
@@ -111,10 +128,15 @@ namespace CricketWithHand.UI
                 LogUI.instance.AddStatusText("User display name needs to be set!");
                 _onLoggedInWithoutDisplayname?.Invoke();
             }
+
+            _loadingView.Hide();
         }
 
-        public void SetDisplayName(string displayName) =>
+        public void SetDisplayName(string displayName)
+        {
+            _loadingView.Show();
             _authServiceFacade.SetDisplayName(displayName);
+        }
 
         private void OnPlayFaberror(PlayFabError error)
         {
@@ -144,10 +166,15 @@ namespace CricketWithHand.UI
             string errorReport = error.GenerateErrorReport();
             LogUI.instance.AddStatusText($"Error code: {error.Error} \n Message: {errorReport} \n");
             PopupUI.instance.ShowMessage($"Error code: {error.Error}", $"Message: {errorReport} \n");
+
+            _loadingView.Hide();
         }
 
-        private void OnUserDisplayNameSet(string displayName) =>
+        private void OnUserDisplayNameSet(string displayName)
+        {
+            _loadingView.Hide();
             _onLoggedInWithDisplayname?.Invoke(displayName);
+        }
 
         private void SubscribeToEvents()
         {
