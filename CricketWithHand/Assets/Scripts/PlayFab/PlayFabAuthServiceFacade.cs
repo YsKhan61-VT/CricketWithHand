@@ -212,7 +212,7 @@ namespace CricketWithHand.PlayFab
 
                 (PlayFabError error) =>
                 {
-                    LogUI.instance.AddStatusText(error.GenerateErrorReport());
+                    LogUI.instance.AddStatusText($"{error.Error}, {error.GenerateErrorReport()}");
                     OnPlayFabError?.Invoke(error);
                 });
         }

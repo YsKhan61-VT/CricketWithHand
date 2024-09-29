@@ -108,23 +108,27 @@ namespace CricketWithHand.UI
             }
             else
             {
-                LogUI.instance.AddStatusText("No Display name found!");
+                LogUI.instance.AddStatusText("User display name needs to be set!");
                 _onLoggedInWithoutDisplayname?.Invoke();
             }
         }
 
         public void SetDisplayName(string displayName) =>
-            _onLoggedInWithDisplayname?.Invoke(displayName);
-            // _authServiceFacade.SetDisplayName(displayName);
+            _authServiceFacade.SetDisplayName(displayName);
 
         private void OnPlayFaberror(PlayFabError error)
         {
-            //There are more cases which can be caught, below are some
+            /*//There are more cases which can be caught, below are some
             //of the basic ones.
             switch (error.Error)
             {
                 case PlayFabErrorCode.InvalidEmailAddress:
+                    LogUI.instance.AddStatusText($"Error Code: {error.Error} Invalid Email");
+                    PopupUI.instance.ShowMessage("Authentication Error:", "No account found with the Email. \n Make sure the email address you provided is correct. \n If yes, register with that email address first!");
+                    break;
                 case PlayFabErrorCode.InvalidPassword:
+                    LogUI.instance.AddStatusText("Invalid password");
+                    PopupUI.instance.ShowMessage("Authentication Error:", "No account found with the Email. \n Make sure the email address you provided is correct. \n If yes, register with that email address first!");
                 case PlayFabErrorCode.InvalidEmailOrPassword:
                 case PlayFabErrorCode.InvalidParams:
                 case PlayFabErrorCode.AccountNotFound:
@@ -133,9 +137,13 @@ namespace CricketWithHand.UI
                     PopupUI.instance.ShowMessage("Authentication Error:", "No account found with the Email. \n Make sure the email address you provided is correct. \n If yes, register with that email address first!");
                     break;
                 default:
-                    LogUI.instance.AddStatusText(error.GenerateErrorReport());
+                    LogUI.instance.AddStatusText($"{error.Error}, {error.ErrorMessage}");
                     break;
-            }
+            }*/
+
+            string errorReport = error.GenerateErrorReport();
+            LogUI.instance.AddStatusText($"Error code: {error.Error} \n Message: {errorReport} \n");
+            PopupUI.instance.ShowMessage($"Error code: {error.Error}", $"Message: {errorReport} \n");
         }
 
         private void OnUserDisplayNameSet(string displayName) =>
