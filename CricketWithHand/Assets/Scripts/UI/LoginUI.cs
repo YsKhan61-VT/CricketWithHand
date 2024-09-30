@@ -19,6 +19,7 @@ namespace CricketWithHand.UI
 
         [SerializeField]
         UIToggle _rememberMeToggle;
+        public bool RememberMe => _rememberMeToggle.isOn;
 
         public void LoginWithEmailAndPassword()
         {
@@ -47,9 +48,6 @@ namespace CricketWithHand.UI
         public void SetRememberMeToRememberedState(bool state) =>
             _rememberMeToggle.isOn = state;
 
-        public void ToggleRememberMe(bool toggle) { }
-            // _registerLoginUIMediator.ToggleRememberMe(toggle);
-
         public void Reset()
         {
             _emailInputField.text = "";
@@ -61,12 +59,14 @@ namespace CricketWithHand.UI
             if (string.IsNullOrEmpty(_emailInputField.text))
             {
                 LogUI.instance.AddStatusText("Email address can't be empty!");
+                PopupUI.instance.ShowMessage("Login Error", "Email address can't be empty!");
                 return false;
             }
 
             if (string.IsNullOrEmpty(_passwordInputField.text))
             {
                 LogUI.instance.AddStatusText("Password can't be empty!");
+                PopupUI.instance.ShowMessage("Login Error", "Password can't be empty!");
                 return false;
             }
 

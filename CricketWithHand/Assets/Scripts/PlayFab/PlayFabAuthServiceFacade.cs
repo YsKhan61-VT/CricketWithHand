@@ -55,7 +55,6 @@ namespace CricketWithHand.PlayFab
         // This is a force link flag for custom ids for demoing
         public bool ForceLink { get; set; } = false;
         public GetPlayerCombinedInfoRequestParams InfoRequestParams { get; set; }
-        public bool IsLoggedIn => PlayFabClientAPI.IsClientLoggedIn();
 
         /// <summary>
         /// Remember the user next time they log in
@@ -108,6 +107,7 @@ namespace CricketWithHand.PlayFab
 
     public class PlayFabAuthServiceFacade
     {
+        public bool IsLoggedIn => PlayFabClientAPI.IsClientLoggedIn();
         public bool IsLinkedWithGoogle => _googleAuth != null && _googleAuth.IsLoggedIn;
 
         public PlayFabAuthServiceData AuthData { get; private set; } = new();
@@ -206,6 +206,8 @@ namespace CricketWithHand.PlayFab
                         // Failure
                         (PlayFabError error) =>
                         {
+                            // If can't add username, password, or email... then make sure to unlink the device.
+                            UnlinkSilentAuth();
                             onFailure?.Invoke(error);
                         }
                     );
@@ -465,7 +467,7 @@ namespace CricketWithHand.PlayFab
 
         public void LogOut(Action<string> onSuccess = null, Action<string> onFailure = null)
         {
-            if (!AuthData.IsLoggedIn)
+            if (!IsLoggedIn)
             {
                 onFailure?.Invoke("No user is logged in!");
                 return;
@@ -483,6 +485,7 @@ namespace CricketWithHand.PlayFab
                     _googleAuth.SignOut(
                         (result) => 
                         {
+                            UnlinkSilentAuth();
                             PlayFabClientAPI.ForgetAllCredentials();
                             onSuccess?.Invoke($"{result}. Logged out of PlayFab!");
                         },
@@ -496,6 +499,12 @@ namespace CricketWithHand.PlayFab
 
                 case Authtypes.Silent:
                     // UnlinkSilentAuth(); - We don't want to unlink the guest account from the device, as it should be permanent.
+                    PlayFabClientAPI.ForgetAllCredentials();
+                    onSuccess?.Invoke("Logged out of PlayFab!");
+                    break;
+
+                case Authtypes.EmailAndPassword:
+                    UnlinkSilentAuth();
                     PlayFabClientAPI.ForgetAllCredentials();
                     onSuccess?.Invoke("Logged out of PlayFab!");
                     break;
@@ -526,7 +535,11 @@ namespace CricketWithHand.PlayFab
                 {
                     AndroidDeviceId = deviceId
                 }, 
-                (success) => onSuccess?.Invoke("Unlink android device successful!"), 
+                (success) => 
+                {
+                    AuthData.AuthType = Authtypes.None;
+                    onSuccess?.Invoke("Unlink android device successful!");
+                },
                 (error) => onFailure?.Invoke(error)
             );
 
@@ -536,7 +549,11 @@ namespace CricketWithHand.PlayFab
                 {
                     DeviceId = SystemInfo.deviceUniqueIdentifier
                 },
-                (success) => onSuccess?.Invoke("Unlink IOS device successful!"),
+                (success) => 
+                {
+                    AuthData.AuthType = Authtypes.None;
+                    onSuccess?.Invoke("Unlink IOS device successful!");
+                },
                 (error) => onFailure?.Invoke(error)
             );
 #else
@@ -545,7 +562,11 @@ namespace CricketWithHand.PlayFab
                 {
                     CustomId = SystemInfo.deviceUniqueIdentifier
                 },
-                (success) => onSuccess?.Invoke("Unlink custom ID successful!"),
+                (success) =>
+                {
+                    AuthData.AuthType = Authtypes.None;
+                    onSuccess?.Invoke("Unlink custom ID successful!");
+                },
                 (error) => onFailure?.Invoke(error)
             );
 #endif

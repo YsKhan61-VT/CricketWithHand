@@ -46,7 +46,7 @@ namespace CricketWithHand.UI
         [SerializeField]
         private UIView _loadingView;
 
-        public bool IsLoggedIn => _authServiceFacade.AuthData.IsLoggedIn;
+        public bool IsLoggedIn => _authServiceFacade.IsLoggedIn;
         public bool IsLinkedInWithGoogle => _authServiceFacade.IsLinkedWithGoogle;
 
         private PlayFabAuthServiceFacade _authServiceFacade = PlayFabAuthServiceFacade.Instance;
