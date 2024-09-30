@@ -12,10 +12,10 @@ namespace CricketWithHand.UI
         Register_LoginUIMediator _registerLoginUIMediator;
 
         [SerializeField]
-        TMP_InputField _email;
+        TMP_InputField _emailInputField;
 
         [SerializeField]
-        TMP_InputField _password;
+        TMP_InputField _passwordInputField;
 
         [SerializeField]
         UIToggle _rememberMeToggle;
@@ -25,7 +25,7 @@ namespace CricketWithHand.UI
             if (!IsLoginCredentialsValid()) return;
 
             LogUI.instance.AddStatusText($"Loging in ...");
-            _registerLoginUIMediator.LoginWithEmailAndPassword(_email.name, _password.name);
+            _registerLoginUIMediator.LoginWithEmailAndPassword(_emailInputField.text, _passwordInputField.text);
         }
 
         public void LoginAsGuest()
@@ -52,19 +52,19 @@ namespace CricketWithHand.UI
 
         public void Reset()
         {
-            _email.text = "";
-            _password.text = "";
+            _emailInputField.text = "";
+            _passwordInputField.text = "";
         }
 
         bool IsLoginCredentialsValid()
         {
-            if (string.IsNullOrEmpty(_email.text))
+            if (string.IsNullOrEmpty(_emailInputField.text))
             {
                 LogUI.instance.AddStatusText("Email address can't be empty!");
                 return false;
             }
 
-            if (string.IsNullOrEmpty(_password.text))
+            if (string.IsNullOrEmpty(_passwordInputField.text))
             {
                 LogUI.instance.AddStatusText("Password can't be empty!");
                 return false;

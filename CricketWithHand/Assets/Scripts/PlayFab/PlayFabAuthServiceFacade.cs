@@ -151,7 +151,6 @@ namespace CricketWithHand.PlayFab
             Action<LoginResult> onSuccess = null,
             Action<PlayFabError> onFailure = null)
         {
-            AuthData.AuthType = Authtypes.EmailAndPassword;
             AuthData.Email = email;
             AuthData.Password = password;
             AuthData.InfoRequestParams = infoRequestParams;
@@ -178,6 +177,7 @@ namespace CricketWithHand.PlayFab
                         // Success
                         (AddUsernamePasswordResult addResult) =>
                         {
+                            AuthData.AuthType = Authtypes.EmailAndPassword;
                             AuthData.PlayFabId = result.PlayFabId;
                             AuthData.SessionTicket = result.SessionTicket;
 
@@ -228,7 +228,6 @@ namespace CricketWithHand.PlayFab
             Action<LoginResult> OnSuccess = null, 
             Action<PlayFabError> OnFailure = null)
         {
-            AuthData.AuthType = Authtypes.EmailAndPassword;
             AuthData.Email = email;
             AuthData.Password = password;
             AuthData.InfoRequestParams = infoRequestParams;
@@ -246,6 +245,7 @@ namespace CricketWithHand.PlayFab
                 // Success
                 (LoginResult result) =>
                 {
+                    AuthData.AuthType = Authtypes.EmailAndPassword;
                     AuthData.PlayFabId = result.PlayFabId;
                     AuthData.SessionTicket = result.SessionTicket;
 

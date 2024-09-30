@@ -10678,7 +10678,7 @@ PrefabInstance:
     - target: {fileID: 9005763974646700084, guid: 6e42ed56fc8f349459f534a49867cfe3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 124.099976
+      value: 124.09985
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -13131,8 +13131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _registerLoginUIMediator: {fileID: 2107564839}
-  _email: {fileID: 682712427}
-  _password: {fileID: 234765194}
+  _emailInputField: {fileID: 682712427}
+  _passwordInputField: {fileID: 234765194}
   _rememberMeToggle: {fileID: 480066381}
 --- !u!1 &1913832527 stripped
 GameObject:
