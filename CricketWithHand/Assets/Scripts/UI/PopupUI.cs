@@ -8,14 +8,13 @@ namespace CricketWithHand.UI
     public class PopupUI : SingletonMonoBehaviour<PopupUI>
     {
         [SerializeField]
-        UIPopup _uiPopup;
+        private UIPopup _uiPopup;
 
         private void Start()
         {
-            _uiPopup.InstantHide();
+            _uiPopup.Hide();
         }
-
-        public void ShowMessage(string title, string message)
+        public void ShowPopup(string title, string message)
         {
             _uiPopup.SetTexts(title, message);
             _uiPopup.Show();

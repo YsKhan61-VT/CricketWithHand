@@ -26,5 +26,7 @@ MonoBehaviour:
       Name: OnLoggedInWithDIsplayName
     - Category: MainMenu
       Name: OnLoggedInWithoutDisplaName
+    - Category: MainMenu
+      Name: OnLogOutSuccess
     - Category: None
       Name: None

@@ -25,6 +25,9 @@ namespace CricketWithHand.UI
         [SerializeField]
         private UnityEvent _onLinkAccountSuccess;
 
+        [SerializeField]
+        private UnityEvent _onLogOutSuccess;
+
         #endregion
 
 
@@ -69,6 +72,11 @@ namespace CricketWithHand.UI
             // _authServiceFacade.Authenticate();
 
             // TryLoginWithRememberedAccount();
+        }
+
+        private void OnDestroy()
+        {
+            LogOut();
         }
 
         private void TryLoginWithRememberedAccount()
@@ -194,16 +202,51 @@ namespace CricketWithHand.UI
 
         public void LogOut()
         {
-            _authServiceFacade.LogOut(
-                (result) => 
-                {
-                    LogUI.instance.AddStatusText(result);
-                },
-                (error) =>
-                {
-                    LogUI.instance.AddStatusText(error);
-                }
-            );
+            if (!_authServiceFacade.IsLoggedIn)
+            {
+                LogUI.instance.AddStatusText("No user logged in!");
+                return;
+            }
+
+            if (_authServiceFacade.AuthData.AuthType == Authtypes.Silent)
+            {
+                ConfirmPopupUI.instance.ShowPopup(
+                    new ConfirmPopupUI.Payload()
+                    {
+                        Title = "WARNING!",
+                        Message = "This is a guest account, if you logout from this, \n " +
+                        "all datas will be lost, and account can't be recovered. \n" +
+                        "Better to link this account before logging out.! \n" +
+                        "Do you still want to logout?",
+                        LeftButtonLabel = "YES",
+                        RightButtonLabel = "NO",
+                        OnLeftButtonClickedCallback = () =>
+                        {
+                            LogOut();
+                        }
+                    }
+                );
+            }
+            else
+            {
+                LogOut();
+            }
+
+
+            void LogOut()
+            {
+                _authServiceFacade.LogOut(
+                    (result) =>
+                    {
+                        LogUI.instance.AddStatusText(result);
+                        _onLogOutSuccess?.Invoke();
+                    },
+                    (error) =>
+                    {
+                        LogUI.instance.AddStatusText(error);
+                    }
+                );
+            }
         }
 
         private void OnPlayFabLoginSuccess(LoginResult result)
@@ -252,7 +295,7 @@ namespace CricketWithHand.UI
 
             string errorReport = error.GenerateErrorReport();
             LogUI.instance.AddStatusText($"Error code: {error.Error} \n Message: {errorReport} \n");
-            PopupUI.instance.ShowMessage($"Error code: {error.Error}", $"Message: {errorReport} \n");
+            PopupUI.instance.ShowPopup($"Error code: {error.Error}", $"Message: {errorReport} \n");
 
             _loadingView.Hide();
         }
@@ -267,7 +310,7 @@ namespace CricketWithHand.UI
         private void OnLinkAccountWithGoogleSuccess()
         {
             _loadingView.Hide();
-            PopupUI.instance.ShowMessage("Link with Google Success", "You have successfully linked your account with google!");
+            PopupUI.instance.ShowPopup("Link with Google Success", "You have successfully linked your account with google!");
             _onLinkAccountSuccess?.Invoke();
         }
     }

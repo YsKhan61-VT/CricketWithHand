@@ -39,14 +39,14 @@ namespace CricketWithHand.UI
             if (string.IsNullOrEmpty(_email.text))
             {
                 LogUI.instance.AddStatusText("Email address can't be empty!");
-                PopupUI.instance.ShowMessage("Registration Error", "Email address can't be empty!");
+                PopupUI.instance.ShowPopup("Registration Error", "Email address can't be empty!");
                 return false;
             }
 
             if (string.IsNullOrEmpty(_password.text))
             {
                 LogUI.instance.AddStatusText("Password can't be empty!");
-                PopupUI.instance.ShowMessage("Registration Error", "Password can't be empty!");
+                PopupUI.instance.ShowPopup("Registration Error", "Password can't be empty!");
                 return false;
             }
 
@@ -54,7 +54,7 @@ namespace CricketWithHand.UI
                 _password.text != _confirmPassword.text)
             {
                 LogUI.instance.AddStatusText("Password doesn't match.!");
-                PopupUI.instance.ShowMessage("Registration Error", "Passwords doesn't match!");
+                PopupUI.instance.ShowPopup("Registration Error", "Passwords doesn't match!");
                 return false;
             }
 

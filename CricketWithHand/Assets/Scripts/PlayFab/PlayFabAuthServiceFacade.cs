@@ -498,7 +498,7 @@ namespace CricketWithHand.PlayFab
                     break;
 
                 case Authtypes.Silent:
-                    // UnlinkSilentAuth(); - We don't want to unlink the guest account from the device, as it should be permanent.
+                    UnlinkSilentAuth();
                     PlayFabClientAPI.ForgetAllCredentials();
                     onSuccess?.Invoke("Logged out of PlayFab!");
                     break;

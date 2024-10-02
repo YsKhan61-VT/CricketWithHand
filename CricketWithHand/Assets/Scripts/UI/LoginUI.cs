@@ -59,14 +59,14 @@ namespace CricketWithHand.UI
             if (string.IsNullOrEmpty(_emailInputField.text))
             {
                 LogUI.instance.AddStatusText("Email address can't be empty!");
-                PopupUI.instance.ShowMessage("Login Error", "Email address can't be empty!");
+                PopupUI.instance.ShowPopup("Login Error", "Email address can't be empty!");
                 return false;
             }
 
             if (string.IsNullOrEmpty(_passwordInputField.text))
             {
                 LogUI.instance.AddStatusText("Password can't be empty!");
-                PopupUI.instance.ShowMessage("Login Error", "Password can't be empty!");
+                PopupUI.instance.ShowPopup("Login Error", "Password can't be empty!");
                 return false;
             }
 
