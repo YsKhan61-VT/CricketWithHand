@@ -65,6 +65,8 @@ MonoBehaviour:
     - Category: LoginView
       Name: Quit
     - Category: ManageAccountView
+      Name: Back
+    - Category: ManageAccountView
       Name: LinkWithGoogle
     - Category: ManageAccountView
       Name: LogOut
