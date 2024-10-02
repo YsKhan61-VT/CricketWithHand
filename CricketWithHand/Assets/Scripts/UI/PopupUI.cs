@@ -12,7 +12,7 @@ namespace CricketWithHand.UI
 
         private void Start()
         {
-            _uiPopup.Hide();
+            _uiPopup.InstantHide();
         }
         public void ShowPopup(string title, string message)
         {
