@@ -30,7 +30,7 @@ namespace CricketWithHand.UI
 
         private void Start()
         {
-            _uiPopup.Hide();
+            _uiPopup.InstantHide();
         }
         public void ShowPopup(Payload payload)
         {
@@ -54,7 +54,7 @@ namespace CricketWithHand.UI
             _leftButton.onClickEvent.RemoveListener(OnLeftButtonClicked);
             _lastSentPayload.OnLeftButtonClickedCallback?.Invoke();
             _uiPopup.Hide();
-            _lastSentPayload.Dispose();
+            _lastSentPayload = null;
         }
 
         void OnRightButtonClicked()
@@ -62,10 +62,10 @@ namespace CricketWithHand.UI
             _rightButton.onClickEvent.RemoveListener(OnRightButtonClicked);
             _lastSentPayload.OnRightButtonClickedCallback?.Invoke();
             _uiPopup.Hide();
-            _lastSentPayload.Dispose();
+            _lastSentPayload = null;
         }
 
-        public class Payload : IDisposable
+        public class Payload
         {
             public string Title;
             public string Message;
@@ -73,11 +73,6 @@ namespace CricketWithHand.UI
             public string RightButtonLabel;
             public Action OnLeftButtonClickedCallback;
             public Action OnRightButtonClickedCallback;
-
-            public void Dispose()
-            {
-                GC.Collect();
-            }
         }
     }
 }
