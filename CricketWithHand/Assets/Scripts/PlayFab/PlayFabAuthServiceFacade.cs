@@ -310,6 +310,13 @@ namespace CricketWithHand.PlayFab
             );
         }
 
+        public void OnAuthenticationTimeOut()
+        {
+            // Force stop google authentication if possible
+            _googleAuth?.SignOut();
+            _googleAuth?.Disconnect();
+        }
+
         public void SetDisplayName(string displayName, 
             Action<string> OnSuccess = null,
             Action<PlayFabError> OnFailure = null)

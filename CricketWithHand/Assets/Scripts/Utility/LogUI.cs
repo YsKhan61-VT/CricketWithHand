@@ -18,7 +18,8 @@ namespace YSK.Utilities
 
         public void AddStatusText(string text)
         {
-            if (_messages.Count >= _maxMessageCount)
+            if (_messages != null && 
+                _messages.Count >= _maxMessageCount)
             {
                 _messages.Dequeue();
             }
