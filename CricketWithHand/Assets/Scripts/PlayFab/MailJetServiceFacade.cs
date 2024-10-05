@@ -4,11 +4,11 @@ using System;
 using UnityEngine;
 using Newtonsoft.Json;
 
+
 namespace CricketWithHand.Authentication
 {
-    public class MailJetServiceFacade : MonoBehaviour
+    public class MailJetServiceFacade
     {
-        [Serializable]
         public class SenderData
         {
             public string ApiKey;                   // YOUR_API_KEY
@@ -29,9 +29,21 @@ namespace CricketWithHand.Authentication
         private readonly HttpClient _httpClient = new HttpClient();
 
         [SerializeField]
-        private SenderData _initData;
+        private SenderData _senderData;
 
-        
+        public MailJetServiceFacade()
+        {
+            _senderData = new SenderData()
+            {
+                ApiKey = "d698093746aee705afcb9b20cbc17f6d",
+                ApiSecret = "9a2fab9d22c8a1d23289731a21b9c518",
+                SenderEmail = "yskhan61@gmail.com",
+                SenderName = "CricketWithHand",
+                Endpoint = "https://api.mailjet.com/v3.1/send"
+            };
+        }
+
+
         public async void SendEmailAsync(
             ReceiverData receiverData,
             Action onSendSuccess,
@@ -43,7 +55,7 @@ namespace CricketWithHand.Authentication
                     {
                         new
                         {
-                            From = new { Email = _initData.SenderEmail, Name = _initData.SenderName },
+                            From = new { Email = _senderData.SenderEmail, Name = _senderData.SenderName },
                             To = new[] { new { Email = receiverData.Email, Name = "User" } },
                             Subject = receiverData.Subject,
                             TextPart = receiverData.Message,
@@ -58,7 +70,7 @@ namespace CricketWithHand.Authentication
             Debug.Log($"JSON Payload: {json}"); // Log the JSON payload for debugging
 
             // Set the API credentials
-            var byteArray = Encoding.ASCII.GetBytes($"{_initData.ApiKey}:{_initData.ApiSecret}");
+            var byteArray = Encoding.ASCII.GetBytes($"{_senderData.ApiKey}:{_senderData.ApiSecret}");
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
             // Create the StringContent
@@ -67,7 +79,7 @@ namespace CricketWithHand.Authentication
             try
             {
                 // Send the POST request
-                HttpResponseMessage response = await _httpClient.PostAsync(_initData.Endpoint, content);
+                HttpResponseMessage response = await _httpClient.PostAsync(_senderData.Endpoint, content);
 
                 // Check for success status code
                 if (response.IsSuccessStatusCode)
@@ -88,58 +100,6 @@ namespace CricketWithHand.Authentication
                 onSendFailed?.Invoke(ex.Message);
             }
         }
+        
     }
 }
-
-
-/*using var client = new HttpClient { BaseAddress = new Uri("https://api.mailjet.com/v3/") };
-
-            // Set the authorization header
-            var byteArray = Encoding.UTF8.GetBytes($"{_initData.ApiKey} : {_initData.ApiSecret}");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-
-            var emailData = new
-            {
-                Messages = new[]
-                {
-                    new
-                    {
-                        From = new { Email = _initData.AdminEmail, Name = _initData.AdminName },
-                        To = new[] { new { Email = receiverData.Email} },
-                        Subject = receiverData.Subject,
-                        TextPart = receiverData.Message,
-                        HTMLPart = $"<h3>{receiverData.Message}</h3>"
-                    }
-                }
-            };
-
-            // Serialize the emailData object to JSON using Newtonsoft.Json
-            var json = JsonConvert.SerializeObject(emailData);
-
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            try
-            {
-                // Send the request
-                var response = await client.PostAsync("send", content);
-
-                // Check if the request was successful
-                if (response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine("Email sent successfully!");
-                    onSendSuccess?.Invoke();
-                }
-                else
-                {
-                    // Read the response content for more details on the error
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Error sending email: {response.StatusCode}");
-                    Console.WriteLine($"Response content: {responseContent}");
-                    onSendFailed?.Invoke($"Code: {response.StatusCode}, Content: {responseContent}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception occurred: {ex.Message}");
-                onSendFailed?.Invoke(ex.Message);
-            }*/
