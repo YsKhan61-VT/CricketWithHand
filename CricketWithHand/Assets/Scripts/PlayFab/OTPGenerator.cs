@@ -5,7 +5,7 @@ namespace CricketWithHand.Authentication
 {
     public class OTPGenerator
     {
-        private const int WAIT_FOR_MINUTES_BEFORE_ALLOW_OTP_RESEND = 2;
+        private const int WAIT_FOR_MINUTES_BEFORE_ALLOW_OTP_RESEND = 1;
         private const int OTP_LENGTH = 6;
 
         private TimeSpan _resendDelay = TimeSpan.FromMinutes(WAIT_FOR_MINUTES_BEFORE_ALLOW_OTP_RESEND);
@@ -44,10 +44,7 @@ namespace CricketWithHand.Authentication
             return timeElapsed >= _resendDelay;
         }
 
-        public int RemainingSecondsToRegenerateOTP()
-        {
-            TimeSpan timeRemaining = _resendDelay - (DateTime.Now - _otpSentTime);
-            return timeRemaining.Seconds;
-        }
+        public TimeSpan RemainingSecondsToRegenerateOTP() =>
+            _resendDelay - (DateTime.Now - _otpSentTime);
     }
 }

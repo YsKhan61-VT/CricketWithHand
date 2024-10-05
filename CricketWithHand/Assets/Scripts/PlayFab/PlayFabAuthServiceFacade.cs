@@ -12,6 +12,7 @@ using System;
 using YSK.Utilities;
 using CricketWithHand.Authentication.Google;
 using Google;
+using TMPro.EditorUtilities;
 
 
 
@@ -41,6 +42,9 @@ namespace CricketWithHand.Authentication
         public const string LOGIN_REMEMBER_KEY = "PlayFabLoginRemember";
         public const string PLAYFAB_REMEMBER_ME_KEY = "PlayFabIdPassGuid";
         public const string PLAYFAB_AUTH_TYPE_KEY = "PlayFabAuthType";
+
+        public const int PASSWORD_MIN_LENGTH = 6;
+        public const int PASSWORD_MAX_LENGTH = 15;
 
         #endregion
 
@@ -577,6 +581,13 @@ namespace CricketWithHand.Authentication
                 (error) => onFailure?.Invoke(error)
             );
 #endif
+        }
+
+        public bool IsPasswordValid(string password)
+        {
+            char[] chars = password.ToCharArray();
+            return chars.Length >= PlayFabAuthServiceData.PASSWORD_MIN_LENGTH &&
+                chars.Length <= PlayFabAuthServiceData.PASSWORD_MAX_LENGTH;
         }
 
         private void OnSignInSuccessWithGoogle(GoogleSignInUser user, 
