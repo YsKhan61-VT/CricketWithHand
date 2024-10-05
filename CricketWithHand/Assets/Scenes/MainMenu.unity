@@ -4771,6 +4771,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Toggle - RememberMe
       objectReference: {fileID: 0}
+    - target: {fileID: 5112310715114257559, guid: 4c41ffb4863ff674c843b5784421392c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5112310715114257560, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4804,12 +4809,12 @@ PrefabInstance:
     - target: {fileID: 5112310715114257560, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 312.83002
       objectReference: {fileID: 0}
     - target: {fileID: 5112310715114257560, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 5112310715114257560, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
@@ -5019,22 +5024,22 @@ PrefabInstance:
     - target: {fileID: 5112310715119132530, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5112310715119132530, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5112310715119132530, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 5112310715119132530, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 5112310715119132530, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
@@ -5054,12 +5059,12 @@ PrefabInstance:
     - target: {fileID: 5112310715119132530, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 5112310715119132530, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -34
       objectReference: {fileID: 0}
     - target: {fileID: 5112310715119132531, guid: 4c41ffb4863ff674c843b5784421392c,
         type: 3}
