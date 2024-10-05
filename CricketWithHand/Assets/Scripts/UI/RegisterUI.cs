@@ -32,10 +32,10 @@ namespace CricketWithHand.UI
 
         public void RegisterUsingEmailAndPassword()
         {
-            if (!IsRegistrationCredentialsValid()) return;
+            // if (!IsRegistrationCredentialsValid()) return;
 
-            LogUI.instance.AddStatusText($"Registering ...");
-            _registerLoginUIMediator.RegisterWithEmailAndPassword(_email.text, _password.text, _confirmPassword.text);
+            // LogUI.instance.AddStatusText($"Registering ...");
+            // _registerLoginUIMediator.RegisterWithEmailAndPassword(_email.text, _password.text, _confirmPassword.text);
 
             SendTestMail();
         }

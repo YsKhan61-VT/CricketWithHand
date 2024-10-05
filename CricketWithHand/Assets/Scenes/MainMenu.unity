@@ -8081,11 +8081,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initData:
-    ApiKey: d698093746aee705afcb9b20cbc17f6d
-    ApiSecret: 99d61cb423562b657f9544770678b06a
-    AdminEmail: yskhan61@gmail.com
-    AdminName: CricketWithHand
-    ApiUrl: https://api.mailjet.com/v3/send
+    ApiKey: 55c22237dd502c94bbd0c76c377c409a
+    ApiSecret: 218575f5765e1a932353baac10c0afda
+    SenderEmail: yskhan61@gmail.com
+    SenderName: Yash
+    Endpoint: https://api.mailjet.com/v3.1/send
 --- !u!1001 &1274448361
 PrefabInstance:
   m_ObjectHideFlags: 0
