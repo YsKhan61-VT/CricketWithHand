@@ -3993,6 +3993,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _registerLoginUIMediator: {fileID: 2107564839}
+  _mailJetServiceFacade: {fileID: 1269680808}
   _email: {fileID: 465771093}
   _password: {fileID: 37610659}
   _confirmPassword: {fileID: 705580205}
@@ -8035,6 +8036,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1269680806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1269680807}
+  - component: {fileID: 1269680808}
+  m_Layer: 0
+  m_Name: MaiJetAPIServiceFacade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1269680807
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269680806}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1269680808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269680806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2125bbb75f222b468440afadabf29b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initData:
+    ApiKey: d698093746aee705afcb9b20cbc17f6d
+    ApiSecret: 99d61cb423562b657f9544770678b06a
+    AdminEmail: yskhan61@gmail.com
+    AdminName: CricketWithHand
+    ApiUrl: https://api.mailjet.com/v3/send
 --- !u!1001 &1274448361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14729,5 +14780,6 @@ SceneRoots:
   - {fileID: 1358507621}
   - {fileID: 1241866813}
   - {fileID: 2107564836}
+  - {fileID: 1269680807}
   - {fileID: 570997755}
   - {fileID: 1775805901}

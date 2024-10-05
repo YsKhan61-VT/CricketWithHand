@@ -12,7 +12,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 
 
-namespace CricketWithHand.PlayFab
+namespace CricketWithHand.Authentication
 {
     public static class PlayFabManager
     {

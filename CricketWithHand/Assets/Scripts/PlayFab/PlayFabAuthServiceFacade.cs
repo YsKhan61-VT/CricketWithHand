@@ -10,12 +10,12 @@ using PlayFab.ClientModels;
 using LoginResult = PlayFab.ClientModels.LoginResult;
 using System;
 using YSK.Utilities;
-using CricketWithHand.PlayFab.Google;
+using CricketWithHand.Authentication.Google;
 using Google;
 
 
 
-namespace CricketWithHand.PlayFab
+namespace CricketWithHand.Authentication
 {
     /// <summary>
     /// Supported Authentication types

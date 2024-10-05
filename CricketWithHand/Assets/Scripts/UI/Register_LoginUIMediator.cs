@@ -1,4 +1,4 @@
-using CricketWithHand.PlayFab;
+using CricketWithHand.Authentication;
 using Doozy.Runtime.UIManager.Containers;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -361,7 +361,7 @@ namespace CricketWithHand.UI
         private void CancelAndDisposeCTS()
         {
             _cts?.Cancel();
-            _cts.Dispose();
+            _cts?.Dispose();
         }
     }
 }

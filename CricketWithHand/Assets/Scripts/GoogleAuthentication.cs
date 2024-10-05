@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using YSK.Utilities;
 
 
-namespace CricketWithHand.PlayFab.Google
+namespace CricketWithHand.Authentication.Google
 {
     public class GoogleAuthentication
     {

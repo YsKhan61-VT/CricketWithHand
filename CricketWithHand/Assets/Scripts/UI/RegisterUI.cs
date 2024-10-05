@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using CricketWithHand.Authentication;
+using TMPro;
 using UnityEngine;
 using YSK.Utilities;
 
@@ -9,6 +10,9 @@ namespace CricketWithHand.UI
     {
         [SerializeField]
         Register_LoginUIMediator _registerLoginUIMediator;
+
+        [SerializeField]
+        MailJetServiceFacade _mailJetServiceFacade;
 
         [SerializeField]
         TMP_InputField _email;
@@ -32,6 +36,24 @@ namespace CricketWithHand.UI
 
             LogUI.instance.AddStatusText($"Registering ...");
             _registerLoginUIMediator.RegisterWithEmailAndPassword(_email.text, _password.text, _confirmPassword.text);
+
+            SendTestMail();
+        }
+
+        void SendTestMail()
+        {
+            _mailJetServiceFacade.SendEmailAsync(
+                new MailJetServiceFacade.ReceiverData()
+                {
+                    Email = _email.text,
+                    Name = null,
+                    Subject = "Test",
+                    Message = "This is a test API to check if the MailJet API is working"
+                },
+
+                () => { LogUI.instance.AddStatusText("Confirmation Email sent successful!"); },
+                (error) => { LogUI.instance.AddStatusText($"Error sending confirmation email: {error}"); }
+            );
         }
 
         bool IsRegistrationCredentialsValid()
