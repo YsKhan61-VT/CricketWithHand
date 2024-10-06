@@ -1,5 +1,4 @@
 using CricketWithHand.Authentication;
-using Doozy.Runtime.UIManager.Containers;
 using PlayFab;
 using PlayFab.ClientModels;
 using System;
@@ -70,9 +69,6 @@ namespace CricketWithHand.UI
 
             _loginUI.ToggleRememberMeUI(_authServiceFacade.AuthData.RememberMe);
 
-            // _authServiceFacade.InfoRequestParams = InfoRequestParams;
-            // _authServiceFacade.Authenticate();
-
             TryLoginWithRememberedAccount();
         }
 
@@ -82,14 +78,31 @@ namespace CricketWithHand.UI
             LogOut();
         }
 
-        private void TryLoginWithRememberedAccount()
+        private async void TryLoginWithRememberedAccount()
         {
             if (!_authServiceFacade.AuthData.RememberMe)
             {
                 return;
             }
 
-            _authServiceFacade.LoginRememberedAccount();
+            _loadingUI.Show();
+
+            // Let other scripts and Doozy get initialized
+            await Task.Delay(500);      
+
+            _authServiceFacade.LoginRememberedAccount(
+                _infoRequestParams,
+
+                (result) =>
+                {
+                    OnPlayFabLoginSuccess(result);
+                },
+
+                (error) =>
+                {
+                    OnPlayFabError(error);
+                }
+            );
         }
 
         public void RegisterWithEmailAndPassword(string email, string password, string confirmPassword, bool rememberMe)

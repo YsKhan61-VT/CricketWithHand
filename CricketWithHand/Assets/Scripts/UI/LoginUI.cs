@@ -2,7 +2,6 @@
 using TMPro;
 using UnityEngine;
 using YSK.Utilities;
-using static Fusion.Editor.FusionHubWindow;
 
 
 namespace CricketWithHand.UI
