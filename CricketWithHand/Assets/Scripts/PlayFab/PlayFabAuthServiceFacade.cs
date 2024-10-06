@@ -12,7 +12,6 @@ using System;
 using YSK.Utilities;
 using CricketWithHand.Authentication.Google;
 using Google;
-using TMPro.EditorUtilities;
 
 
 
@@ -530,7 +529,6 @@ namespace CricketWithHand.Authentication
             Action<string> onSuccess = null,
             Action<PlayFabError> onFailure = null)
         {
-            LogUI.instance.AddStatusText($"Unlinking device ID...!");
 
 #if UNITY_ANDROID && !UNITY_EDITOR
             //Get the device id from native android
