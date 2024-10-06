@@ -23,9 +23,6 @@ namespace CricketWithHand.UI
         private UnityEvent _onLoggedInWithoutDisplayName;
 
         [SerializeField]
-        private UnityEvent _onNoAccountRemembered;
-
-        [SerializeField]
         private UnityEvent _onLinkAccountSuccess;
 
         [SerializeField]
@@ -71,12 +68,12 @@ namespace CricketWithHand.UI
                 _authServiceFacade.ClearCache();
             }
 
-            _loginUI.SetRememberMeToRememberedState(_authServiceFacade.AuthData.RememberMe);
+            _loginUI.ToggleRememberMeUI(_authServiceFacade.AuthData.RememberMe);
 
             // _authServiceFacade.InfoRequestParams = InfoRequestParams;
             // _authServiceFacade.Authenticate();
 
-            // TryLoginWithRememberedAccount();
+            TryLoginWithRememberedAccount();
         }
 
         private void OnDisable()
@@ -89,20 +86,20 @@ namespace CricketWithHand.UI
         {
             if (!_authServiceFacade.AuthData.RememberMe)
             {
-                _onNoAccountRemembered?.Invoke();
                 return;
             }
 
             _authServiceFacade.LoginRememberedAccount();
         }
 
-        public void RegisterWithEmailAndPassword(string email, string password, string confirmPassword)
+        public void RegisterWithEmailAndPassword(string email, string password, string confirmPassword, bool rememberMe)
         {
             _loadingUI.Show();
             _authServiceFacade.RegisterWithEmailAndPassword(
                 email, 
                 password, 
                 _infoRequestParams,
+                rememberMe,
                 (result) =>
                 {
                     OnPlayFabLoginSuccess(result);
@@ -114,17 +111,20 @@ namespace CricketWithHand.UI
             );
         }
 
-        public void LoginWithEmailAndPassword(string email, string password)
+        public void LoginWithEmailAndPassword(string email, string password, bool rememberMe)
         {
             _loadingUI.Show();
             _authServiceFacade.AuthenticateEmailPassword(
                 email, 
                 password, 
                 _infoRequestParams,
+                rememberMe,
+
                 (result) =>
                 {
                     OnPlayFabLoginSuccess(result);
                 },
+
                 (error) =>
                 {
                     OnPlayFabError(error);
@@ -148,7 +148,7 @@ namespace CricketWithHand.UI
             );
         }
 
-        public void LoginWithGoogleAccount()
+        public void LoginWithGoogleAccount(bool rememberMe)
         {
             LogUI.instance.AddStatusText("Logging in with google account...");
 
@@ -158,6 +158,7 @@ namespace CricketWithHand.UI
             _authServiceFacade.AuthenticateWithGoogle(
                 _googleWebClientId, 
                 _infoRequestParams,
+                rememberMe,
                 (result) =>
                 {
                     LogUI.instance.AddStatusText("PlayFab login with google success!");
@@ -205,14 +206,6 @@ namespace CricketWithHand.UI
                 (error) => OnPlayFabError(error)
             );
         }
-
-        /// <summary>
-        /// Rather than settting like this, directly set this bool value 
-        /// while calling actual authentication methods
-        /// </summary>
-        /// <param name="result"></param>
-        /*public void ToggleRememberMe(bool toggle) =>
-            _authServiceFacade.AuthData.RememberMe = toggle;*/
 
         public void LogOut()
         {

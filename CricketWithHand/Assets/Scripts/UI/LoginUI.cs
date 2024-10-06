@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using YSK.Utilities;
+using static Fusion.Editor.FusionHubWindow;
 
 
 namespace CricketWithHand.UI
@@ -19,14 +20,16 @@ namespace CricketWithHand.UI
 
         [SerializeField]
         UIToggle _rememberMeToggle;
-        public bool RememberMe => _rememberMeToggle.isOn;
 
         public void LoginWithEmailAndPassword()
         {
             if (!IsLoginCredentialsValid()) return;
 
             LogUI.instance.AddStatusText($"Loging in ...");
-            _registerLoginUIMediator.LoginWithEmailAndPassword(_emailInputField.text, _passwordInputField.text);
+            _registerLoginUIMediator.LoginWithEmailAndPassword(
+                _emailInputField.text, 
+                _passwordInputField.text,
+                _rememberMeToggle.isOn);
         }
 
         public void LoginAsGuest()
@@ -37,7 +40,7 @@ namespace CricketWithHand.UI
 
         public void LoginWithGoogle()
         {
-            _registerLoginUIMediator.LoginWithGoogleAccount();
+            _registerLoginUIMediator.LoginWithGoogleAccount(_rememberMeToggle.isOn);
         }
 
         public void LoginWithFacebook()
@@ -45,8 +48,8 @@ namespace CricketWithHand.UI
 
         }
 
-        public void SetRememberMeToRememberedState(bool state) =>
-            _rememberMeToggle.isOn = state;
+        public void ToggleRememberMeUI(bool value) =>
+            _rememberMeToggle.isOn = value;
 
         public void Reset()
         {

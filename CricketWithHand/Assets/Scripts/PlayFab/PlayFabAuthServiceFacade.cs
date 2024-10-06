@@ -9,7 +9,6 @@ using PlayFab;
 using PlayFab.ClientModels;
 using LoginResult = PlayFab.ClientModels.LoginResult;
 using System;
-using YSK.Utilities;
 using CricketWithHand.Authentication.Google;
 using Google;
 
@@ -38,9 +37,9 @@ namespace CricketWithHand.Authentication
     {
         #region Constants
 
-        public const string LOGIN_REMEMBER_KEY = "PlayFabLoginRemember";
-        public const string PLAYFAB_REMEMBER_ME_KEY = "PlayFabIdPassGuid";
-        public const string PLAYFAB_AUTH_TYPE_KEY = "PlayFabAuthType";
+        public const string REMEMBER_ME_TOGGLE_KEY = "RememberMe";
+        public const string REMEMBER_ME_GUID_KEY = "RememberMeGuid";
+        public const string AUTH_TYPE_KEY = "AuthenticationType";
 
         public const int PASSWORD_MIN_LENGTH = 6;
         public const int PASSWORD_MAX_LENGTH = 15;
@@ -67,11 +66,11 @@ namespace CricketWithHand.Authentication
         {
             get
             {
-                return PlayerPrefs.GetInt(LOGIN_REMEMBER_KEY, 0) != 0;
+                return PlayerPrefs.GetInt(REMEMBER_ME_TOGGLE_KEY, 0) != 0;
             }
             set
             {
-                PlayerPrefs.SetInt(LOGIN_REMEMBER_KEY, value ? 1 : 0);
+                PlayerPrefs.SetInt(REMEMBER_ME_TOGGLE_KEY, value ? 1 : 0);
             }
         }
 
@@ -82,11 +81,11 @@ namespace CricketWithHand.Authentication
         {
             get
             {
-                return (Authtypes)PlayerPrefs.GetInt(PLAYFAB_AUTH_TYPE_KEY, 0);
+                return (Authtypes)PlayerPrefs.GetInt(AUTH_TYPE_KEY, 0);
             }
             set
             {
-                PlayerPrefs.SetInt(PLAYFAB_AUTH_TYPE_KEY, (int)value);
+                PlayerPrefs.SetInt(AUTH_TYPE_KEY, (int)value);
             }
         }
 
@@ -94,16 +93,16 @@ namespace CricketWithHand.Authentication
         /// Generated Remember Me ID
         /// Pass Null for a value to have one auto-generated.
         /// </summary>
-        public string RememberMeId
+        public string CustomGUID
         {
             get
             {
-                return PlayerPrefs.GetString(PLAYFAB_REMEMBER_ME_KEY, "");
+                return PlayerPrefs.GetString(REMEMBER_ME_GUID_KEY, "");
             }
             set
             {
                 var guid = value ?? Guid.NewGuid().ToString();
-                PlayerPrefs.SetString(PLAYFAB_REMEMBER_ME_KEY, guid);
+                PlayerPrefs.SetString(REMEMBER_ME_GUID_KEY, guid);
             }
         }
     }
@@ -137,9 +136,9 @@ namespace CricketWithHand.Authentication
         {
             AuthData.AuthType = Authtypes.None;
 
-            PlayerPrefs.DeleteKey(PlayFabAuthServiceData.LOGIN_REMEMBER_KEY);
-            PlayerPrefs.DeleteKey(PlayFabAuthServiceData.PLAYFAB_REMEMBER_ME_KEY);
-            PlayerPrefs.DeleteKey(PlayFabAuthServiceData.PLAYFAB_AUTH_TYPE_KEY);
+            PlayerPrefs.DeleteKey(PlayFabAuthServiceData.REMEMBER_ME_TOGGLE_KEY);
+            PlayerPrefs.DeleteKey(PlayFabAuthServiceData.REMEMBER_ME_GUID_KEY);
+            PlayerPrefs.DeleteKey(PlayFabAuthServiceData.AUTH_TYPE_KEY);
         }
 
 
@@ -151,12 +150,14 @@ namespace CricketWithHand.Authentication
             string email,
             string password,
             GetPlayerCombinedInfoRequestParams infoRequestParams,
+            bool rememberMe,
             Action<LoginResult> onSuccess = null,
             Action<PlayFabError> onFailure = null)
         {
             AuthData.Email = email;
             AuthData.Password = password;
             AuthData.InfoRequestParams = infoRequestParams;
+            AuthData.RememberMe = rememberMe;
 
             // Any time we attempt to register a player, first silently authenticate the player.
             // This will retain the players True Origination (Android, iOS, Desktop)
@@ -185,24 +186,11 @@ namespace CricketWithHand.Authentication
                             AuthData.SessionTicket = result.SessionTicket;
 
                             // Need to think of this when we will configure Remember me
-                            /*if (AuthData.RememberMe)
+                            if (AuthData.RememberMe)
                             {
-                                AuthData.RememberMeId = Guid.NewGuid().ToString();
+                                LinkWithCustomID();
+                            }
 
-                                PlayFabClientAPI.LinkCustomID(
-                                    new LinkCustomIDRequest()
-                                    {
-                                        CustomId = AuthData.RememberMeId,
-                                        ForceLink = AuthData.ForceLink
-                                    },
-                                    // success
-                                    null,
-                                    // error
-                                    null
-                                    );
-                            }*/
-
-                            AuthData.AuthType = Authtypes.EmailAndPassword;
                             onSuccess?.Invoke(result);
                         },
 
@@ -230,12 +218,14 @@ namespace CricketWithHand.Authentication
             string email,
             string password,
             GetPlayerCombinedInfoRequestParams infoRequestParams,
+            bool rememberMe,
             Action<LoginResult> OnSuccess = null, 
             Action<PlayFabError> OnFailure = null)
         {
             AuthData.Email = email;
             AuthData.Password = password;
             AuthData.InfoRequestParams = infoRequestParams;
+            AuthData.RememberMe = rememberMe;
 
             // We have not opted for remember me in a previous session, so now we have to login the user with email & password.
             PlayFabClientAPI.LoginWithEmailAddress(
@@ -256,22 +246,10 @@ namespace CricketWithHand.Authentication
 
                     // Note: At this point, they already have an account with PlayFab using a Username (email) & Password
                     // If RememberMe is checked, then generate a new Guid for Login with CustomId.
-                    /*if (AuthData.RememberMe)
+                    if (AuthData.RememberMe)
                     {
-                        AuthData.RememberMeId = Guid.NewGuid().ToString();
-                        AuthData.AuthType = Authtypes.EmailAndPassword;
-
-                        // Fire and forget, but link a custom ID to this PlayFab Account.
-                        PlayFabClientAPI.LinkCustomID(
-                            new LinkCustomIDRequest
-                            {
-                                CustomId = AuthData.RememberMeId,
-                                ForceLink = AuthData.ForceLink
-                            },
-                            null,   // Success callback
-                            null    // Failure callback
-                            );
-                    }*/
+                        LinkWithCustomID();
+                    }
 
                     OnSuccess?.Invoke(result);
                 },
@@ -286,10 +264,12 @@ namespace CricketWithHand.Authentication
         public void AuthenticateWithGoogle(
             string webClientId,
             GetPlayerCombinedInfoRequestParams infoRequestParams,
+            bool rememberMe,
             Action<LoginResult> onSuccess = null,
             Action<PlayFabError> onFailure = null)
         {
             AuthData.InfoRequestParams = infoRequestParams;
+            AuthData.RememberMe = rememberMe;
             _googleAuth ??= new();
             _googleAuth.SignInAsync(
                 webClientId, 
@@ -346,7 +326,7 @@ namespace CricketWithHand.Authentication
         public void LoginRememberedAccount(Action<LoginResult> onSuccess = null, Action<PlayFabError> onFailure = null)
         {
             //Check if the users has opted to be remembered.
-            if (AuthData.RememberMe && !string.IsNullOrEmpty(AuthData.RememberMeId))
+            if (AuthData.RememberMe && !string.IsNullOrEmpty(AuthData.CustomGUID))
             {
                 // If the user is being remembered, then log them in with a customid that was 
                 // generated by the RememberMeId property
@@ -354,7 +334,7 @@ namespace CricketWithHand.Authentication
                     new LoginWithCustomIDRequest()
                     {
                         TitleId = PlayFabSettings.TitleId,
-                        CustomId = AuthData.RememberMeId,
+                        CustomId = AuthData.CustomGUID,
                         CreateAccount = true,
                         InfoRequestParameters = AuthData.InfoRequestParams
                     },
@@ -605,6 +585,12 @@ namespace CricketWithHand.Authentication
                 (result) =>
                 {
                     AuthData.AuthType = Authtypes.GooglePlay;
+
+                    if (AuthData.RememberMe)
+                    {
+                        LinkWithCustomID();
+                    }
+
                     onSuccess?.Invoke(result);
                 },
 
@@ -658,6 +644,25 @@ namespace CricketWithHand.Authentication
                     );
                     break;
             }
+        }
+
+        private void LinkWithCustomID(
+            Action<LinkCustomIDResult> onSuccess = null,
+            Action<PlayFabError> onFailure = null)
+        {
+            AuthData.CustomGUID = Guid.NewGuid().ToString();
+
+            PlayFabClientAPI.LinkCustomID(
+                new LinkCustomIDRequest()
+                {
+                    CustomId = AuthData.CustomGUID,
+                    ForceLink = AuthData.ForceLink
+                },
+                // success
+                (result) => onSuccess?.Invoke(result),
+                // error
+                (error) => onFailure?.Invoke(error)
+            );
         }
     }
 }

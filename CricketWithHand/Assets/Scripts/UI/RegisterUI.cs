@@ -29,6 +29,9 @@ namespace CricketWithHand.UI
         private TMP_InputField _confirmPassword;
 
         [SerializeField]
+        UIToggle _rememberMeToggle;
+
+        [SerializeField]
         private CanvasGroup _otpPanel;
 
         [SerializeField]
@@ -115,7 +118,7 @@ namespace CricketWithHand.UI
             HideOTPPanel();
 
             _logUI.AddStatusText($"Registering ...");
-            _registerLoginUIMediator.RegisterWithEmailAndPassword(_email.text, _password.text, _confirmPassword.text);
+            _registerLoginUIMediator.RegisterWithEmailAndPassword(_email.text, _password.text, _confirmPassword.text, _rememberMeToggle.isOn);
         }
 
         public void HideOTPPanel()
