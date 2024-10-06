@@ -13,8 +13,6 @@ namespace CricketWithHand.UI
 {
     public class RegisterUI : MonoBehaviour
     {
-        
-
         [SerializeField]
         private Register_LoginUIMediator _registerLoginUIMediator;
 
@@ -45,6 +43,8 @@ namespace CricketWithHand.UI
         private OTPGenerator _otpGenerator;
         private PlayFabAuthServiceFacade _playFabAuthServiceFacade;
         private MailJetServiceFacade _mailServiceFacade;
+        private PopupUI _popupUI;
+        private LogUI _logUI;
         private CancellationTokenSource _cts;
 
         private void Start()
@@ -52,6 +52,8 @@ namespace CricketWithHand.UI
             _otpGenerator = new();
             _mailServiceFacade = new();
             _playFabAuthServiceFacade = PlayFabAuthServiceFacade.Instance;
+            _popupUI = PopupUI.instance;
+            _logUI = LogUI.instance;
 
             HideOTPPanel();
 
@@ -84,7 +86,7 @@ namespace CricketWithHand.UI
 
                 () =>
                 {
-                    LogUI.instance.AddStatusText("Confirmation Email sent successful!");
+                    _logUI.AddStatusText("Confirmation Email sent successful!");
                     _loadingUI.Hide();
                     ShowOTPPanel();
 
@@ -93,8 +95,8 @@ namespace CricketWithHand.UI
 
                 (error) =>
                 {
-                    LogUI.instance.AddStatusText($"Error verifying Email address!: {error}");
-                    PopupUI.instance.ShowPopup("Error verifying Email address!", "Please try again!");
+                    _logUI.AddStatusText($"Error verifying Email address!: {error}");
+                    _popupUI.ShowPopup("Error verifying Email address!", "Please try again!");
                 }
             );
         }
@@ -105,14 +107,14 @@ namespace CricketWithHand.UI
 
             if (inputOTP != _otpGenerator.GeneratedOTP)
             {
-                LogUI.instance.AddStatusText("OTP not matching!");
-                PopupUI.instance.ShowPopup("OTP NOT MATCHING", "Please make sure to type the OTP correctly");
+                _logUI.AddStatusText("OTP not matching!");
+                _popupUI.ShowPopup("OTP NOT MATCHING", "Please make sure to type the OTP correctly");
                 return;
             }
 
             HideOTPPanel();
 
-            LogUI.instance.AddStatusText($"Registering ...");
+            _logUI.AddStatusText($"Registering ...");
             _registerLoginUIMediator.RegisterWithEmailAndPassword(_email.text, _password.text, _confirmPassword.text);
         }
 
@@ -164,7 +166,7 @@ namespace CricketWithHand.UI
             }
             catch (TaskCanceledException e)
             {
-                LogUI.instance.AddStatusText(e.ToString());
+                _logUI.AddStatusText(e.ToString());
             }
         }
 
@@ -196,34 +198,34 @@ namespace CricketWithHand.UI
         {
             if (string.IsNullOrEmpty(_email.text))
             {
-                LogUI.instance.AddStatusText("Email address can't be empty!");
-                PopupUI.instance.ShowPopup("Registration Error", "Email address can't be empty!");
+                _logUI.AddStatusText("Email address can't be empty!");
+                _popupUI.ShowPopup("Registration Error", "Email address can't be empty!");
                 return false;
             }
 
             if (string.IsNullOrEmpty(_password.text))
             {
-                LogUI.instance.AddStatusText("Password can't be empty!");
-                PopupUI.instance.ShowPopup("Invalid Password", "Password can't be empty!");
+                _logUI.AddStatusText("Password can't be empty!");
+                _popupUI.ShowPopup("Invalid Password", "Password can't be empty!");
                 return false;
             }
 
             if (!_playFabAuthServiceFacade.IsPasswordValid(_password.text))
             {
-                LogUI.instance.AddStatusText("Password should contain in between 6 to 15 characters!");
-                PopupUI.instance.ShowPopup("Invalid Password", "Password should contain in between 6 to 15 characters!");
+                _logUI.AddStatusText("Password should contain in between 6 to 15 characters!");
+                _popupUI.ShowPopup("Invalid Password", "Password should contain in between 6 to 15 characters!");
                 return false;
             }
 
             if (string.IsNullOrEmpty(_confirmPassword.text) ||
                 _password.text != _confirmPassword.text)
             {
-                LogUI.instance.AddStatusText("Password doesn't match.!");
-                PopupUI.instance.ShowPopup("Invalid Password", "Passwords doesn't match!");
+                _logUI.AddStatusText("Password doesn't match.!");
+                _popupUI.ShowPopup("Invalid Password", "Passwords doesn't match!");
                 return false;
             }
 
-            LogUI.instance.AddStatusText($"Credentials valid: {_email.text}, {_password.text}");
+            _logUI.AddStatusText($"Credentials valid: {_email.text}, {_password.text}");
             return true;
         }
     }
