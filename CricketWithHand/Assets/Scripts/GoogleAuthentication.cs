@@ -1,8 +1,6 @@
 using Google;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using YSK.Utilities;
 
 
 namespace CricketWithHand.Authentication.Google
@@ -49,8 +47,6 @@ namespace CricketWithHand.Authentication.Google
                 UseGameSignIn = false
             };
 
-            LogUI.instance.AddStatusText("Calling SignIn Silently");
-
             try
             {
                 GoogleSignInUser user = await GoogleSignIn.DefaultInstance.SignInSilently();
@@ -59,7 +55,6 @@ namespace CricketWithHand.Authentication.Google
             }
             catch (Exception ex)
             {
-                LogUI.instance.AddStatusText("Sign in failed: " + ex.Message);
                 onFailure?.Invoke(ex);
             }
         }
@@ -77,8 +72,6 @@ namespace CricketWithHand.Authentication.Google
                 UseGameSignIn = true,
             };
 
-            LogUI.instance.AddStatusText("Calling Games SignIn");
-
             try
             {
                 GoogleSignInUser user = await GoogleSignIn.DefaultInstance.SignIn();
@@ -87,7 +80,6 @@ namespace CricketWithHand.Authentication.Google
             }
             catch (Exception ex)
             {
-                LogUI.instance.AddStatusText("Sign in failed: " + ex.Message);
                 onFailure?.Invoke(ex);
             }
         }
@@ -96,7 +88,6 @@ namespace CricketWithHand.Authentication.Google
             Action<string> onSuccess = null,
             Action<string> onFailure = null)
         {
-            LogUI.instance.AddStatusText("Calling sign out google account!");
             Task.Run(() =>
             {
                 GoogleSignIn.DefaultInstance.SignOut();
@@ -119,7 +110,6 @@ namespace CricketWithHand.Authentication.Google
 
         public void Disconnect()
         {
-            LogUI.instance.AddStatusText("Calling Disconnect");
             GoogleSignIn.DefaultInstance.Disconnect();
         }
     }
