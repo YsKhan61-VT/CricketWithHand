@@ -2,18 +2,18 @@
 {
     public class OtherBattingState : GameState
     {
-        public override GameStateCategory StateCategory { get; } = GameStateCategory.Other_Batting;
+        internal override GameStateCategory StateCategory { get; } = GameStateCategory.Other_Batting;
 
         private GameplayUIMediator _gameplayUIMediator;
 
-        public OtherBattingState(
+        internal OtherBattingState(
             GameStateManager stateManager, 
             GameplayUIMediator gameplayUIMediator) : base(stateManager)
         {
             _gameplayUIMediator = gameplayUIMediator;
         }
 
-        public override void Enter()
+        internal override void Enter()
         {
             StateManager.OtherStartedBat = true;
             StateManager.OnOtherBattingStateStarted?.Invoke();

@@ -12,6 +12,9 @@ namespace CricketWithHand.Gameplay
         private GameConfigSO _gameConfig;
 
         [SerializeField]
+        private BatsmanDataContainerSO _batsmanOfFirstHalf;
+
+        [SerializeField]
         private UnityEvent OnOwnerOwnToss;
 
         [SerializeField]
@@ -19,9 +22,6 @@ namespace CricketWithHand.Gameplay
 
         [SerializeField]
         private UnityEvent OnPublishTossResult;
-
-        [SerializeField]
-        private TurnController _turnController;
 
         [SerializeField]
         private TossResultUI _tossResultUI;
@@ -52,13 +52,15 @@ namespace CricketWithHand.Gameplay
             {
                 // either owner choose to bat, or non-owner choose to ball,
                 // in both cases, owner have to bat.
-                _turnController.ChangeBatsman(true);
+
+                _batsmanOfFirstHalf.UpdateData(PlayerType.OWNER);
                 _tossResultUI.ShowBatOrBallResult(true);
             }
             else
             {
                 // otherwise, owner have to ball.
-                _turnController.ChangeBatsman(false);
+
+                _batsmanOfFirstHalf.UpdateData(PlayerType.OTHER);
                 _tossResultUI.ShowBatOrBallResult(false);
             }
 

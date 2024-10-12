@@ -1,18 +1,28 @@
 ﻿namespace CricketWithHand.Gameplay
 {
+    public enum GameStateCategory
+    {
+        Owner_Batting,
+        FirstHalf,
+        HalfTime,
+        SecondHalf,
+        Other_Batting,
+        GameEnd
+    }
+
     public abstract class GameState
     {
-        public abstract GameStateCategory StateCategory { get; }
-        public GameStateManager StateManager { get; private set; }
+        internal abstract GameStateCategory StateCategory { get; }
+        protected GameStateManager StateManager { get; private set; }
 
-        public GameState(GameStateManager stateManager)
+        internal GameState(GameStateManager stateManager)
         {
             StateManager = stateManager;
         }
 
-        public virtual void Enter() { }
-        public virtual void Update() { }
-        public virtual void Exit() { }
+        internal virtual void Enter() { }
+        internal virtual void Update() { }
+        internal virtual void Exit() { }
     }
 
 }

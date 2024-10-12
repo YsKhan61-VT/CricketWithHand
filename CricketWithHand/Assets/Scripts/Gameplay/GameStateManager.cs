@@ -4,16 +4,10 @@ using UnityEngine.Events;
 
 namespace CricketWithHand.Gameplay
 {
-    public enum GameStateCategory
-    {
-        Owner_Batting,
-        HalfTime,
-        Other_Batting,
-        GameEnd
-    }
-
     public class GameStateManager : MonoBehaviour
     {
+        #region Events
+
         /// <summary>
         /// Invoked when the Owner starts batting
         /// </summary>
@@ -34,6 +28,8 @@ namespace CricketWithHand.Gameplay
         /// </summary>
         public UnityEvent OnGameEnds;
 
+        #endregion
+
         [SerializeField]
         GameplayUIMediator _gameplayUIMediator;
 
@@ -45,16 +41,27 @@ namespace CricketWithHand.Gameplay
         public bool OtherStartedBat { get; set; } = false;
 
         private GameState _ownerBattingState;
+        private GameState _firstHalfState;
         private GameState _halfTimeState;
+        private GameState _secondHalfState;
         private GameState _otherBattingState;
         private GameState _gameEndState;
 
         private void Awake()
         {
             _ownerBattingState = new OwnerBattingState(this, _gameplayUIMediator);
+            _firstHalfState = new FirstHalfState(this, _turnController);
             _halfTimeState = new HalfTimeState(this);
+            _secondHalfState = new SecondHalfState(this);
             _otherBattingState = new OtherBattingState(this, _gameplayUIMediator);
-            _gameEndState = new GameEndState(this, _turnController, _gameplayUIMediator);
+            _gameEndState = new GameEndState(this, _turnController);
+        }
+
+        public void StartFirstHalf()
+        {
+            CurrentGameState?.Exit();
+            CurrentGameState = _firstHalfState;
+            CurrentGameState?.Enter();
         }
 
         public void ChangeGameState(GameStateCategory state)

@@ -6418,6 +6418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
+  _batsmanOfFirstHalf: {fileID: 0}
   OnOwnerOwnToss:
     m_PersistentCalls:
       m_Calls:
@@ -6465,7 +6466,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _turnController: {fileID: 1988157923}
   _tossResultUI: {fileID: 1010356368}
 --- !u!114 &902392676
 MonoBehaviour:
@@ -8593,12 +8593,12 @@ PrefabInstance:
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartNextHalf
+      value: StartHalf
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DoozyPractice.Gameplay.TurnController, Assembly-CSharp
+      value: CricketWithHand.Gameplay.TurnController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713482, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
@@ -12238,6 +12238,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5eb4571abd2f4468cb6c4d65375be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnNextHalfStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNextOverStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1519460131}
+        m_TargetAssemblyTypeName: CricketWithHand.Gameplay.GameplayUIMediator, Assembly-CSharp
+        m_MethodName: ResetOverScoreUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnNextTurnCountdownStarted:
     m_PersistentCalls:
       m_Calls:
@@ -12329,17 +12347,35 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
+  _ownerInputScoreContainer: {fileID: 11400000, guid: 81eb0c9ae81eeb348888c8f5e409cfad,
+    type: 2}
   _ownerOverCountContainer: {fileID: 11400000, guid: 4a59e8dda3148f543ad6af26d2f5ef85,
     type: 2}
-  _otherOverCountContainer: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1,
+  _ownerBallCountContainer: {fileID: 11400000, guid: 9e55e2175aa99a447967db6fb94cf885,
+    type: 2}
+  _ownerTurnScoreContainer: {fileID: 11400000, guid: a45f82f33014b5b408abdaccfea019b0,
     type: 2}
   _ownerBallDataContainer: {fileID: 11400000, guid: 2777b53cb44b3bd44b78fce9f694bb38,
     type: 2}
-  _otherBallDataContainer: {fileID: 11400000, guid: fc2fcce5825901c4c850a24389833ec2,
-    type: 2}
   _ownerTotalScoreContainer: {fileID: 11400000, guid: 88d50dea8f60d6248afe384a75278442,
     type: 2}
+  _ownerTotalWicketLostContainer: {fileID: 11400000, guid: 77634f7daa44c554db4562de3be86f7e,
+    type: 2}
+  _otherInputScoreContainer: {fileID: 11400000, guid: 7055ea82121e7984292e050f09c7322d,
+    type: 2}
+  _otherOverCountContainer: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1,
+    type: 2}
+  _otherBallCountContainer: {fileID: 11400000, guid: 062a2eca49e1663488affd01b2e44de7,
+    type: 2}
+  _otherTurnScoreContainer: {fileID: 11400000, guid: 0561e720fdb31b749a4ffb94915fb955,
+    type: 2}
+  _otherBallDataContainer: {fileID: 11400000, guid: fc2fcce5825901c4c850a24389833ec2,
+    type: 2}
   _otherTotalScoreContainer: {fileID: 11400000, guid: cd9f3c3178cefb1488d691e2ed644265,
+    type: 2}
+  _otherTotalWicketLostContainer: {fileID: 11400000, guid: 35c03df8828398847ad49fb437f77b02,
+    type: 2}
+  _batsmanOfFirstHalf: {fileID: 11400000, guid: 93966818d60ed81489dfb6db7409bcff,
     type: 2}
   _totalOversCountDataContainer: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9,
     type: 2}
@@ -13008,16 +13044,16 @@ PrefabInstance:
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1988157923}
+      objectReference: {fileID: 2115737126}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartGameplay
+      value: StartFirstHalf
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DoozyPractice.Gameplay.TurnController, Assembly-CSharp
+      value: CricketWithHand.Gameplay.GameStateManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713482, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}

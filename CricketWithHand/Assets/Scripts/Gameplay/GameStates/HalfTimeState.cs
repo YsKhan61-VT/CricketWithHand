@@ -2,14 +2,14 @@
 {
     public class HalfTimeState : GameState
     {
-        public override GameStateCategory StateCategory => GameStateCategory.HalfTime;
+        internal override GameStateCategory StateCategory => GameStateCategory.HalfTime;
 
-        public HalfTimeState(
+        internal HalfTimeState(
             GameStateManager stateManager) : base(stateManager)
         {
         }
 
-        public override void Enter()
+        internal override void Enter()
         {
             StateManager.OnHalfTimeStarted?.Invoke();
         }
