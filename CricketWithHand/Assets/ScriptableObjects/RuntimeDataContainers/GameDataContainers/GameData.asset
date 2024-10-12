@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112946f8bbecfd348b28c4742a5eaab2, type: 3}
+  m_Name: GameData
+  m_EditorClassIdentifier: 
+  GameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
+  CurrentGameStateCategory: {fileID: 11400000, guid: 61da69c5bc3555d45abf98ad16383cf7,
+    type: 2}
+  BatsmanOfFirstHalf: {fileID: 11400000, guid: 93966818d60ed81489dfb6db7409bcff, type: 2}
+  TotalOversCountDataContainer: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9,
+    type: 2}
+  TotalWicketsCountDataContainer: {fileID: 11400000, guid: 95bd9549f8ade8c4db651eb9d7397ca4,
+    type: 2}
+  TurnSliderValue: {fileID: 11400000, guid: 7a87e4924bb19b54eb6460738b55ba78, type: 2}
+  GameResult: {fileID: 11400000, guid: f330419e98db145428afd0112e245292, type: 2}
+  HasOwnerBattingStarted: {fileID: 11400000, guid: 12465a1d14a313543b5531bbf532022c,
+    type: 2}
+  OwnerInputScoreContainer: {fileID: 11400000, guid: 81eb0c9ae81eeb348888c8f5e409cfad,
+    type: 2}
+  OwnerOverCountContainer: {fileID: 11400000, guid: 4a59e8dda3148f543ad6af26d2f5ef85,
+    type: 2}
+  OwnerBallCountContainer: {fileID: 11400000, guid: 9e55e2175aa99a447967db6fb94cf885,
+    type: 2}
+  OwnerTurnScoreContainer: {fileID: 11400000, guid: a45f82f33014b5b408abdaccfea019b0,
+    type: 2}
+  OwnerIsOutOnThisTurnContainer: {fileID: 11400000, guid: c027423528c5f6745a658bbf5acf7975,
+    type: 2}
+  OwnerBallDataContainer: {fileID: 11400000, guid: 2777b53cb44b3bd44b78fce9f694bb38,
+    type: 2}
+  OwnerTotalScoreContainer: {fileID: 11400000, guid: 88d50dea8f60d6248afe384a75278442,
+    type: 2}
+  OwnerTotalWicketLostContainer: {fileID: 11400000, guid: 77634f7daa44c554db4562de3be86f7e,
+    type: 2}
+  HasOtherBattingStarted: {fileID: 11400000, guid: 98982c1c982ab0441a3f09d4afd40d6d,
+    type: 2}
+  OtherInputScoreContainer: {fileID: 11400000, guid: 7055ea82121e7984292e050f09c7322d,
+    type: 2}
+  OtherOverCountContainer: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1,
+    type: 2}
+  OtherBallCountContainer: {fileID: 11400000, guid: 062a2eca49e1663488affd01b2e44de7,
+    type: 2}
+  OtherTurnScoreContainer: {fileID: 11400000, guid: 0561e720fdb31b749a4ffb94915fb955,
+    type: 2}
+  OtherIsOutOnThisTurnContainer: {fileID: 11400000, guid: 8ec8de8c8a2996e4d96936312ed120e9,
+    type: 2}
+  OtherBallDataContainer: {fileID: 11400000, guid: fc2fcce5825901c4c850a24389833ec2,
+    type: 2}
+  OtherTotalScoreContainer: {fileID: 11400000, guid: cd9f3c3178cefb1488d691e2ed644265,
+    type: 2}
+  OtherTotalWicketLostContainer: {fileID: 11400000, guid: 35c03df8828398847ad49fb437f77b02,
+    type: 2}

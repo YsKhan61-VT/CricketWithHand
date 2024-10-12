@@ -6,20 +6,12 @@ namespace CricketWithHand.Gameplay
     {
         internal override GameStateCategory StateCategory => GameStateCategory.GameEnd;
 
-        private TurnController _turnController;
-
         internal GameEndState(
-            GameStateManager gameStateManager, 
-            TurnController turnController) : base(gameStateManager)
-        {
-            _turnController = turnController;
-        }
+            GameStateManager gameStateManager) : base(gameStateManager) { }
 
         internal override void Enter()
         {
             StateManager.OnGameEnds?.Invoke();
-            _turnController.ProcessResult();
         }
     }
-
 }

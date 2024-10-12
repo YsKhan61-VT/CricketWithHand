@@ -2,11 +2,9 @@
 {
     public enum GameStateCategory
     {
-        Owner_Batting,
         FirstHalf,
         HalfTime,
         SecondHalf,
-        Other_Batting,
         GameEnd
     }
 

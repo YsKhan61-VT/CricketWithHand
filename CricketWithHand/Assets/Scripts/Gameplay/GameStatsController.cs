@@ -32,12 +32,6 @@ namespace CricketWithHand.Gameplay
         [SerializeField]
         BallDataContainerSO _otherBallDataContainer;
 
-        /*[SerializeField]
-        GameStatsSO _ownerStats;
-
-        [SerializeField]
-        GameStatsSO _otherStats;*/
-
         [SerializeField]
         OverStatsUI _overStatsUIPrefab;
 
@@ -50,9 +44,6 @@ namespace CricketWithHand.Gameplay
         private List<OverStatsUI> _ownerOverStatsUIs = new();
         private List<OverStatsUI> _otherOverStatsUIs = new();
 
-        private int _currentOwnerOverStatsUIIndex = -1;
-        private int _currentOtherOverStatsUIIndex = -1;
-
         private void OnEnable()
         {
             _ownerOverCount.OnValueUpdated += OnOwnerOverCountUpdated;
@@ -60,9 +51,6 @@ namespace CricketWithHand.Gameplay
 
             _ownerBallDataContainer.OnValueUpdated += OnOwnerBallDataUpdated;
             _otherBallDataContainer.OnValueUpdated += OnOtherBallDataUpdated;
-
-            // _ownerStats.SubscribeToEvents();
-            // _otherStats.SubscribeToEvents();
         }
 
         private void OnDisable()
@@ -72,9 +60,6 @@ namespace CricketWithHand.Gameplay
 
             _ownerBallDataContainer.OnValueUpdated -= OnOwnerBallDataUpdated;
             _otherBallDataContainer.OnValueUpdated -= OnOtherBallDataUpdated;
-
-            // _ownerStats.UnsubscribeFromEvents();
-            // _otherStats.UnsubscribeFromEvents();
         }
 
         void OnOwnerOverCountUpdated()
@@ -85,7 +70,6 @@ namespace CricketWithHand.Gameplay
             {
                 OverStatsUI overStatsUI = SpawnOverStatsUI(true);
                 _ownerOverStatsUIs.Add(overStatsUI);
-                _currentOwnerOverStatsUIIndex++;
                 overStatsUI.UpdateOverCountText(_ownerOverCount.Value);
             }
         }
@@ -98,7 +82,6 @@ namespace CricketWithHand.Gameplay
             {
                 OverStatsUI overStatsUI = SpawnOverStatsUI(false);
                 _otherOverStatsUIs.Add(overStatsUI);
-                _currentOtherOverStatsUIIndex++;
                 overStatsUI.UpdateOverCountText(_otherOverCount.Value);
             }
         }
@@ -106,14 +89,16 @@ namespace CricketWithHand.Gameplay
         private void OnOwnerBallDataUpdated()
         {
             BallData ballData = _ownerBallDataContainer.Value;
-            _ownerOverStatsUIs[_currentOwnerOverStatsUIIndex].UpdateScoreInBallText(
+            if (ballData.OverNumber <= 0) return;
+            _ownerOverStatsUIs[ballData.BallNumber - 1].UpdateScoreInBallText(
                 ballData.BallNumber, ballData.Score, ballData.IsWicketLost);
         }
 
         private void OnOtherBallDataUpdated()
         {
             BallData ballData = _otherBallDataContainer.Value;
-            _otherOverStatsUIs[_currentOtherOverStatsUIIndex].UpdateScoreInBallText(
+            if (ballData.OverNumber <= 0) return;
+            _otherOverStatsUIs[ballData.BallNumber - 1].UpdateScoreInBallText(
                 ballData.BallNumber, ballData.Score, ballData.IsWicketLost);
         }
 

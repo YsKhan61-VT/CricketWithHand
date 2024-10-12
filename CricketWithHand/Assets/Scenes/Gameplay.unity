@@ -2559,6 +2559,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff18a18297cce284fbe4a405124ebbf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _totalOvers: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9, type: 2}
+  _totalWickets: {fileID: 11400000, guid: 95bd9549f8ade8c4db651eb9d7397ca4, type: 2}
+  _hasStartedBatting: {fileID: 11400000, guid: 12465a1d14a313543b5531bbf532022c, type: 2}
+  _overCount: {fileID: 11400000, guid: 4a59e8dda3148f543ad6af26d2f5ef85, type: 2}
+  _ballCount: {fileID: 11400000, guid: 9e55e2175aa99a447967db6fb94cf885, type: 2}
+  _inputScore: {fileID: 11400000, guid: 81eb0c9ae81eeb348888c8f5e409cfad, type: 2}
+  _totalScore: {fileID: 11400000, guid: 88d50dea8f60d6248afe384a75278442, type: 2}
+  _wicketsLost: {fileID: 11400000, guid: 77634f7daa44c554db4562de3be86f7e, type: 2}
   _playingStateText: {fileID: 1206139285}
   _inputScoreText: {fileID: 795090463}
   _totalScoreText: {fileID: 308154957}
@@ -3267,6 +3275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f52331039e541194198d716b10861465, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameData: {fileID: 11400000, guid: 7c4d1994849cb3d488b93f1d3be0cd49, type: 2}
   _ballScoreUIs:
   - BackgroundImage: {fileID: 767915347}
     ScoreText: {fileID: 651751332}
@@ -3667,6 +3676,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff18a18297cce284fbe4a405124ebbf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _totalOvers: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9, type: 2}
+  _totalWickets: {fileID: 11400000, guid: 95bd9549f8ade8c4db651eb9d7397ca4, type: 2}
+  _hasStartedBatting: {fileID: 11400000, guid: 98982c1c982ab0441a3f09d4afd40d6d, type: 2}
+  _overCount: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1, type: 2}
+  _ballCount: {fileID: 11400000, guid: 062a2eca49e1663488affd01b2e44de7, type: 2}
+  _inputScore: {fileID: 11400000, guid: 7055ea82121e7984292e050f09c7322d, type: 2}
+  _totalScore: {fileID: 11400000, guid: cd9f3c3178cefb1488d691e2ed644265, type: 2}
+  _wicketsLost: {fileID: 11400000, guid: 35c03df8828398847ad49fb437f77b02, type: 2}
   _playingStateText: {fileID: 1642925734}
   _inputScoreText: {fileID: 649053280}
   _totalScoreText: {fileID: 1702828589}
@@ -6418,7 +6435,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
-  _batsmanOfFirstHalf: {fileID: 0}
+  _batsmanOfFirstHalf: {fileID: 11400000, guid: 93966818d60ed81489dfb6db7409bcff,
+    type: 2}
   OnOwnerOwnToss:
     m_PersistentCalls:
       m_Calls:
@@ -8560,7 +8578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09dec4e4ce5fd8c4599fc4a7a0a264c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
+  _gameData: {fileID: 11400000, guid: 7c4d1994849cb3d488b93f1d3be0cd49, type: 2}
   _resultMessageText: {fileID: 357771717}
 --- !u!1001 &1276989672
 PrefabInstance:
@@ -10308,64 +10326,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511427191}
   m_CullTransparentMesh: 1
---- !u!1 &1519460129
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1519460130}
-  - component: {fileID: 1519460131}
-  m_Layer: 0
-  m_Name: GameplayUIMediator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1519460130
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519460129}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1519460131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519460129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6307072ec30555a4eb9189d2dd4d37a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _totalOversDataContainer: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9,
-    type: 2}
-  _totalWicketsDataContainer: {fileID: 11400000, guid: 95bd9549f8ade8c4db651eb9d7397ca4,
-    type: 2}
-  _ownerTotalScoreContainer: {fileID: 11400000, guid: 88d50dea8f60d6248afe384a75278442,
-    type: 2}
-  _otherTotalScoreContainer: {fileID: 11400000, guid: cd9f3c3178cefb1488d691e2ed644265,
-    type: 2}
-  _turnDurationSlider: {fileID: 2102637317}
-  _ownerClientUI: {fileID: 330036699}
-  _otherClientUI: {fileID: 579993607}
-  _ownerClientInputUI: {fileID: 603019675}
-  _overScoreUI: {fileID: 541033453}
-  _resultUI: {fileID: 1232469890}
 --- !u!1 &1546902372
 GameObject:
   m_ObjectHideFlags: 0
@@ -12244,9 +12204,9 @@ MonoBehaviour:
   OnNextOverStarted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1519460131}
-        m_TargetAssemblyTypeName: CricketWithHand.Gameplay.GameplayUIMediator, Assembly-CSharp
-        m_MethodName: ResetOverScoreUI
+      - m_Target: {fileID: 541033453}
+        m_TargetAssemblyTypeName: CricketWithHand.UI.OverScoreUI, Assembly-CSharp
+        m_MethodName: ResetBallUIs
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12346,43 +12306,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
-  _ownerInputScoreContainer: {fileID: 11400000, guid: 81eb0c9ae81eeb348888c8f5e409cfad,
-    type: 2}
-  _ownerOverCountContainer: {fileID: 11400000, guid: 4a59e8dda3148f543ad6af26d2f5ef85,
-    type: 2}
-  _ownerBallCountContainer: {fileID: 11400000, guid: 9e55e2175aa99a447967db6fb94cf885,
-    type: 2}
-  _ownerTurnScoreContainer: {fileID: 11400000, guid: a45f82f33014b5b408abdaccfea019b0,
-    type: 2}
-  _ownerBallDataContainer: {fileID: 11400000, guid: 2777b53cb44b3bd44b78fce9f694bb38,
-    type: 2}
-  _ownerTotalScoreContainer: {fileID: 11400000, guid: 88d50dea8f60d6248afe384a75278442,
-    type: 2}
-  _ownerTotalWicketLostContainer: {fileID: 11400000, guid: 77634f7daa44c554db4562de3be86f7e,
-    type: 2}
-  _otherInputScoreContainer: {fileID: 11400000, guid: 7055ea82121e7984292e050f09c7322d,
-    type: 2}
-  _otherOverCountContainer: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1,
-    type: 2}
-  _otherBallCountContainer: {fileID: 11400000, guid: 062a2eca49e1663488affd01b2e44de7,
-    type: 2}
-  _otherTurnScoreContainer: {fileID: 11400000, guid: 0561e720fdb31b749a4ffb94915fb955,
-    type: 2}
-  _otherBallDataContainer: {fileID: 11400000, guid: fc2fcce5825901c4c850a24389833ec2,
-    type: 2}
-  _otherTotalScoreContainer: {fileID: 11400000, guid: cd9f3c3178cefb1488d691e2ed644265,
-    type: 2}
-  _otherTotalWicketLostContainer: {fileID: 11400000, guid: 35c03df8828398847ad49fb437f77b02,
-    type: 2}
-  _batsmanOfFirstHalf: {fileID: 11400000, guid: 93966818d60ed81489dfb6db7409bcff,
-    type: 2}
-  _totalOversCountDataContainer: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9,
-    type: 2}
-  _totalWicketsCountDataContainer: {fileID: 11400000, guid: 95bd9549f8ade8c4db651eb9d7397ca4,
-    type: 2}
+  _gameData: {fileID: 11400000, guid: 7c4d1994849cb3d488b93f1d3be0cd49, type: 2}
   _gameStateManager: {fileID: 2115737126}
-  _gameplayUIMediator: {fileID: 1519460131}
+  _gameplayUIMediator: {fileID: 0}
 --- !u!1001 &1996877635
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12863,7 +12789,11 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 102528737411956647, guid: 3786c2a6a16d2ff4d84679f97cfa8f85, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 102528735645043399, guid: 3786c2a6a16d2ff4d84679f97cfa8f85,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2102637318}
   m_SourcePrefab: {fileID: 100100000, guid: 3786c2a6a16d2ff4d84679f97cfa8f85, type: 3}
 --- !u!224 &2102637316 stripped
 RectTransform:
@@ -12871,13 +12801,33 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2102637315}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2102637317 stripped
+--- !u!1 &2102637317 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 102528735645043399, guid: 3786c2a6a16d2ff4d84679f97cfa8f85,
+    type: 3}
+  m_PrefabInstance: {fileID: 2102637315}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2102637318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102637317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b89300e767fd30428471428469d5358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _turnSliderValue: {fileID: 11400000, guid: 7a87e4924bb19b54eb6460738b55ba78, type: 2}
+  _turnDurationSlider: {fileID: 2102637319}
+--- !u!114 &2102637319 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 102528735645043393, guid: 3786c2a6a16d2ff4d84679f97cfa8f85,
     type: 3}
   m_PrefabInstance: {fileID: 2102637315}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2102637317}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8da71258f417462fb917f02c17fb620e, type: 3}
@@ -13217,12 +13167,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d19d0c0d9ef7c3648bfc06c2fbfcd9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnOwnerBattingStateStarted:
+  OnFirstHalfStarted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1519460131}
-        m_TargetAssemblyTypeName: DoozyPractice.Gameplay.GameplayUIMediator, Assembly-CSharp
-        m_MethodName: UpdateUIToOwnerIsBatting
+      - m_Target: {fileID: 11400000, guid: 7c4d1994849cb3d488b93f1d3be0cd49, type: 2}
+        m_TargetAssemblyTypeName: CricketWithHand.Gameplay.GameDataSO, Assembly-CSharp
+        m_MethodName: OnBattingStarted
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13232,9 +13182,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1519460131}
-        m_TargetAssemblyTypeName: DoozyPractice.Gameplay.GameplayUIMediator, Assembly-CSharp
-        m_MethodName: UpdateUIToOtherIsBalling
+      - m_Target: {fileID: 1988157923}
+        m_TargetAssemblyTypeName: CricketWithHand.Gameplay.TurnController, Assembly-CSharp
+        m_MethodName: StartHalf
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13243,33 +13193,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-  OnOtherBattingStateStarted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1519460131}
-        m_TargetAssemblyTypeName: DoozyPractice.Gameplay.GameplayUIMediator, Assembly-CSharp
-        m_MethodName: UpdateUIToOwnerIsBalling
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1519460131}
-        m_TargetAssemblyTypeName: DoozyPractice.Gameplay.GameplayUIMediator, Assembly-CSharp
-        m_MethodName: UpdateUIToOtherIsBatting
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
   OnHalfTimeStarted:
     m_PersistentCalls:
@@ -13287,9 +13210,48 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnSecondHalfStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 7c4d1994849cb3d488b93f1d3be0cd49, type: 2}
+        m_TargetAssemblyTypeName: CricketWithHand.Gameplay.GameDataSO, Assembly-CSharp
+        m_MethodName: OnBattingStarted
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1988157923}
+        m_TargetAssemblyTypeName: CricketWithHand.Gameplay.TurnController, Assembly-CSharp
+        m_MethodName: StartHalf
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnGameEnds:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 11400000, guid: 7c4d1994849cb3d488b93f1d3be0cd49, type: 2}
+        m_TargetAssemblyTypeName: CricketWithHand.Gameplay.GameDataSO, Assembly-CSharp
+        m_MethodName: ProcessResult
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2115737127}
         m_TargetAssemblyTypeName: Doozy.Runtime.Signals.Components.SignalSender,
           Assembly-CSharp
@@ -13303,8 +13265,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _gameplayUIMediator: {fileID: 1519460131}
-  _turnController: {fileID: 1988157923}
+  _currentGameStateCategory: {fileID: 11400000, guid: 61da69c5bc3555d45abf98ad16383cf7,
+    type: 2}
 --- !u!114 &2115737127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17133,7 +17095,6 @@ SceneRoots:
   - {fileID: 569882381}
   - {fileID: 1988157922}
   - {fileID: 2115737125}
-  - {fileID: 1519460130}
   - {fileID: 842129734}
   - {fileID: 902392674}
   - {fileID: 797219323}

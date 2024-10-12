@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using CricketWithHand.Gameplay;
+using CricketWithHand.Utility;
+using TMPro;
 using UnityEngine;
 
 
@@ -6,6 +8,30 @@ namespace CricketWithHand.UI
 {
     public class ClientUI : MonoBehaviour
     {
+        [SerializeField]
+        IntDataContainerSO _totalOvers;
+
+        [SerializeField]
+        IntDataContainerSO _totalWickets;
+
+        [SerializeField]
+        BoolDataContainerSO _hasStartedBatting;
+
+        [SerializeField]
+        IntDataContainerSO _overCount;
+
+        [SerializeField]
+        IntDataContainerSO _ballCount;
+
+        [SerializeField]
+        IntDataContainerSO _inputScore;
+
+        [SerializeField]
+        IntDataContainerSO _totalScore;
+
+        [SerializeField]
+        IntDataContainerSO _wicketsLost;
+
         [SerializeField]
         TMP_Text _playingStateText;
 
@@ -27,31 +53,48 @@ namespace CricketWithHand.UI
         [SerializeField]
         string _ballingText = "Balling";
 
-        public void UpdatePlayingStateText(bool isBatting)
+        private void OnEnable()
         {
-            if (isBatting)
-            {
-                _playingStateText.text = _battingText;
-            }
-            else
-            {
-                _playingStateText.text = _ballingText;
-            }
+            _totalOvers.OnValueUpdated += UpdateOversUI;
+            _overCount.OnValueUpdated += UpdateOversUI;
+            _ballCount.OnValueUpdated += UpdateOversUI;
+
+            _totalWickets.OnValueUpdated += UpdateWicketsUI;
+            _wicketsLost.OnValueUpdated += UpdateWicketsUI;
+
+            _hasStartedBatting.OnValueUpdated += UpdatePlayingStateText;
+            _inputScore.OnValueUpdated += UpdateInputScoreUI;
+            _totalScore.OnValueUpdated += UpdateTotalScoreUI;
         }
 
-        public void ShowInputScore(int score) =>
-            _inputScoreText.text = score.ToString();
-
-        public void UpdateTotalScore(int score) =>
-            _totalScoreText.text = score.ToString();
-
-        public void UpdateTotalWickets(int wicketsLost, int totalWickets) =>
-            _totalWicketsText.text = $"{wicketsLost} / {totalWickets}";
-
-        public void UpdateTotalOversText(int over, int balls, int totalOvers)
+        private void OnDisable()
         {
-            string totalOversText = totalOvers != -1 ? totalOvers.ToString() : "-";
-            _totalOversText.text = $"{over}.{balls} / {totalOversText}";
+            _totalOvers.OnValueUpdated -= UpdateOversUI;
+            _overCount.OnValueUpdated -= UpdateOversUI;
+            _ballCount.OnValueUpdated -= UpdateOversUI;
+
+            _totalWickets.OnValueUpdated -= UpdateWicketsUI;
+            _wicketsLost.OnValueUpdated -= UpdateWicketsUI;
+
+            _hasStartedBatting.OnValueUpdated -= UpdatePlayingStateText;
+            _inputScore.OnValueUpdated -= UpdateInputScoreUI;
+            _totalScore.OnValueUpdated -= UpdateTotalScoreUI;
         }
+
+        private void UpdatePlayingStateText() =>
+            _playingStateText.text = _hasStartedBatting.Value ? 
+            _battingText : _ballingText;
+
+        private void UpdateInputScoreUI() =>
+            _inputScoreText.text = _inputScore.Value.ToString();
+
+        private void UpdateTotalScoreUI() =>
+            _totalScoreText.text = _totalScore.Value.ToString();
+
+        private void UpdateWicketsUI() =>
+            _totalWicketsText.text = $"{_wicketsLost.Value} / {_totalWickets.Value}";
+
+        private void UpdateOversUI() =>
+            _totalOversText.text = $"{_overCount.Value}.{_ballCount.Value} / {_totalOvers.Value.ToString()}";
     }
 }

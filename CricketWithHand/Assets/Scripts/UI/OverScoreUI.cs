@@ -1,3 +1,5 @@
+using CricketWithHand.Gameplay;
+using CricketWithHand.Utility;
 using System;
 using TMPro;
 using UnityEngine;
@@ -16,6 +18,9 @@ namespace CricketWithHand.UI
         }
 
         [SerializeField]
+        private GameDataSO _gameData;
+
+        [SerializeField]
         BallScoreUI[] _ballScoreUIs;
 
         [SerializeField]
@@ -27,6 +32,18 @@ namespace CricketWithHand.UI
         [SerializeField]
         Color _wicketColor;
 
+        private void OnEnable()
+        {
+            _gameData.OwnerBallDataContainer.OnValueUpdated += UpdateUI;
+            _gameData.OtherBallDataContainer.OnValueUpdated += UpdateUI;
+        }
+
+        private void OnDisable()
+        {
+            _gameData.OwnerBallDataContainer.OnValueUpdated -= UpdateUI;
+            _gameData.OtherBallDataContainer.OnValueUpdated -= UpdateUI;
+        }
+
         public void ResetBallUIs()
         {
             foreach (var ball in _ballScoreUIs)
@@ -36,16 +53,23 @@ namespace CricketWithHand.UI
             }
         }
 
-        public void UpdateScoreOnBallUI(int ballCount, int score, bool isOut)
+        private void UpdateUI()
         {
-            int index = ballCount - 1;
+            BallData ballData;
+
+            if (_gameData.IsOwnerBatting)
+                ballData = _gameData.OwnerBallDataContainer.Value;
+            else
+                ballData = _gameData.OtherBallDataContainer.Value;
+
+            int index = ballData.BallNumber - 1;
             if (index < 0 || index >= _ballScoreUIs.Length)
             {
                 // index can be -1 when the first ball of the game is bowled.
                 return;
             }
 
-            if (score == 0 && isOut)
+            if (ballData.Score == 0 && ballData.IsWicketLost)
             {
                 _ballScoreUIs[index].BackgroundImage.color = _wicketColor;
                 _ballScoreUIs[index].ScoreText.text = "W";
@@ -53,7 +77,7 @@ namespace CricketWithHand.UI
             else
             {
                 _ballScoreUIs[index].BackgroundImage.color = _currentBallColor;
-                _ballScoreUIs[index].ScoreText.text = score.ToString();
+                _ballScoreUIs[index].ScoreText.text = ballData.Score.ToString();
             }
         }
     }
