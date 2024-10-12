@@ -164,11 +164,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5203047329472918651}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetWicket
       objectReference: {fileID: 0}
@@ -326,11 +321,6 @@ PrefabInstance:
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5203047329472918651}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -838,31 +828,8 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4659277735925504389}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5203047329472918651}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba5426fee7e7e6745b4d29bb89a71139, type: 3}
---- !u!1 &1065626880808362148 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
-    type: 3}
-  m_PrefabInstance: {fileID: 2755412968431563298}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5203047329472918651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1065626880808362148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 996a8274163290a488446aeb2178a75e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _turnController: {fileID: 0}
 --- !u!224 &1065626880808362149 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2951246982249616007, guid: ba5426fee7e7e6745b4d29bb89a71139,
@@ -903,11 +870,6 @@ PrefabInstance:
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5203047329472918651}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1069,11 +1031,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5203047329472918651}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetWicket
       objectReference: {fileID: 0}
@@ -1226,11 +1183,6 @@ PrefabInstance:
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5203047329472918651}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName

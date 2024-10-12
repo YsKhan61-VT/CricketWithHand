@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using CricketWithHand.Utility;
+using TMPro;
 using UnityEngine;
 
 
@@ -7,24 +8,18 @@ namespace CricketWithHand.UI
     public class ResultUI : MonoBehaviour
     {
         [SerializeField]
+        private GameConfigSO _gameConfig;
+
+        [SerializeField]
         TMP_Text _resultMessageText;
 
-        [SerializeField]
-        string _winMessage;
-
-        [SerializeField]
-        string _lossMessage;
-
-        [SerializeField]
-        string _drawMessage;
-
         public void ShowWinText() =>
-            _resultMessageText.text = _winMessage;
+            _resultMessageText.text = _gameConfig.WinMessage;
 
         public void ShowLossText() =>
-            _resultMessageText.text = _lossMessage;
+            _resultMessageText.text = _gameConfig.LossMessage;
 
         public void ShowDrawText() =>
-            _resultMessageText.text = _drawMessage;
+            _resultMessageText.text = _gameConfig.DrawMessage;
     }
 }

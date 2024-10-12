@@ -1,4 +1,5 @@
 ﻿using CricketWithHand.UI;
+using CricketWithHand.Utility;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,28 +9,30 @@ namespace CricketWithHand.Gameplay
     public class TossController : MonoBehaviour
     {
         [SerializeField]
-        UnityEvent OnOwnerOwnToss;
+        private GameConfigSO _gameConfig;
 
         [SerializeField]
-        UnityEvent OnOwnerLostToss;
+        private UnityEvent OnOwnerOwnToss;
 
         [SerializeField]
-        UnityEvent OnPublishTossResult;
+        private UnityEvent OnOwnerLostToss;
 
         [SerializeField]
-        TurnController _turnController;
+        private UnityEvent OnPublishTossResult;
 
         [SerializeField]
-        TossResultUI _tossResultUI;
+        private TurnController _turnController;
 
-        [SerializeField, Range(0f, 1f)]
-        float _ownerWinningChance;
+        [SerializeField]
+        private TossResultUI _tossResultUI;
+
+        
 
         private bool _ownerWonToss;
 
         public void Toss()
         {
-            _ownerWonToss = Random.Range(0f, 1f) <= _ownerWinningChance;
+            _ownerWonToss = Random.Range(0f, 1f) <= _gameConfig.OwnerWinningChance;
             if (_ownerWonToss)
             {
                 OnOwnerOwnToss?.Invoke();

@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3944ae617f49e644e8f61fe8130d6581, type: 3}
-  m_Name: TotalOvers
+  m_Name: TotalWicketsToBePlayedInTheMatch
   m_EditorClassIdentifier: 

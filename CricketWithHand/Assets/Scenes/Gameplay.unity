@@ -657,7 +657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3698c1a94700b40a3a76c1b6df9ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tossController: {fileID: 1988157924}
+  _tossController: {fileID: 902392675}
 --- !u!1 &83567210
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,7 +726,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1988157924}
+      objectReference: {fileID: 902392675}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -735,7 +735,7 @@ PrefabInstance:
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DoozyPractice.Gameplay.TossController, Assembly-CSharp
+      value: CricketWithHand.Gameplay.TossController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713482, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
@@ -1497,11 +1497,7 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1183452773}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 166718475}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba5426fee7e7e6745b4d29bb89a71139, type: 3}
 --- !u!224 &166718473 stripped
 RectTransform:
@@ -1509,28 +1505,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 166718472}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &166718474 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
-    type: 3}
-  m_PrefabInstance: {fileID: 166718472}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &166718475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 166718474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09dec4e4ce5fd8c4599fc4a7a0a264c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _resultMessageText: {fileID: 1056735067}
-  _winMessage: YOU WON
-  _lossMessage: YOU LOST
-  _drawMessage: YOU DREW
 --- !u!1001 &174869416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3577,6 +3551,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567479634}
   m_CullTransparentMesh: 1
+--- !u!1 &569882380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 569882381}
+  - component: {fileID: 569882382}
+  m_Layer: 0
+  m_Name: FlowController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &569882381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569882380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &569882382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569882380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06fce82b8ad949daa2a1d83ddfb8d9b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DontDestroyOnSceneChange: 0
+  Flow: {fileID: 11400000, guid: fbd95d0a1000a1741bda9feae7e61d44, type: 2}
+  FlowType: 1
+  OnEnableBehaviour: 1
+  OnDisableBehaviour: 3
+  OnStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStop:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPause:
+    m_PersistentCalls:
+      m_Calls: []
+  OnResume:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBackFlow:
+    m_PersistentCalls:
+      m_Calls: []
+  MultiplayerInfo: {fileID: 0}
 --- !u!1 &579993605
 GameObject:
   m_ObjectHideFlags: 0
@@ -5144,7 +5183,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 1500}
+  m_SizeDelta: {x: 0, y: 1400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &767915345
 GameObject:
@@ -5731,6 +5770,60 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &797219322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 797219323}
+  - component: {fileID: 797219324}
+  m_Layer: 0
+  m_Name: GameStatsController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &797219323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797219322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &797219324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797219322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eddbaa805d01bde4dbf0a312f839caa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ownerOverCount: {fileID: 11400000, guid: 4a59e8dda3148f543ad6af26d2f5ef85, type: 2}
+  _otherOverCount: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1, type: 2}
+  _ownerBallDataContainer: {fileID: 11400000, guid: 2777b53cb44b3bd44b78fce9f694bb38,
+    type: 2}
+  _otherBallDataContainer: {fileID: 11400000, guid: fc2fcce5825901c4c850a24389833ec2,
+    type: 2}
+  _overStatsUIPrefab: {fileID: 4675969165670686943, guid: 4a2914723b76a4a41a5e76f34c4240b1,
+    type: 3}
+  _ownerOverStatsSpawnParent: {fileID: 1082275427}
+  _otherOverStatsSpawnParent: {fileID: 1610121639}
 --- !u!1 &842129732
 GameObject:
   m_ObjectHideFlags: 0
@@ -5760,9 +5853,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f32700f4db7114fb75b26b02dd051b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
   _turnController: {fileID: 1988157923}
-  _tossController: {fileID: 1988157924}
-  _aiBattingChance: 0.5
+  _tossController: {fileID: 902392675}
 --- !u!4 &842129734
 Transform:
   m_ObjectHideFlags: 0
@@ -6278,6 +6371,162 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893001590}
   m_CullTransparentMesh: 1
+--- !u!1 &902392673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 902392674}
+  - component: {fileID: 902392675}
+  - component: {fileID: 902392676}
+  - component: {fileID: 902392677}
+  m_Layer: 0
+  m_Name: TossController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &902392674
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902392673}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &902392675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902392673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d342f5c2466dd749a5c8d31c05e7f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
+  OnOwnerOwnToss:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 902392676}
+        m_TargetAssemblyTypeName: Doozy.Runtime.Signals.Components.SignalSender,
+          Assembly-CSharp
+        m_MethodName: SendSignal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnOwnerLostToss:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 842129733}
+        m_TargetAssemblyTypeName: DoozyPractice.Gameplay.AIController, Assembly-CSharp
+        m_MethodName: ChooseBatOrBall
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnPublishTossResult:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 902392677}
+        m_TargetAssemblyTypeName: Doozy.Runtime.Signals.Components.SignalSender,
+          Assembly-CSharp
+        m_MethodName: SendSignal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _turnController: {fileID: 1988157923}
+  _tossResultUI: {fileID: 1010356368}
+--- !u!114 &902392676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902392673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f003aa0ad0a4c469338c205df004d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Payload:
+    StreamId:
+      Category: Gameplay
+      Name: OnOwnerWinToss
+      Custom: 0
+    SignalValueType: 0
+    IntegerValue: 0
+    BooleanValue: 0
+    FloatValue: 0
+    StringValue: 
+    ColorValue: {r: 0, g: 0, b: 0, a: 0}
+    Vector2Value: {x: 0, y: 0}
+    Vector3Value: {x: 0, y: 0, z: 0}
+    Vector4Value: {x: 0, y: 0, z: 0, w: 0}
+  SendOnStart: 0
+  SendOnEnable: 0
+  SendOnDisable: 0
+  SendOnDestroy: 0
+--- !u!114 &902392677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902392673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f003aa0ad0a4c469338c205df004d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Payload:
+    StreamId:
+      Category: Gameplay
+      Name: OnPublishTossResult
+      Custom: 0
+    SignalValueType: 0
+    IntegerValue: 0
+    BooleanValue: 0
+    FloatValue: 0
+    StringValue: 
+    ColorValue: {r: 0, g: 0, b: 0, a: 0}
+    Vector2Value: {x: 0, y: 0}
+    Vector3Value: {x: 0, y: 0, z: 0}
+    Vector4Value: {x: 0, y: 0, z: 0, w: 0}
+  SendOnStart: 0
+  SendOnEnable: 0
+  SendOnDisable: 0
+  SendOnDestroy: 0
 --- !u!1 &911422269
 GameObject:
   m_ObjectHideFlags: 0
@@ -7067,10 +7316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd009f9ca03a282429b85becf5775e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ownerWinMessage: You won the toss!
-  _ownerLostMessage: You lost the toss!
-  _ownerWillBatMessage: You will be batting.
-  _ownerWillBallMessage: You will be balling.
+  _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
   _tossResultText: {fileID: 2042717037}
   _chooseBatOrBallText: {fileID: 533969936}
 --- !u!1 &1018126814
@@ -8314,10 +8560,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09dec4e4ce5fd8c4599fc4a7a0a264c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
   _resultMessageText: {fileID: 357771717}
-  _winMessage: YOU WON
-  _lossMessage: YOU LOST
-  _drawMessage: MATCH DRAW
 --- !u!1001 &1276989672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10109,6 +10353,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _totalOversDataContainer: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9,
+    type: 2}
+  _totalWicketsDataContainer: {fileID: 11400000, guid: 95bd9549f8ade8c4db651eb9d7397ca4,
     type: 2}
   _ownerTotalScoreContainer: {fileID: 11400000, guid: 88d50dea8f60d6248afe384a75278442,
     type: 2}
@@ -11957,14 +12203,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1988157922}
-  - component: {fileID: 1988157925}
   - component: {fileID: 1988157923}
-  - component: {fileID: 1988157924}
-  - component: {fileID: 1988157926}
-  - component: {fileID: 1988157927}
-  - component: {fileID: 1988157928}
   m_Layer: 0
-  m_Name: Controllers
+  m_Name: TurnController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12087,6 +12328,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
   _ownerOverCountContainer: {fileID: 11400000, guid: 4a59e8dda3148f543ad6af26d2f5ef85,
     type: 2}
   _otherOverCountContainer: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1,
@@ -12099,191 +12341,12 @@ MonoBehaviour:
     type: 2}
   _otherTotalScoreContainer: {fileID: 11400000, guid: cd9f3c3178cefb1488d691e2ed644265,
     type: 2}
-  _totalOversContainer: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9,
+  _totalOversCountDataContainer: {fileID: 11400000, guid: c45a792f6a4a02740bfbcec6f1bcc1c9,
+    type: 2}
+  _totalWicketsCountDataContainer: {fileID: 11400000, guid: 95bd9549f8ade8c4db651eb9d7397ca4,
     type: 2}
   _gameStateManager: {fileID: 2115737126}
   _gameplayUIMediator: {fileID: 1519460131}
-  _ballsPerOver: 6
-  _totalWickets: 2
-  _turnDuration: 3
-  _waitBeforeNextTurn: 3
---- !u!114 &1988157924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988157921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d342f5c2466dd749a5c8d31c05e7f39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnOwnerOwnToss:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1988157926}
-        m_TargetAssemblyTypeName: Doozy.Runtime.Signals.Components.SignalSender,
-          Assembly-CSharp
-        m_MethodName: SendSignal
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnOwnerLostToss:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 842129733}
-        m_TargetAssemblyTypeName: DoozyPractice.Gameplay.AIController, Assembly-CSharp
-        m_MethodName: ChooseBatOrBall
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPublishTossResult:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1988157927}
-        m_TargetAssemblyTypeName: Doozy.Runtime.Signals.Components.SignalSender,
-          Assembly-CSharp
-        m_MethodName: SendSignal
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _turnController: {fileID: 1988157923}
-  _tossResultUI: {fileID: 1010356368}
-  _ownerWinningChance: 1
---- !u!114 &1988157925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988157921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06fce82b8ad949daa2a1d83ddfb8d9b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DontDestroyOnSceneChange: 0
-  Flow: {fileID: 11400000, guid: fbd95d0a1000a1741bda9feae7e61d44, type: 2}
-  FlowType: 1
-  OnEnableBehaviour: 1
-  OnDisableBehaviour: 3
-  OnStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStop:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPause:
-    m_PersistentCalls:
-      m_Calls: []
-  OnResume:
-    m_PersistentCalls:
-      m_Calls: []
-  OnBackFlow:
-    m_PersistentCalls:
-      m_Calls: []
-  MultiplayerInfo: {fileID: 0}
---- !u!114 &1988157926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988157921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78f003aa0ad0a4c469338c205df004d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Payload:
-    StreamId:
-      Category: Gameplay
-      Name: OnOwnerWinToss
-      Custom: 0
-    SignalValueType: 0
-    IntegerValue: 0
-    BooleanValue: 0
-    FloatValue: 0
-    StringValue: 
-    ColorValue: {r: 0, g: 0, b: 0, a: 0}
-    Vector2Value: {x: 0, y: 0}
-    Vector3Value: {x: 0, y: 0, z: 0}
-    Vector4Value: {x: 0, y: 0, z: 0, w: 0}
-  SendOnStart: 0
-  SendOnEnable: 0
-  SendOnDisable: 0
-  SendOnDestroy: 0
---- !u!114 &1988157927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988157921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78f003aa0ad0a4c469338c205df004d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Payload:
-    StreamId:
-      Category: Gameplay
-      Name: OnPublishTossResult
-      Custom: 0
-    SignalValueType: 0
-    IntegerValue: 0
-    BooleanValue: 0
-    FloatValue: 0
-    StringValue: 
-    ColorValue: {r: 0, g: 0, b: 0, a: 0}
-    Vector2Value: {x: 0, y: 0}
-    Vector3Value: {x: 0, y: 0, z: 0}
-    Vector4Value: {x: 0, y: 0, z: 0, w: 0}
-  SendOnStart: 0
-  SendOnEnable: 0
-  SendOnDisable: 0
-  SendOnDestroy: 0
---- !u!114 &1988157928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1988157921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eddbaa805d01bde4dbf0a312f839caa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ownerOverCount: {fileID: 11400000, guid: 4a59e8dda3148f543ad6af26d2f5ef85, type: 2}
-  _otherOverCount: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1, type: 2}
-  _ownerBallDataContainer: {fileID: 11400000, guid: 2777b53cb44b3bd44b78fce9f694bb38,
-    type: 2}
-  _otherBallDataContainer: {fileID: 11400000, guid: fc2fcce5825901c4c850a24389833ec2,
-    type: 2}
-  _overStatsUIPrefab: {fileID: 4675969165670686943, guid: 4a2914723b76a4a41a5e76f34c4240b1,
-    type: 3}
-  _ownerOverStatsSpawnParent: {fileID: 1082275427}
-  _otherOverStatsSpawnParent: {fileID: 1610121639}
 --- !u!1001 &1996877635
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12311,7 +12374,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1988157924}
+      objectReference: {fileID: 902392675}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -12320,7 +12383,7 @@ PrefabInstance:
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DoozyPractice.Gameplay.TossController, Assembly-CSharp
+      value: CricketWithHand.Gameplay.TossController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713482, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
@@ -17031,7 +17094,10 @@ SceneRoots:
   - {fileID: 1958589526}
   - {fileID: 1546902376}
   - {fileID: 1627744044}
+  - {fileID: 569882381}
   - {fileID: 1988157922}
   - {fileID: 2115737125}
   - {fileID: 1519460130}
   - {fileID: 842129734}
+  - {fileID: 902392674}
+  - {fileID: 797219323}

@@ -159,11 +159,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6474923963810758212}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetToAllOut
       objectReference: {fileID: 0}
@@ -648,11 +643,7 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8194074914750051473}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6474923963810758212}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba5426fee7e7e6745b4d29bb89a71139, type: 3}
 --- !u!224 &809817933918307732 stripped
 RectTransform:
@@ -660,25 +651,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2578841166207953354}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &809817934499429196 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2951246982249616006, guid: ba5426fee7e7e6745b4d29bb89a71139,
-    type: 3}
-  m_PrefabInstance: {fileID: 2578841166207953354}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6474923963810758212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809817934499429196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d70cdb6d15bf4ad4da85c51e8742514f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _turnController: {fileID: 0}
 --- !u!224 &809817934499429197 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2951246982249616007, guid: ba5426fee7e7e6745b4d29bb89a71139,
@@ -708,11 +680,6 @@ PrefabInstance:
       propertyPath: Id.Category
       value: ChooseOverView
       objectReference: {fileID: 0}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6474923963810758212}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1008,11 +975,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6474923963810758212}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetTwoOver
       objectReference: {fileID: 0}
@@ -1155,11 +1117,6 @@ PrefabInstance:
       propertyPath: Id.Category
       value: ChooseOverView
       objectReference: {fileID: 0}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6474923963810758212}
     - target: {fileID: 4952301426718713482, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1299,11 +1256,6 @@ PrefabInstance:
       propertyPath: Id.Category
       value: ChooseOverView
       objectReference: {fileID: 0}
-    - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
-        type: 3}
-      propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6474923963810758212}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName

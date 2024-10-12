@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CricketWithHand.Utility;
+using UnityEngine;
 
 
 namespace CricketWithHand.Gameplay
@@ -6,13 +7,13 @@ namespace CricketWithHand.Gameplay
     public class AIController : MonoBehaviour
     {
         [SerializeField]
-        TurnController _turnController;
+        private GameConfigSO _gameConfig;
 
         [SerializeField]
-        TossController _tossController;
+        private TurnController _turnController;
 
-        [SerializeField, Range(0f, 1f)]
-        float _aiBattingChance;
+        [SerializeField]
+        private TossController _tossController;
 
 
         public void GiveRandomInput()
@@ -23,7 +24,7 @@ namespace CricketWithHand.Gameplay
 
         public void ChooseBatOrBall()
         {
-            bool willBat = Random.Range(0f, 1f) <= _aiBattingChance;
+            bool willBat = Random.Range(0f, 1f) <= _gameConfig.AIBattingChance;
             _tossController.ChooseBatOrBallFirst(false, willBat);
         }
     }

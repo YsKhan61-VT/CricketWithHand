@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using CricketWithHand.Utility;
+using TMPro;
 using UnityEngine;
 
 
@@ -7,37 +8,28 @@ namespace CricketWithHand.UI
     public class TossResultUI : MonoBehaviour
     {
         [SerializeField]
-        string _ownerWinMessage = "You won the toss!";
+        private GameConfigSO _gameConfig;
 
         [SerializeField]
-        string _ownerLostMessage = "You lost the toss!";
+        private TMP_Text _tossResultText;
 
         [SerializeField]
-        string _ownerWillBatMessage = "You will be batting.";
-
-        [SerializeField]
-        string _ownerWillBallMessage = "You will be balling.";
-
-        [SerializeField]
-        TMP_Text _tossResultText;
-
-        [SerializeField]
-        TMP_Text _chooseBatOrBallText;
+        private TMP_Text _chooseBatOrBallText;
 
         public void ShowTossResult(bool ownerOwn)
         {
             if (ownerOwn)
-                _tossResultText.text = _ownerWinMessage;
+                _tossResultText.text = _gameConfig.OwnerWinTossMessage;
             else
-                _tossResultText.text = _ownerLostMessage;
+                _tossResultText.text = _gameConfig.OwnerLostTossMessage;
         }
 
         public void ShowBatOrBallResult(bool willBat)
         {
             if (willBat)
-                _chooseBatOrBallText.text = _ownerWillBatMessage;
+                _chooseBatOrBallText.text = _gameConfig.OwnerWillBatMessage;
             else
-                _chooseBatOrBallText.text = _ownerWillBallMessage;
+                _chooseBatOrBallText.text = _gameConfig.OwnerWillBallMessage;
         }
     }
 }

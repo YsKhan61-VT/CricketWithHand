@@ -13,6 +13,9 @@ namespace CricketWithHand.Gameplay
         [SerializeField]
         IntDataContainerSO _totalOversDataContainer;
 
+        [SerializeField]
+        IntDataContainerSO _totalWicketsDataContainer;
+
         /// <summary>
         /// Called everytime the owner total score gets updated.
         /// </summary>
@@ -45,14 +48,22 @@ namespace CricketWithHand.Gameplay
 
         private void OnEnable()
         {
-            _totalOversDataContainer.OnValueUpdated += OnTotalOversUpdated;
+            _totalOversDataContainer.OnValueUpdated += OnTotalOversCountUpdated;
+            _totalWicketsDataContainer.OnValueUpdated += OnTotalWicketsCountUpdated;
             _ownerTotalScoreContainer.OnValueUpdated += OnOwnerTotalScoreUpdated;
             _otherTotalScoreContainer.OnValueUpdated += OnOtherTotalScoreUpdated;
         }
 
+        private void Start()
+        {
+            OnTotalOversCountUpdated();
+            OnTotalWicketsCountUpdated();
+        }
+
         private void OnDisable()
         {
-            _totalOversDataContainer.OnValueUpdated -= OnTotalOversUpdated;
+            _totalOversDataContainer.OnValueUpdated -= OnTotalOversCountUpdated;
+            _totalWicketsDataContainer.OnValueUpdated -= OnTotalWicketsCountUpdated;
             _ownerTotalScoreContainer.OnValueUpdated -= OnOwnerTotalScoreUpdated;
             _otherTotalScoreContainer.OnValueUpdated -= OnOtherTotalScoreUpdated;
         }
@@ -128,10 +139,16 @@ namespace CricketWithHand.Gameplay
             _otherClientUI.UpdateTotalScore(_otherTotalScoreContainer.Value);
         }
 
-        private void OnTotalOversUpdated()
+        private void OnTotalOversCountUpdated()
         {
             _ownerClientUI.UpdateTotalOversText(0, 0, _totalOversDataContainer.Value);
             _otherClientUI.UpdateTotalOversText(0, 0, _totalOversDataContainer.Value);
+        }
+
+        private void OnTotalWicketsCountUpdated()
+        {
+            _ownerClientUI.UpdateTotalWickets(0, _totalWicketsDataContainer.Value);
+            _otherClientUI.UpdateTotalWickets(0, _totalWicketsDataContainer.Value);
         }
     }
 }
