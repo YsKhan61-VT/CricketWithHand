@@ -40,8 +40,6 @@ namespace Doozy.Runtime.UIManager
         public enum Gameplay
         {
             ChooseBatOrBallView,
-            ChooseOverView,
-            ChooseWicketView,
             GameplayView,
             GameResultView,
             GameStatsView,
@@ -52,7 +50,11 @@ namespace Doozy.Runtime.UIManager
 
         public enum MainMenu
         {
+            ChooseOverView,
+            ChooseWicketView,
             DisplayNameView,
+            GameModesView,
+            LoadingView,
             LoginView,
             ManageAccountView,
             ProfileView,

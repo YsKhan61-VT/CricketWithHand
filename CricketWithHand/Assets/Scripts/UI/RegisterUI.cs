@@ -66,9 +66,9 @@ namespace CricketWithHand.UI
 
         public void Reset()
         {
-            _email.text = "";
-            _password.text = "";
-            _confirmPassword.text = "";
+            _email.text = string.Empty;
+            _password.text = string.Empty;
+            _confirmPassword.text = string.Empty;
         }
 
         public void RegisterUsingEmailAndPassword()

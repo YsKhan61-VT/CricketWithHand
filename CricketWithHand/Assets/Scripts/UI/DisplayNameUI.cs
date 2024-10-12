@@ -14,5 +14,8 @@ namespace CricketWithHand.UI
 
         public void SaveDisplayName() =>
             _registerLoginUIMediator.SetDisplayName(_displayNameInput.text);
+
+        public void Reset() =>
+            _displayNameInput.text = string.Empty;
     }
 }

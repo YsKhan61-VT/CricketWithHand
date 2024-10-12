@@ -19,10 +19,6 @@ MonoBehaviour:
     - Category: Gameplay
       Name: ChooseBatOrBallView
     - Category: Gameplay
-      Name: ChooseOverView
-    - Category: Gameplay
-      Name: ChooseWicketView
-    - Category: Gameplay
       Name: GameplayView
     - Category: Gameplay
       Name: GameResultView
@@ -35,7 +31,15 @@ MonoBehaviour:
     - Category: Gameplay
       Name: TossView
     - Category: MainMenu
+      Name: ChooseOverView
+    - Category: MainMenu
+      Name: ChooseWicketView
+    - Category: MainMenu
       Name: DisplayNameView
+    - Category: MainMenu
+      Name: GameModesView
+    - Category: MainMenu
+      Name: LoadingView
     - Category: MainMenu
       Name: LoginView
     - Category: MainMenu

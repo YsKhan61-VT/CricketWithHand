@@ -33,7 +33,7 @@ namespace CricketWithHand.UI
 
         public void LogOut()
         {
-            _registerLoginUIMediator.LogOut();
+            _registerLoginUIMediator.OnUserWantsToLogOut();
         }
 
         public void ShowDisplayName(string displayName) =>

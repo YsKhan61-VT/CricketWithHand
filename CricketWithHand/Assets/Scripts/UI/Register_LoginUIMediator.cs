@@ -37,6 +37,9 @@ namespace CricketWithHand.UI
         private LoginUI _loginUI;
 
         [SerializeField]
+        private DisplayNameUI _displayNameUI;
+
+        [SerializeField, Tooltip("For debug purposes")]
         private bool _clearPlayerPrefs;
 
         [SerializeField]
@@ -62,9 +65,7 @@ namespace CricketWithHand.UI
 
             if (_clearPlayerPrefs)
             {
-                _registerUI.Reset();
-                _loginUI.Reset();
-                _authServiceFacade.ClearCache();
+                ForgetLastAccountDetails();
             }
 
             _loginUI.ToggleRememberMeUI(_authServiceFacade.AuthData.RememberMe);
@@ -72,37 +73,14 @@ namespace CricketWithHand.UI
             TryLoginWithRememberedAccount();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             CancelAndDisposeCTS();
-            LogOut();
         }
 
-        private async void TryLoginWithRememberedAccount()
+        private void OnApplicationQuit()
         {
-            if (!_authServiceFacade.AuthData.RememberMe)
-            {
-                return;
-            }
-
-            _loadingUI.Show();
-
-            // Let other scripts and Doozy get initialized
-            await Task.Delay(500);      
-
-            _authServiceFacade.LoginRememberedAccount(
-                _infoRequestParams,
-
-                (result) =>
-                {
-                    OnPlayFabLoginSuccess(result);
-                },
-
-                (error) =>
-                {
-                    OnPlayFabError(error);
-                }
-            );
+            AutoLogOutOnApplicationQuit();
         }
 
         public void RegisterWithEmailAndPassword(string email, string password, string confirmPassword, bool rememberMe)
@@ -220,7 +198,11 @@ namespace CricketWithHand.UI
             );
         }
 
-        public void LogOut()
+        /// <summary>
+        /// We need to take precautions before logging out of a unlinked guest account, as
+        /// doing such will let us loose all guest account data.
+        /// </summary>
+        public void OnUserWantsToLogOut()
         {
             if (!_authServiceFacade.IsLoggedIn)
             {
@@ -242,31 +224,70 @@ namespace CricketWithHand.UI
                         RightButtonLabel = "NO",
                         OnLeftButtonClickedCallback = () =>
                         {
-                            LogOut();
+                            LogOut(ForgetLastAccountDetails);
                         }
                     }
                 );
             }
             else
             {
-                LogOut();
+                LogOut(ForgetLastAccountDetails);
             }
+        }
 
-
-            void LogOut()
+        private async void TryLoginWithRememberedAccount()
+        {
+            if (!_authServiceFacade.AuthData.RememberMe)
             {
-                _authServiceFacade.LogOut(
-                    (result) =>
-                    {
-                        LogUI.instance.AddStatusText(result);
-                        _onLogOutSuccess?.Invoke();
-                    },
-                    (error) =>
-                    {
-                        LogUI.instance.AddStatusText(error);
-                    }
-                );
+                return;
             }
+
+            _loadingUI.Show();
+
+            // Let other scripts and Doozy get initialized
+            await Task.Delay(500);
+
+            _authServiceFacade.LoginRememberedAccount(
+                _infoRequestParams,
+
+                (result) =>
+                {
+                    OnPlayFabLoginSuccess(result);
+                },
+
+                (error) =>
+                {
+                    OnPlayFabError(error);
+                }
+            );
+        }
+
+        /// <summary>
+        /// Guest account if not linked, then if logged out, will loose all datas.
+        /// So don't force logout of guest account.
+        /// </summary>
+        private void AutoLogOutOnApplicationQuit()
+        {
+            if (_authServiceFacade.AuthData.AuthType == Authtypes.Silent)
+                return;
+
+            LogOut();
+        }
+
+        private void LogOut(Action onSuccess = null)
+        {
+            _authServiceFacade.LogOut(
+                (result) =>
+                {
+                    LogUI.instance.AddStatusText(result);
+                    onSuccess?.Invoke();
+                    _onLogOutSuccess?.Invoke();
+                },
+                (error) =>
+                {
+                    LogUI.instance.AddStatusText(error);
+                }
+            );
         }
 
         private void OnPlayFabLoginSuccess(LoginResult result)
@@ -362,6 +383,14 @@ namespace CricketWithHand.UI
                 // Log any unexpected errors
                 Debug.LogError($"An error occurred: {ex.Message}");
             }
+        }
+
+        private void ForgetLastAccountDetails()
+        {
+            _registerUI.Reset();
+            _loginUI.Reset();
+            _displayNameUI.Reset();
+            _authServiceFacade.ClearCache();
         }
 
         private void CancelAndDisposeCTS()

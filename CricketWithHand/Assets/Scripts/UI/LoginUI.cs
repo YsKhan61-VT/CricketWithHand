@@ -52,8 +52,8 @@ namespace CricketWithHand.UI
 
         public void Reset()
         {
-            _emailInputField.text = "";
-            _passwordInputField.text = "";
+            _emailInputField.text = string.Empty;
+            _passwordInputField.text = string.Empty;
         }
 
         bool IsLoginCredentialsValid()

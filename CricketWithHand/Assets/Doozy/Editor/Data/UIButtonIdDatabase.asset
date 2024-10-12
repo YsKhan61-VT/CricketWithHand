@@ -21,6 +21,8 @@ MonoBehaviour:
     - Category: ChooseOverView
       Name: AllOut
     - Category: ChooseOverView
+      Name: Back
+    - Category: ChooseOverView
       Name: FourOver
     - Category: ChooseOverView
       Name: OneOver
@@ -28,6 +30,8 @@ MonoBehaviour:
       Name: SixOver
     - Category: ChooseOverView
       Name: TwoOver
+    - Category: ChooseWicketView
+      Name: Back
     - Category: ChooseWicketView
       Name: EightWickets
     - Category: ChooseWicketView
@@ -40,6 +44,10 @@ MonoBehaviour:
       Name: TwoWickets
     - Category: DisplayNameView
       Name: Save
+    - Category: GameModesView
+      Name: Back
+    - Category: GameModesView
+      Name: PlayWithAI
     - Category: GameResultView
       Name: GameStats
     - Category: GameResultView
@@ -74,6 +82,10 @@ MonoBehaviour:
       Name: None
     - Category: ProfileView
       Name: ManageAccount
+    - Category: ProfileView
+      Name: Play
+    - Category: ProfileView
+      Name: Quit
     - Category: RegistrationView
       Name: Back
     - Category: RegistrationView
