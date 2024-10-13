@@ -1,4 +1,5 @@
 ﻿using CricketWithHand.Gameplay;
+using CricketWithHand.Utility;
 using TMPro;
 using UnityEngine;
 
@@ -15,27 +16,27 @@ namespace CricketWithHand.UI
 
         private void OnEnable()
         {
-            _gameData.GameResult.OnValueUpdated += OnGameResultUpdated;
+            _gameData.Winner.OnValueUpdated += OnGameResultUpdated;
         }
 
         private void OnDisable()
         {
-            _gameData.GameResult.OnValueUpdated -= OnGameResultUpdated;
+            _gameData.Winner.OnValueUpdated -= OnGameResultUpdated;
         }
 
-        private void OnGameResultUpdated()
+        public void OnGameResultUpdated()
         {
-            switch (_gameData.GameResult.Value)
+            switch (_gameData.Winner.Value)
             {
-                case GameResultEnum.DRAW:
+                case PlayerType.NONE:
                     _resultMessageText.text = _gameData.GameConfig.DrawMessage;
                     break;
 
-                case GameResultEnum.LOST:
+                case PlayerType.OTHER:
                     _resultMessageText.text = _gameData.GameConfig.LossMessage;
                     break;
 
-                case GameResultEnum.WON:
+                case PlayerType.OWNER:
                     _resultMessageText.text = _gameData.GameConfig.WinMessage;
                     break;
             }

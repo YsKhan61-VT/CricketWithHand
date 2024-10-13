@@ -259,13 +259,13 @@ namespace CricketWithHand.Gameplay
                 return;
             }
 
-            if (HasLastOverOfThisHalfEnded() || IsCurrentHalfBattingTeamAllOut())
+            if (HasAllOversOfThisHalfEnded() || IsCurrentHalfBattingPlayerAllOut())
             {
                 ExecuteHalfTIme();
                 return;
             }
 
-            if (IsCurrentOverComplete() && !HasLastOverOfThisHalfEnded())
+            if (IsCurrentOverComplete() && !HasAllOversOfThisHalfEnded())
             {
                 StartNextOver();
             }
@@ -352,47 +352,69 @@ namespace CricketWithHand.Gameplay
         bool IsCurrentOverComplete() => _currentBallCount == _gameData.GameConfig.BallsPerOver;
 
         /// <summary>
-        /// Has the current half batting team lost all wickets.
+        /// Is this over the last over of this half
         /// </summary>
-        bool IsCurrentHalfBattingTeamAllOut() => 
-            _gameData.IsOwnerBatting ? 
-            _totalWicketsLost == _gameData.TotalWicketsCountDataContainer.Value : 
-            _totalWicketsLost == _gameData.TotalWicketsCountDataContainer.Value;
+        bool IsThisLastOverOfThisHalf() => _currentOverCount == _gameData.TotalOversCountDataContainer.Value;
 
+        /// <summary>
+        /// Has the current half batting player lost all wickets.
+        /// </summary>
+        bool IsCurrentHalfBattingPlayerAllOut() => _totalWicketsLost == _gameData.TotalWicketsCountDataContainer.Value;
+
+        /// <summary>
+        /// Is this second half running
+        /// </summary>
         bool IsSecondHalf() => _gameData.CurrentGameStateCategory.Value == GameStateCategory.SecondHalf;
-
-        /// <summary>
-        /// Is the current over the last over of this half(1st half or 2nd half)
-        /// </summary>
-        bool HasLastOverOfThisHalfEnded() => IsCurrentOverComplete() && _currentOverCount == _gameData.TotalOversCountDataContainer.Value;
-
-        /// <summary>
-        /// Both teams started batting and Has the owner's score crossed the other's score
-        /// </summary>
-        bool HasOwnerWon() => IsSecondHalf() && _gameData.IsOwnerBatting && _gameData.OwnerTotalScoreContainer.Value > _gameData.OtherTotalScoreContainer.Value;
-
-        /// <summary>
-        /// Both teams started batting and Has the other team's score crossed the owner's score
-        /// </summary>
-        bool HasOtherWon() => IsSecondHalf() && !_gameData.IsOwnerBatting && _gameData.OtherTotalScoreContainer.Value > _gameData.OwnerTotalScoreContainer.Value;
-
-        /// <summary>
-        /// [ If the second half batting team is all out OR
-        /// If the total overs to be played is limited, then total overs is finished ] AND
-        /// Both team scores are same.
-        /// </summary>
-        bool IsTargetDraw() => (IsSecondHalfBattingTeamAllOut() || HasSecondHalfTotalOversEnded()) && _gameData.OwnerTotalScoreContainer.Value == _gameData.OtherTotalScoreContainer.Value;
 
         /// <summary>
         /// If both teams have batted AND second half batting team is all out.
         /// </summary>
-        bool IsSecondHalfBattingTeamAllOut() => IsSecondHalf() && IsCurrentHalfBattingTeamAllOut();
+        bool IsSecondHalfBattingPlayerAllOut() => IsSecondHalf() && IsCurrentHalfBattingPlayerAllOut();
 
         /// <summary>
-        /// If both teams started to bat,
-        /// Has the second half batting team finished the total overs to be played.
+        /// has all the overs of this half been played
         /// </summary>
-        bool HasSecondHalfTotalOversEnded() => IsSecondHalf() && HasLastOverOfThisHalfEnded();
+        bool HasAllOversOfThisHalfEnded() => IsCurrentOverComplete() && IsThisLastOverOfThisHalf();
+
+        /// <summary>
+        /// Has all the overs of the second half been played
+        /// </summary>
+        bool HasAllOversOfSecondHalfEnded() => IsSecondHalf() && HasAllOversOfThisHalfEnded();
+
+        /// <summary>
+        /// Both teams started batting and Has the owner's score crossed the other's score
+        /// </summary>
+        bool HasOwnerWon()
+        {
+            bool won = IsSecondHalf() && 
+                _gameData.OwnerTotalScoreContainer.Value > _gameData.OtherTotalScoreContainer.Value;
+            if (won)
+                _gameData.Winner.UpdateData(PlayerType.OWNER);
+            return won;
+        }
+
+        /// <summary>
+        /// Both teams started batting and Has the other team's score crossed the owner's score
+        /// </summary>
+        bool HasOtherWon()
+        {
+            bool won = IsSecondHalf() &&
+                _gameData.OtherTotalScoreContainer.Value > _gameData.OwnerTotalScoreContainer.Value;
+            if (won)
+                _gameData.Winner.UpdateData(PlayerType.OTHER);
+            return won;
+        }
+
+        /// <summary>
+        /// Is the game a draw
+        /// </summary>
+        bool IsTargetDraw()
+        {
+            bool isDraw = (IsSecondHalfBattingPlayerAllOut() || HasAllOversOfSecondHalfEnded()) && _gameData.OwnerTotalScoreContainer.Value == _gameData.OtherTotalScoreContainer.Value;
+            if (isDraw)
+                _gameData.Winner.UpdateData(PlayerType.NONE);
+            return isDraw;
+        }
 
         /// <summary>
         /// If this conditions match, we end the game.
@@ -401,8 +423,8 @@ namespace CricketWithHand.Gameplay
             IsTargetDraw() ||
             HasOwnerWon() ||
             HasOtherWon() ||
-            HasSecondHalfTotalOversEnded() ||
-            IsSecondHalfBattingTeamAllOut();
+            HasAllOversOfSecondHalfEnded() ||
+            IsSecondHalfBattingPlayerAllOut();
 
         bool PassPreChecks()
         {

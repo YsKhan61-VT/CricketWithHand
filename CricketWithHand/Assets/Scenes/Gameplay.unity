@@ -13604,18 +13604,6 @@ MonoBehaviour:
   OnGameEnds:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 7c4d1994849cb3d488b93f1d3be0cd49, type: 2}
-        m_TargetAssemblyTypeName: CricketWithHand.Gameplay.GameDataSO, Assembly-CSharp
-        m_MethodName: ProcessResult
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4775341448253160733}
         m_TargetAssemblyTypeName: CricketWithHand.UI.TotalStatsUI, Assembly-CSharp
         m_MethodName: UpdateTotalStats
@@ -13631,6 +13619,19 @@ MonoBehaviour:
       - m_Target: {fileID: 4775341448253160733}
         m_TargetAssemblyTypeName: CricketWithHand.UI.TotalStatsUI, Assembly-CSharp
         m_MethodName: UpdateTotalStats
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2115737127}
+        m_TargetAssemblyTypeName: Doozy.Runtime.Signals.Components.SignalSender,
+          Assembly-CSharp
+        m_MethodName: SendSignal
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

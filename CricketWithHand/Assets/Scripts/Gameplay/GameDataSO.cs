@@ -11,7 +11,7 @@ namespace CricketWithHand.Gameplay
 
         public GameStateCategoryDataContainerSO CurrentGameStateCategory;
 
-        public BatsmanDataContainerSO BatsmanOfFirstHalf;
+        public PlayerTypeDataContainerSO BatsmanOfFirstHalf;
 
         public IntDataContainerSO TotalOversCountDataContainer;
 
@@ -19,7 +19,7 @@ namespace CricketWithHand.Gameplay
 
         public FloatDataContainerSO TurnSliderValue;
 
-        public GameResultDataContainerSO GameResult;
+        public PlayerTypeDataContainerSO Winner;
 
 
         [Space(10)]
@@ -159,26 +159,6 @@ namespace CricketWithHand.Gameplay
                     BatsmanOfFirstHalf.Value == PlayerType.OWNER) ||
                 (CurrentGameStateCategory.Value == GameStateCategory.SecondHalf &&
                     BatsmanOfFirstHalf.Value == PlayerType.OTHER);
-            }
-        }
-
-        public void ProcessResult()
-        {
-            int scoreDiff = OtherTotalScoreContainer.Value - OwnerTotalScoreContainer.Value;
-
-            switch (scoreDiff)
-            {
-                case 0:
-                    GameResult.UpdateData(GameResultEnum.DRAW);
-                    break;
-
-                case > 0:
-                    GameResult.UpdateData(GameResultEnum.LOST);
-                    break;
-
-                case < 0:
-                    GameResult.UpdateData(GameResultEnum.WON);
-                    break;
             }
         }
     }

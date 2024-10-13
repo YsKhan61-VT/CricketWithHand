@@ -12,7 +12,7 @@ namespace CricketWithHand.Gameplay
         private GameConfigSO _gameConfig;
 
         [SerializeField]
-        private BatsmanDataContainerSO _batsmanOfFirstHalf;
+        private PlayerTypeDataContainerSO _batsmanOfFirstHalf;
 
         [SerializeField]
         private UnityEvent OnOwnerOwnToss;
