@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CricketWithHand.Utility
+namespace CricketWithHand.Gameplay
 {
     [CreateAssetMenu(fileName = "GameConfig", menuName = "ScriptableObjects/GameConfigSO")]
     public class GameConfigSO : ScriptableObject
@@ -40,6 +40,14 @@ namespace CricketWithHand.Utility
         [SerializeField]
         private string _ownerWillBallMessage = "You will be balling.";
         public string OwnerWillBallMessage => _ownerWillBallMessage;
+
+        [SerializeField]
+        string _battingPlayStateText = "Batting";
+        public string BattingPlayStateText => _battingPlayStateText;
+
+        [SerializeField]
+        string _ballingPlayStateText = "Balling";
+        public string BallingPlayStateText => _ballingPlayStateText;
 
         [SerializeField]
         private string _winMessage;

@@ -694,7 +694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameData: {fileID: 11400000, guid: 7c4d1994849cb3d488b93f1d3be0cd49, type: 2}
-  _playerType: 0
+  _playerStats: {fileID: 0}
   _totalScoreText: {fileID: 122190553182369650}
   _oversPlayedText: {fileID: 6686025412442890274}
   _wicketsLostText: {fileID: 8122594344984428367}
@@ -1637,6 +1637,7 @@ GameObject:
   - component: {fileID: 5179901602908670134}
   - component: {fileID: 7812216210343636877}
   - component: {fileID: 5515998506887474933}
+  - component: {fileID: 9174508799595714688}
   m_Layer: 5
   m_Name: Container - Stats
   m_TagString: Untagged
@@ -2327,6 +2328,22 @@ MonoBehaviour:
       ToCustomValue: 1
       FromOffset: 0
       ToOffset: 0
+--- !u!114 &9174508799595714688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2957046517922655528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c89e20ec29420c4b8d53550e1ddc0d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerStats: {fileID: 0}
+  _overStatsUIPrefab: {fileID: 4675969165670686943, guid: 4a2914723b76a4a41a5e76f34c4240b1,
+    type: 3}
+  _overStatsSpawnParent: {fileID: 5582452785060029890}
 --- !u!1 &3495110948733187588
 GameObject:
   m_ObjectHideFlags: 0

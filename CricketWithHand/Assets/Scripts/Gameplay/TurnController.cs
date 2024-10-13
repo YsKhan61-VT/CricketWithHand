@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using CricketWithHand.Utility;
 using System.Threading.Tasks;
+using System;
 
 
 namespace CricketWithHand.Gameplay
 {
     public class TurnController : MonoBehaviour
     {
-
         #region Events
 
         /// <summary>
@@ -36,169 +36,170 @@ namespace CricketWithHand.Gameplay
         #region Game Data Containers
 
         [SerializeField]
+        private GameConfigSO _gameConfig;
+
+        [SerializeField]
         private GameDataSO _gameData;
+
+        [SerializeField]
+        private PlayerStatsSO _ownerStats;
+
+        [SerializeField]
+        private PlayerStatsSO _otherStats;
 
         #endregion
 
         [SerializeField]
         GameStateManager _gameStateManager;
 
-        int _totalScore
+        int TotalScore
         {
             get
             {
                 if (_gameData.IsOwnerBatting)
-                    return _gameData.OwnerTotalScoreContainer.Value;
+                    return _ownerStats.TotalScore.Value;
                 else
-                    return _gameData.OtherTotalScoreContainer.Value;
+                    return _otherStats.TotalScore.Value;
             }
 
             set
             {
                 if (_gameData.IsOwnerBatting)
-                    _gameData.OwnerTotalScoreContainer.UpdateData(value);
+                    _ownerStats.TotalScore.UpdateData(value);
                 else
-                    _gameData.OtherTotalScoreContainer.UpdateData(value);
+                    _otherStats.TotalScore.UpdateData(value);
             }
         }
 
         /// <summary>
         /// Use this only in either of First half or Second half state, while a player is batting
         /// </summary>
-        int _currentBallCount
+        int CurrentBallCount
         {
             get
             {
                 if (_gameData.IsOwnerBatting)
-                    return _gameData.OwnerBallCountContainer.Value;
+                    return _ownerStats.BallsCount.Value;
                 else
-                    return _gameData.OtherBallCountContainer.Value;
+                    return _otherStats.BallsCount.Value;
             }
 
             set
 
             {
                 if (_gameData.IsOwnerBatting)
-                    _gameData.OwnerBallCountContainer.UpdateData(value);
+                    _ownerStats.BallsCount.UpdateData(value);
                 else
-                    _gameData.OtherBallCountContainer.UpdateData(value);
+                    _otherStats.BallsCount.UpdateData(value);
             }
         }
 
         /// <summary>
         /// Use this only in either of First half or Second half state, while a player is batting
         /// </summary>
-        int _currentOverCount
+        int CurrentOverCount
         {
             get
             {
                 if (_gameData.IsOwnerBatting)
-                    return _gameData.OwnerOverCountContainer.Value;
+                    return _ownerStats.OversCount.Value;
                 else
-                    return _gameData.OtherOverCountContainer.Value;
+                    return _otherStats.OversCount.Value;
             }
 
             set
             {
                 if (_gameData.IsOwnerBatting)
-                    _gameData.OwnerOverCountContainer.UpdateData(value);
+                    _ownerStats.OversCount.UpdateData(value);
                 else
-                    _gameData.OtherOverCountContainer.UpdateData(value);
+                    _otherStats.OversCount.UpdateData(value);
             }
         }
 
-        int _turnScore
+        int ScoreInThisBall
         {
             get
             {
                 if (_gameData.IsOwnerBatting)
-                    return _gameData.OwnerTurnScoreContainer.Value;
+                    return _ownerStats.ScoreInThisBall.Value;
                 else
-                    return _gameData.OtherTurnScoreContainer.Value;
+                    return _otherStats.ScoreInThisBall.Value;
             }
 
             set
             {
                 if (_gameData.IsOwnerBatting)
-                    _gameData.OwnerTurnScoreContainer.UpdateData(value);
+                    _ownerStats.ScoreInThisBall.UpdateData(value);
                 else
-                    _gameData.OtherTurnScoreContainer.UpdateData(value);
+                    _otherStats.ScoreInThisBall.UpdateData(value);
             }
         }
 
-        BallData _turnData
+        int InputScore
         {
             get
             {
                 if (_gameData.IsOwnerBatting)
-                    return _gameData.OwnerBallDataContainer.Value;
+                    return _ownerStats.InputScore.Value;
                 else
-                    return _gameData.OtherBallDataContainer.Value;
-            }
-
-            set
-            {
-                if (_gameData.IsOwnerBatting)
-                    _gameData.OwnerBallDataContainer.UpdateData(value);
-                else
-                    _gameData.OtherBallDataContainer.UpdateData(value);
-            }
-        }
-
-        int _inputScore
-        {
-            get
-            {
-                if (_gameData.IsOwnerBatting)
-                    return _gameData.OwnerInputScoreContainer.Value;
-                else
-                    return _gameData.OtherInputScoreContainer.Value;
+                    return _otherStats.InputScore.Value;
             }
             
             set
             {
                 if (_gameData.IsOwnerBatting)
-                    _gameData.OwnerInputScoreContainer.UpdateData(value);
+                    _ownerStats.InputScore.UpdateData(value);
                 else
-                    _gameData.OtherInputScoreContainer.UpdateData(value);
+                    _otherStats.InputScore.UpdateData(value);
             }
         }
 
-        int _totalWicketsLost
+        int TotalWicketsLost
         {
             get
             {
                 if (_gameData.IsOwnerBatting)
-                    return _gameData.OwnerTotalWicketLostContainer.Value;
+                    return _ownerStats.TotalWicketsLost.Value;
                 else
-                    return _gameData.OtherTotalWicketLostContainer.Value;
+                    return _otherStats.TotalWicketsLost.Value;
             }
 
             set
             {
                 if (_gameData.IsOwnerBatting)
-                    _gameData.OwnerTotalWicketLostContainer.UpdateData(value);
+                    _ownerStats.TotalWicketsLost.UpdateData(value);
                 else
-                    _gameData.OtherTotalWicketLostContainer.UpdateData(value);
+                    _otherStats.TotalWicketsLost.UpdateData(value);
             }
         }
 
-        bool _isOutOnThisTurn
+        bool IsOutOnThisBall
         {
             get
             {
                 if (_gameData.IsOwnerBatting)
-                    return _gameData.OwnerIsOutOnThisTurnContainer.Value;
+                    return _ownerStats.IsOutInThisBall.Value;
                 else
-                    return _gameData.OtherIsOutOnThisTurnContainer.Value;
+                    return _otherStats.IsOutInThisBall.Value;
             }
 
             set
             {
                 if (_gameData.IsOwnerBatting)
-                    _gameData.OwnerIsOutOnThisTurnContainer.UpdateData(value);
+                    _ownerStats.IsOutInThisBall.UpdateData(value);
                 else
-                    _gameData.OtherIsOutOnThisTurnContainer.UpdateData(value);
+                    _otherStats.IsOutInThisBall.UpdateData(value);
+            }
+        }
+
+        Action OnBallPlayed
+        {
+            get
+            {
+                if (_gameData.IsOwnerBatting)
+                    return _ownerStats.OnBallPlayed;
+                else
+                    return _otherStats.OnBallPlayed;
             }
         }
        
@@ -208,7 +209,9 @@ namespace CricketWithHand.Gameplay
 
         void Start()
         {
-            _gameData.ResetRuntimeDatas();
+            _gameData.ResetData();
+            _ownerStats.ResetData();
+            _otherStats.ResetData();
         }
 
 
@@ -225,7 +228,7 @@ namespace CricketWithHand.Gameplay
                 return;
             }
 
-            ResetForNewHalf();
+            SetForNewHalf();
 
             OnNextHalfStarted?.Invoke();
 
@@ -235,10 +238,10 @@ namespace CricketWithHand.Gameplay
         }
 
         public void RegisterOwnerInput(int scoreValue) =>
-            _gameData.OwnerInputScoreContainer.UpdateData(scoreValue);
+            _ownerStats.InputScore.UpdateData(scoreValue);
 
         public void RegisterOtherInput(int scoreValue) =>
-            _gameData.OtherInputScoreContainer.UpdateData(scoreValue);
+            _otherStats.InputScore.UpdateData(scoreValue);
 
         async void TryExecuteNextTurn()
         {
@@ -247,11 +250,13 @@ namespace CricketWithHand.Gameplay
 
             OnNextTurnCountdownEnded?.Invoke();
 
-            _currentBallCount++;
+            CurrentBallCount++;
 
             CalculateScoreAndWicketsLost();
 
-            await Task.Delay(_gameData.GameConfig.WaitForSecsBeforeNextTurn * 1000);
+            OnBallPlayed?.Invoke();
+
+            await Task.Delay(_gameConfig.WaitForSecsBeforeNextTurn * 1000);
 
             if (IsGameEndConditionsMatching())
             {
@@ -273,10 +278,15 @@ namespace CricketWithHand.Gameplay
             StartNextTurn();
         }
 
-        void ResetForNewHalf()
+        void SetForNewHalf()
         {
-            _currentOverCount = 0;
-            _currentBallCount = 0;
+            if (_gameData.IsOwnerBatting)
+                _ownerStats.StartedBatting.UpdateData(true);
+            else
+                _otherStats.StartedBatting.UpdateData(true);
+
+            CurrentOverCount = 0;
+            CurrentBallCount = 0;
         }
 
         void ExecuteHalfTIme()
@@ -289,9 +299,9 @@ namespace CricketWithHand.Gameplay
             if (_pauseCountdown) return false;
 
             _timeElapsedSinceTurnCountdownStarted += Time.deltaTime;
-            _gameData.TurnSliderValue.UpdateData(1 - (_timeElapsedSinceTurnCountdownStarted / _gameData.GameConfig.TurnDurationInSecs));
+            _gameData.TurnSliderValue.UpdateData(1 - (_timeElapsedSinceTurnCountdownStarted / _gameConfig.TurnDurationInSecs));
 
-            if (_timeElapsedSinceTurnCountdownStarted < _gameData.GameConfig.TurnDurationInSecs)
+            if (_timeElapsedSinceTurnCountdownStarted < _gameConfig.TurnDurationInSecs)
                 return false;
             else
             {
@@ -302,7 +312,7 @@ namespace CricketWithHand.Gameplay
 
         void StartNextOver()
         {
-            _currentOverCount++;
+            CurrentOverCount++;
             OnNextOverStarted?.Invoke();
         }
 
@@ -312,10 +322,10 @@ namespace CricketWithHand.Gameplay
             _gameData.TurnSliderValue.UpdateData(1);
             _pauseCountdown = false;
             
-            _gameData.OwnerInputScoreContainer.UpdateData(0);
-            _gameData.OtherInputScoreContainer.UpdateData(0);
+            _ownerStats.InputScore.UpdateData(0);
+            _otherStats.InputScore.UpdateData(0);
 
-            _isOutOnThisTurn = false;
+            IsOutOnThisBall = false;
 
             OnNextTurnCountdownStarted?.Invoke();
         }
@@ -328,38 +338,31 @@ namespace CricketWithHand.Gameplay
         void CalculateScoreAndWicketsLost()
         {
             // Check if is out
-            _isOutOnThisTurn = _gameData.OwnerInputScoreContainer.Value == _gameData.OtherInputScoreContainer.Value;
+            IsOutOnThisBall = _ownerStats.InputScore.Value == _otherStats.InputScore.Value;
 
-            _turnScore = _isOutOnThisTurn ? 0 : _gameData.IsOwnerBatting ? _gameData.OwnerInputScoreContainer.Value : _gameData.OtherInputScoreContainer.Value;
-            _totalScore += _turnScore;
-            _turnData = new BallData
-            {
-                OverNumber = _currentOverCount,
-                BallNumber = _currentBallCount,
-                Score = _turnScore,
-                IsWicketLost = _isOutOnThisTurn,
-            };
+            ScoreInThisBall = IsOutOnThisBall ? 0 : _gameData.IsOwnerBatting ? _ownerStats.InputScore.Value : _otherStats.InputScore.Value;
+            TotalScore += ScoreInThisBall;
 
-            if (!_isOutOnThisTurn)
+            if (!IsOutOnThisBall)
                 return;
 
-            _totalWicketsLost++;
+            TotalWicketsLost++;
         }
 
         /// <summary>
         /// Is the total balls of the current over completed playing.
         /// </summary>
-        bool IsCurrentOverComplete() => _currentBallCount == _gameData.GameConfig.BallsPerOver;
+        bool IsCurrentOverComplete() => CurrentBallCount == _gameConfig.BallsPerOver;
 
         /// <summary>
         /// Is this over the last over of this half
         /// </summary>
-        bool IsThisLastOverOfThisHalf() => _currentOverCount == _gameData.TotalOversCountDataContainer.Value;
+        bool IsThisLastOverOfThisHalf() => CurrentOverCount == _gameData.TotalOversCountDataContainer.Value;
 
         /// <summary>
         /// Has the current half batting player lost all wickets.
         /// </summary>
-        bool IsCurrentHalfBattingPlayerAllOut() => _totalWicketsLost == _gameData.TotalWicketsCountDataContainer.Value;
+        bool IsCurrentHalfBattingPlayerAllOut() => TotalWicketsLost == _gameData.TotalWicketsCountDataContainer.Value;
 
         /// <summary>
         /// Is this second half running
@@ -387,7 +390,7 @@ namespace CricketWithHand.Gameplay
         bool HasOwnerWon()
         {
             bool won = IsSecondHalf() && 
-                _gameData.OwnerTotalScoreContainer.Value > _gameData.OtherTotalScoreContainer.Value;
+                _ownerStats.TotalScore.Value > _otherStats.TotalScore.Value;
             if (won)
                 _gameData.Winner.UpdateData(PlayerType.OWNER);
             return won;
@@ -399,7 +402,7 @@ namespace CricketWithHand.Gameplay
         bool HasOtherWon()
         {
             bool won = IsSecondHalf() &&
-                _gameData.OtherTotalScoreContainer.Value > _gameData.OwnerTotalScoreContainer.Value;
+                _ownerStats.TotalScore.Value < _otherStats.TotalScore.Value;
             if (won)
                 _gameData.Winner.UpdateData(PlayerType.OTHER);
             return won;
@@ -410,7 +413,8 @@ namespace CricketWithHand.Gameplay
         /// </summary>
         bool IsTargetDraw()
         {
-            bool isDraw = (IsSecondHalfBattingPlayerAllOut() || HasAllOversOfSecondHalfEnded()) && _gameData.OwnerTotalScoreContainer.Value == _gameData.OtherTotalScoreContainer.Value;
+            bool isDraw = (IsSecondHalfBattingPlayerAllOut() || HasAllOversOfSecondHalfEnded()) &&
+                _ownerStats.TotalScore.Value == _otherStats.TotalScore.Value;
             if (isDraw)
                 _gameData.Winner.UpdateData(PlayerType.NONE);
             return isDraw;
@@ -428,7 +432,7 @@ namespace CricketWithHand.Gameplay
 
         bool PassPreChecks()
         {
-            if (_gameData.GameConfig.BallsPerOver == 0 || _gameData.TotalOversCountDataContainer.Value == 0)
+            if (_gameConfig.BallsPerOver == 0 || _gameData.TotalOversCountDataContainer.Value == 0)
             {
                 gameObject.SetActive(false);
                 return false;

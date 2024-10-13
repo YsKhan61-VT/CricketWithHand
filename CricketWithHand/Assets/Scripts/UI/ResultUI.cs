@@ -1,5 +1,4 @@
 ﻿using CricketWithHand.Gameplay;
-using CricketWithHand.Utility;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +7,9 @@ namespace CricketWithHand.UI
 {
     public class ResultUI : MonoBehaviour
     {
+        [SerializeField]
+        private GameConfigSO _gameConfig;
+
         [SerializeField]
         private GameDataSO _gameData;
 
@@ -29,15 +31,15 @@ namespace CricketWithHand.UI
             switch (_gameData.Winner.Value)
             {
                 case PlayerType.NONE:
-                    _resultMessageText.text = _gameData.GameConfig.DrawMessage;
+                    _resultMessageText.text = _gameConfig.DrawMessage;
                     break;
 
                 case PlayerType.OTHER:
-                    _resultMessageText.text = _gameData.GameConfig.LossMessage;
+                    _resultMessageText.text = _gameConfig.LossMessage;
                     break;
 
                 case PlayerType.OWNER:
-                    _resultMessageText.text = _gameData.GameConfig.WinMessage;
+                    _resultMessageText.text = _gameConfig.WinMessage;
                     break;
             }
         }

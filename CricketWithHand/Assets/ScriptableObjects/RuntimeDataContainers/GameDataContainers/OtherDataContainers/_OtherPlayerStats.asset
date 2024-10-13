@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a5908775c80bbd4793ca8b41dc8dfd1, type: 3}
+  m_Name: _OtherPlayerStats
+  m_EditorClassIdentifier: 
+  PlayerType: 2
+  StartedBatting: {fileID: 11400000, guid: 98982c1c982ab0441a3f09d4afd40d6d, type: 2}
+  InputScore: {fileID: 11400000, guid: 7055ea82121e7984292e050f09c7322d, type: 2}
+  OversCount: {fileID: 11400000, guid: c0ab5476a826c8a46b333ca3c69376d1, type: 2}
+  BallsCount: {fileID: 11400000, guid: 062a2eca49e1663488affd01b2e44de7, type: 2}
+  ScoreInThisBall: {fileID: 11400000, guid: 0561e720fdb31b749a4ffb94915fb955, type: 2}
+  IsOutInThisBall: {fileID: 11400000, guid: 8ec8de8c8a2996e4d96936312ed120e9, type: 2}
+  TotalScore: {fileID: 11400000, guid: cd9f3c3178cefb1488d691e2ed644265, type: 2}
+  TotalWicketsLost: {fileID: 11400000, guid: 35c03df8828398847ad49fb437f77b02, type: 2}

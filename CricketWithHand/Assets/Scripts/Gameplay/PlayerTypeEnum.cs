@@ -1,4 +1,4 @@
-﻿namespace CricketWithHand.Utility
+﻿namespace CricketWithHand.Gameplay
 {
     public enum PlayerType : byte
     {

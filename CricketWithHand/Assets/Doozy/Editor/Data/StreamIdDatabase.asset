@@ -23,6 +23,8 @@ MonoBehaviour:
     - Category: Gameplay
       Name: OnPublishTossResult
     - Category: MainMenu
+      Name: OnAutoLoginFailed
+    - Category: MainMenu
       Name: OnLoggedInWithDIsplayName
     - Category: MainMenu
       Name: OnLoggedInWithoutDisplaName

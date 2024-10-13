@@ -1,5 +1,4 @@
 using CricketWithHand.Gameplay;
-using CricketWithHand.Utility;
 using System;
 using TMPro;
 using UnityEngine;
@@ -21,6 +20,12 @@ namespace CricketWithHand.UI
         private GameDataSO _gameData;
 
         [SerializeField]
+        private PlayerStatsSO _ownerStats;
+
+        [SerializeField]
+        private PlayerStatsSO _otherStats;
+
+        [SerializeField]
         BallScoreUI[] _ballScoreUIs;
 
         [SerializeField]
@@ -34,17 +39,26 @@ namespace CricketWithHand.UI
 
         private void OnEnable()
         {
-            _gameData.OwnerBallDataContainer.OnValueUpdated += UpdateUI;
-            _gameData.OtherBallDataContainer.OnValueUpdated += UpdateUI;
+            _ownerStats.OversCount.OnValueUpdated += ResetBallUIs;
+            _otherStats.OversCount.OnValueUpdated += ResetBallUIs;
+
+            _ownerStats.OnBallPlayed += UpdateUI;
+            _otherStats.OnBallPlayed += UpdateUI;
         }
 
         private void OnDisable()
         {
-            _gameData.OwnerBallDataContainer.OnValueUpdated -= UpdateUI;
-            _gameData.OtherBallDataContainer.OnValueUpdated -= UpdateUI;
+            _ownerStats.OversCount.OnValueUpdated -= ResetBallUIs;
+            _otherStats.OversCount.OnValueUpdated -= ResetBallUIs;
+
+            _ownerStats.OnBallPlayed -= UpdateUI;
+            _otherStats.OnBallPlayed -= UpdateUI;
         }
 
-        public void ResetBallUIs()
+        /// <summary>
+        /// This should be called at the start of every over
+        /// </summary>
+        private void ResetBallUIs()
         {
             foreach (var ball in _ballScoreUIs)
             {
@@ -55,21 +69,12 @@ namespace CricketWithHand.UI
 
         private void UpdateUI()
         {
-            BallData ballData;
+            PlayerStatsSO playerStats = _gameData.IsOwnerBatting ? _ownerStats : _otherStats;
 
-            if (_gameData.IsOwnerBatting)
-                ballData = _gameData.OwnerBallDataContainer.Value;
-            else
-                ballData = _gameData.OtherBallDataContainer.Value;
+            int index = Mathf.Max(0, playerStats.BallsCount.Value - 1);
+            int scoreInThisBall = playerStats.ScoreInThisBall.Value;
 
-            int index = ballData.BallNumber - 1;
-            if (index < 0 || index >= _ballScoreUIs.Length)
-            {
-                // index can be -1 when the first ball of the game is bowled.
-                return;
-            }
-
-            if (ballData.Score == 0 && ballData.IsWicketLost)
+            if (scoreInThisBall == 0 && playerStats.IsOutInThisBall)
             {
                 _ballScoreUIs[index].BackgroundImage.color = _wicketColor;
                 _ballScoreUIs[index].ScoreText.text = "W";
@@ -77,7 +82,7 @@ namespace CricketWithHand.UI
             else
             {
                 _ballScoreUIs[index].BackgroundImage.color = _currentBallColor;
-                _ballScoreUIs[index].ScoreText.text = ballData.Score.ToString();
+                _ballScoreUIs[index].ScoreText.text = scoreInThisBall.ToString();
             }
         }
     }

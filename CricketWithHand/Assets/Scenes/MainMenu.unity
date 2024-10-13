@@ -21559,6 +21559,7 @@ GameObject:
   - component: {fileID: 2107564838}
   - component: {fileID: 2107564837}
   - component: {fileID: 2107564840}
+  - component: {fileID: 2107564841}
   m_Layer: 0
   m_Name: Registration-LoginUIMediator
   m_TagString: Untagged
@@ -21729,6 +21730,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _onAutoLoginFailed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2107564841}
+        m_TargetAssemblyTypeName: Doozy.Runtime.Signals.Components.SignalSender,
+          Assembly-CSharp
+        m_MethodName: SendSignal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _registerUI: {fileID: 320916124}
   _loginUI: {fileID: 1854542330}
   _displayNameUI: {fileID: 1666256979}
@@ -21784,6 +21801,36 @@ MonoBehaviour:
     StreamId:
       Category: MainMenu
       Name: OnLogOutSuccess
+      Custom: 0
+    SignalValueType: 0
+    IntegerValue: 0
+    BooleanValue: 0
+    FloatValue: 0
+    StringValue: 
+    ColorValue: {r: 0, g: 0, b: 0, a: 0}
+    Vector2Value: {x: 0, y: 0}
+    Vector3Value: {x: 0, y: 0, z: 0}
+    Vector4Value: {x: 0, y: 0, z: 0, w: 0}
+  SendOnStart: 0
+  SendOnEnable: 0
+  SendOnDisable: 0
+  SendOnDestroy: 0
+--- !u!114 &2107564841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107564835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f003aa0ad0a4c469338c205df004d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Payload:
+    StreamId:
+      Category: MainMenu
+      Name: OnAutoLoginFailed
       Custom: 0
     SignalValueType: 0
     IntegerValue: 0

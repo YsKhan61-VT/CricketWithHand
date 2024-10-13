@@ -27,6 +27,9 @@ namespace CricketWithHand.UI
         [SerializeField]
         private UnityEvent _onLogOutSuccess;
 
+        [SerializeField]
+        private UnityEvent _onAutoLoginFailed;
+
         #endregion
 
 
@@ -235,17 +238,21 @@ namespace CricketWithHand.UI
             }
         }
 
+        [ContextMenu("OnAutoLoginFailed")]
+        void Invoke() => _onAutoLoginFailed?.Invoke();
+
         private async void TryLoginWithRememberedAccount()
         {
+            // Let other scripts and Doozy get initialized
+            await Task.Delay(5000);
+
             if (!_authServiceFacade.AuthData.RememberMe)
             {
+                _onAutoLoginFailed?.Invoke();
                 return;
             }
 
             _loadingUI.Show();
-
-            // Let other scripts and Doozy get initialized
-            await Task.Delay(500);
 
             _authServiceFacade.LoginRememberedAccount(
                 _infoRequestParams,
@@ -258,6 +265,7 @@ namespace CricketWithHand.UI
                 (error) =>
                 {
                     OnPlayFabError(error);
+                    _onAutoLoginFailed?.Invoke();
                 }
             );
         }
@@ -311,29 +319,6 @@ namespace CricketWithHand.UI
 
         private void OnPlayFabError(PlayFabError error)
         {
-            /*//There are more cases which can be caught, below are some
-            //of the basic ones.
-            switch (error.Error)
-            {
-                case PlayFabErrorCode.InvalidEmailAddress:
-                    LogUI.instance.AddStatusText($"Error Code: {error.Error} Invalid Email");
-                    PopupUI.instance.ShowMessage("Authentication Error:", "No account found with the Email. \n Make sure the email address you provided is correct. \n If yes, register with that email address first!");
-                    break;
-                case PlayFabErrorCode.InvalidPassword:
-                    LogUI.instance.AddStatusText("Invalid password");
-                    PopupUI.instance.ShowMessage("Authentication Error:", "No account found with the Email. \n Make sure the email address you provided is correct. \n If yes, register with that email address first!");
-                case PlayFabErrorCode.InvalidEmailOrPassword:
-                case PlayFabErrorCode.InvalidParams:
-                case PlayFabErrorCode.AccountNotFound:
-                case PlayFabErrorCode.InvalidAccount:
-                    LogUI.instance.AddStatusText("Invalid Email or Password");
-                    PopupUI.instance.ShowMessage("Authentication Error:", "No account found with the Email. \n Make sure the email address you provided is correct. \n If yes, register with that email address first!");
-                    break;
-                default:
-                    LogUI.instance.AddStatusText($"{error.Error}, {error.ErrorMessage}");
-                    break;
-            }*/
-
             string errorReport = error.GenerateErrorReport();
             LogUI.instance.AddStatusText($"Error code: {error.Error} \n Message: {errorReport} \n");
             PopupUI.instance.ShowPopup($"Error code: {error.Error}", $"Message: {errorReport} \n");

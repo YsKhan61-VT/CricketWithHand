@@ -1,5 +1,4 @@
 ﻿using CricketWithHand.Gameplay;
-using CricketWithHand.Utility;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ namespace CricketWithHand.UI
         private GameDataSO _gameData;
 
         [SerializeField]
-        private PlayerType _playerType;
+        private PlayerStatsSO _playerStats;
 
         [SerializeField]
         private TMP_Text _totalScoreText;
@@ -27,11 +26,7 @@ namespace CricketWithHand.UI
         private TMP_Text _wicketsLostText;
 
 
-        bool IsOwner => _playerType == PlayerType.OWNER;
-        int TotalScore => IsOwner ? _gameData.OwnerTotalScoreContainer.Value : _gameData.OtherTotalScoreContainer.Value;
-        int OversPlayed => IsOwner ? _gameData.OwnerOverCountContainer.Value : _gameData.OtherOverCountContainer.Value;
-        int BallsPlayed => IsOwner ? _gameData.OwnerBallCountContainer.Value : _gameData.OtherBallCountContainer.Value;
-        int WicketsLost => IsOwner ? _gameData.OwnerTotalWicketLostContainer.Value : _gameData.OtherTotalWicketLostContainer.Value;
+        bool IsOwner => _playerStats.PlayerType == PlayerType.OWNER;
 
         public void UpdateTotalStats()
         {
@@ -41,7 +36,7 @@ namespace CricketWithHand.UI
         }
 
         private void UpdateTotalScoreText() =>
-            _totalScoreText.text = TotalScore.ToString();
+            _totalScoreText.text = _playerStats.TotalScore.Value.ToString();
 
         /// <summary>
         /// Here the over count of the game will be 1, but in the score board we show the first over as 0,
@@ -51,13 +46,16 @@ namespace CricketWithHand.UI
 
         private void UpdateOversPlayedText()
         {
-            int oversPlayed = Mathf.Max(0, OversPlayed - 1);
-            string oversPlayedText = (BallsPlayed == 6 || BallsPlayed == 0) ?
-                oversPlayed.ToString() : $"{oversPlayed}.{BallsPlayed}";
+            int ballsCount = _playerStats.BallsCount.Value;
+            int oversPlayed = Mathf.Max(0, _playerStats.OversCount.Value - 1);
+
+            string oversPlayedText = (ballsCount == 6 || ballsCount == 0) ?
+                oversPlayed.ToString() : $"{oversPlayed}.{ballsCount}";
+
             _oversPlayedText.text = oversPlayedText;
         }
 
         private void UpdateWicketsLostText() =>
-            _wicketsLostText.text = $"{WicketsLost}/{_gameData.TotalWicketsCountDataContainer.Value}";
+            _wicketsLostText.text = $"{_playerStats.TotalWicketsLost.Value}/{_gameData.TotalWicketsCountDataContainer.Value}";
     }
 }

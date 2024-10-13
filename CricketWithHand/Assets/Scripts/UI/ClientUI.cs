@@ -1,5 +1,4 @@
 ﻿using CricketWithHand.Gameplay;
-using CricketWithHand.Utility;
 using TMPro;
 using UnityEngine;
 
@@ -9,28 +8,13 @@ namespace CricketWithHand.UI
     public class ClientUI : MonoBehaviour
     {
         [SerializeField]
-        IntDataContainerSO _totalOvers;
+        private GameConfigSO _gameConfig;
 
         [SerializeField]
-        IntDataContainerSO _totalWickets;
+        private GameDataSO _gameData;
 
         [SerializeField]
-        BoolDataContainerSO _hasStartedBatting;
-
-        [SerializeField]
-        IntDataContainerSO _overCount;
-
-        [SerializeField]
-        IntDataContainerSO _ballCount;
-
-        [SerializeField]
-        IntDataContainerSO _inputScore;
-
-        [SerializeField]
-        IntDataContainerSO _totalScore;
-
-        [SerializeField]
-        IntDataContainerSO _wicketsLost;
+        private PlayerStatsSO _playerStats;
 
         [SerializeField]
         TMP_Text _playingStateText;
@@ -47,50 +31,50 @@ namespace CricketWithHand.UI
         [SerializeField]
         TMP_Text _totalOversText;
 
-        [SerializeField]
-        string _battingText = "Batting";
+        bool IsOwner => _playerStats.PlayerType == PlayerType.OWNER;
 
-        [SerializeField]
-        string _ballingText = "Balling";
+        bool IsBatting => (IsOwner && _gameData.IsOwnerBatting) ||
+            (!IsOwner && !_gameData.IsOwnerBatting);
 
         private void OnEnable()
         {
-            _totalOvers.OnValueUpdated += UpdateOversUI;
-            _overCount.OnValueUpdated += UpdateOversUI;
-            _ballCount.OnValueUpdated += UpdateOversUI;
+            _gameData.TotalOversCountDataContainer.OnValueUpdated += UpdateOversUI;
+            _gameData.TotalWicketsCountDataContainer.OnValueUpdated += UpdateWicketsUI;
 
-            _totalWickets.OnValueUpdated += UpdateWicketsUI;
-            _wicketsLost.OnValueUpdated += UpdateWicketsUI;
-
-            _inputScore.OnValueUpdated += UpdateInputScoreUI;
-            _totalScore.OnValueUpdated += UpdateTotalScoreUI;
+            _playerStats.OversCount.OnValueUpdated += UpdateOversUI;
+            _playerStats.BallsCount.OnValueUpdated += UpdateOversUI;
+            _playerStats.TotalWicketsLost.OnValueUpdated += UpdateWicketsUI;
+            _playerStats.InputScore.OnValueUpdated += UpdateInputScoreUI;
+            _playerStats.TotalScore.OnValueUpdated += UpdateTotalScoreUI;
         }
 
         private void OnDisable()
         {
-            _totalOvers.OnValueUpdated -= UpdateOversUI;
-            _overCount.OnValueUpdated -= UpdateOversUI;
-            _ballCount.OnValueUpdated -= UpdateOversUI;
+            _gameData.TotalOversCountDataContainer.OnValueUpdated -= UpdateOversUI;
+            _gameData.TotalWicketsCountDataContainer.OnValueUpdated -= UpdateWicketsUI;
 
-            _totalWickets.OnValueUpdated -= UpdateWicketsUI;
-            _wicketsLost.OnValueUpdated -= UpdateWicketsUI;
-
-            _inputScore.OnValueUpdated -= UpdateInputScoreUI;
-            _totalScore.OnValueUpdated -= UpdateTotalScoreUI;
+            _playerStats.OversCount.OnValueUpdated -= UpdateOversUI;
+            _playerStats.BallsCount.OnValueUpdated -= UpdateOversUI;
+            _playerStats.TotalWicketsLost.OnValueUpdated -= UpdateWicketsUI;
+            _playerStats.InputScore.OnValueUpdated -= UpdateInputScoreUI;
+            _playerStats.TotalScore.OnValueUpdated -= UpdateTotalScoreUI;
         }
 
-        public void UpdatePlayingStateText() =>
-            _playingStateText.text = _hasStartedBatting.Value ? 
-            _battingText : _ballingText;
+        /// <summary>
+        /// This should be called at the start of each half, 
+        /// better from TurnController's OnNextHalfStarted event
+        /// </summary>
+        public void UpdatePlayingStateText() => _playingStateText.text = IsBatting ?
+            _gameConfig.BattingPlayStateText : _gameConfig.BallingPlayStateText;
 
         private void UpdateInputScoreUI() =>
-            _inputScoreText.text = _inputScore.Value.ToString();
+            _inputScoreText.text = _playerStats.InputScore.Value.ToString();
 
         private void UpdateTotalScoreUI() =>
-            _totalScoreText.text = _totalScore.Value.ToString();
+            _totalScoreText.text = _playerStats.TotalScore.Value.ToString();
 
         private void UpdateWicketsUI() =>
-            _totalWicketsText.text = $"{_wicketsLost.Value} / {_totalWickets.Value}";
+            _totalWicketsText.text = $"{_playerStats.TotalWicketsLost.Value} / {_gameData.TotalWicketsCountDataContainer.Value}";
 
         /// <summary>
         /// Here the over count of the game will be 1, but in the score board we show the first over as 0,
@@ -98,6 +82,6 @@ namespace CricketWithHand.UI
         /// they didn't even start playing, that time we wanna show 0 to the UI also, not -1, hence we use Mathf.Max
         /// </summary>
         private void UpdateOversUI() =>
-            _totalOversText.text = $"{Mathf.Max(0, _overCount.Value - 1)}.{_ballCount.Value} / {_totalOvers.Value.ToString()}";
+            _totalOversText.text = $"{Mathf.Max(0, _playerStats.OversCount.Value - 1)}.{_playerStats.BallsCount.Value} / {_gameData.TotalOversCountDataContainer.Value}";
     }
 }
