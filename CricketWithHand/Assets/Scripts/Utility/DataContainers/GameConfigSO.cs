@@ -53,6 +53,18 @@ namespace CricketWithHand.Utility
         private string _drawMessage;
         public string DrawMessage => _drawMessage;
 
+#if UNITY_EDITOR
+
+        [SerializeField]
+        private bool _useManualInputForAI;
+        public bool UseManualInputForAI => _useManualInputForAI;
+
+        [SerializeField]
+        private int _inputScoreOfAI;
+        public int InputScoreOfAI => _inputScoreOfAI;
+
+#endif
+
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 
 namespace CricketWithHand.Utility
 {
@@ -11,6 +12,21 @@ namespace CricketWithHand.Utility
     }
 
     [CreateAssetMenu(fileName = "BallDataContainer", menuName = "ScriptableObjects/DataContainers/BallDataContainer")]
-    public class BallDataContainerSO : GenericDataContainerSO<BallData> { }
+    public class BallDataContainerSO : GenericDataContainerSO<BallData> 
+    {
+        protected override void Log()
+        {
+            // Remove 'using' since StringBuilder doesn't require disposal
+            StringBuilder builder = new();
+
+            // Append each log line
+            builder.Append($"OverNumber: {Value.OverNumber} \n");
+            builder.Append($"BallNumber: {Value.BallNumber} \n");
+            builder.Append($"Score: {Value.Score} \n");
+            builder.Append($"IsWicketLost: {Value.IsWicketLost}");
+
+            _logArea = builder.ToString();
+        }
+    }
 }
 

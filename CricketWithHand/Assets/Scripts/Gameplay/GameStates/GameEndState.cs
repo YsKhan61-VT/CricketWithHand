@@ -6,12 +6,11 @@ namespace CricketWithHand.Gameplay
     {
         internal override GameStateCategory StateCategory => GameStateCategory.GameEnd;
 
-        internal GameEndState(
-            GameStateManager gameStateManager) : base(gameStateManager) { }
+        internal GameEndState(GameStateManager gameStateManager) : base(gameStateManager) { }
 
         internal override void Enter()
         {
-            StateManager.OnGameEnds?.Invoke();
+            stateManager.OnGameEnds?.Invoke();
         }
     }
 }

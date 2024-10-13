@@ -5873,6 +5873,8 @@ MonoBehaviour:
   _gameConfig: {fileID: 11400000, guid: a1b05e774e3880f42b5c29f34b398802, type: 2}
   _turnController: {fileID: 1988157923}
   _tossController: {fileID: 902392675}
+  _useManualInput: 1
+  _inputScore: 0
 --- !u!4 &842129734
 Transform:
   m_ObjectHideFlags: 0
@@ -8607,16 +8609,16 @@ PrefabInstance:
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1988157923}
+      objectReference: {fileID: 2115737126}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartHalf
+      value: StartSecondHalf
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713481, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
       propertyPath: Behaviours.Behaviours.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CricketWithHand.Gameplay.TurnController, Assembly-CSharp
+      value: CricketWithHand.Gameplay.GameStateManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4952301426718713482, guid: 9a5e342ab4f5c744d9f84c123e0b5f7b,
         type: 3}
@@ -12200,7 +12202,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnNextHalfStarted:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 330036699}
+        m_TargetAssemblyTypeName: CricketWithHand.UI.ClientUI, Assembly-CSharp
+        m_MethodName: UpdatePlayingStateText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 579993607}
+        m_TargetAssemblyTypeName: CricketWithHand.UI.ClientUI, Assembly-CSharp
+        m_MethodName: UpdatePlayingStateText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnNextOverStarted:
     m_PersistentCalls:
       m_Calls:
@@ -12308,7 +12334,6 @@ MonoBehaviour:
         m_CallState: 2
   _gameData: {fileID: 11400000, guid: 7c4d1994849cb3d488b93f1d3be0cd49, type: 2}
   _gameStateManager: {fileID: 2115737126}
-  _gameplayUIMediator: {fileID: 0}
 --- !u!1001 &1996877635
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16262,7 +16287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ac75d8059442fe85fb36ebf07c1dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controller: {fileID: 0}
+  Controller: {fileID: 1610121638}
   ShowAnimation:
     OnPlayCallback:
       m_PersistentCalls:

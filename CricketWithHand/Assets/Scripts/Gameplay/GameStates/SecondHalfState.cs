@@ -4,9 +4,11 @@
     {
         internal override GameStateCategory StateCategory => GameStateCategory.SecondHalf;
 
-        internal SecondHalfState(GameStateManager stateManager) : base(stateManager)
-        {
+        internal SecondHalfState(GameStateManager stateManager) : base(stateManager) {}
 
+        internal override void Enter()
+        {
+            stateManager.OnSecondHalfStarted?.Invoke();
         }
     }
 

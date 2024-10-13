@@ -11,11 +11,11 @@
     public abstract class GameState
     {
         internal abstract GameStateCategory StateCategory { get; }
-        protected GameStateManager StateManager { get; private set; }
+        protected GameStateManager stateManager { get; private set; }
 
         internal GameState(GameStateManager stateManager)
         {
-            StateManager = stateManager;
+            this.stateManager = stateManager;
         }
 
         internal virtual void Enter() { }

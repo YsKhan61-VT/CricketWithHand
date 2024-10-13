@@ -12,11 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79e1bdc6adb42b343895f83c5ae95b1f, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  _ballsPerOver: 2
+  _ballsPerOver: 1
   _turnDurationInSecs: 3
   _waitForSecsBeforeNextTurn: 3
-  _ownerWinningChance: 0.5
+  _ownerWinningChance: 1
   _aiBattingChance: 0.5
+  _ownerWinTossMessage: You won the toss!
+  _ownerLostTossMessage: You lost the toss!
+  _ownerWillBatMessage: You will be batting.
+  _ownerWillBallMessage: You will be balling.
   _winMessage: YOU WON THE GAME
   _lossMessage: YOU LOST THE GAME
   _drawMessage: IT'S A DRAW GAME
+  _useManualInputForAI: 1
+  _inputScoreOfAI: 1

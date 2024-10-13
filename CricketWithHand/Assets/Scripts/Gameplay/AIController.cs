@@ -15,9 +15,16 @@ namespace CricketWithHand.Gameplay
         [SerializeField]
         private TossController _tossController;
 
-
         public void GiveRandomInput()
         {
+#if UNITY_EDITOR
+            if (_gameConfig.UseManualInputForAI)
+            {
+                _turnController.RegisterOtherInput(_gameConfig.InputScoreOfAI);
+                return;
+            }
+#endif
+
             int score = Random.Range(1, 7);
             _turnController.RegisterOtherInput(score);
         }

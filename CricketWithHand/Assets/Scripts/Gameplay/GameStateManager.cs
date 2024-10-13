@@ -40,13 +40,9 @@ namespace CricketWithHand.Gameplay
             _gameEndState = new GameEndState(this);
         }
 
-        public void StartFirstHalf()
-        {
-            _currentGameState?.Exit();
-            _currentGameState = _firstHalfState;
-            _currentGameStateCategory.UpdateData(_currentGameState.StateCategory);
-            _currentGameState?.Enter();
-        }
+        public void StartFirstHalf() => ChangeGameState(GameStateCategory.FirstHalf);
+
+        public void StartSecondHalf() => ChangeGameState(GameStateCategory.SecondHalf);
 
         public void ChangeGameState(GameStateCategory state)
         {
@@ -56,7 +52,7 @@ namespace CricketWithHand.Gameplay
             _currentGameState?.Enter();
         }
 
-        public GameState ChooseState(GameStateCategory state)
+        private GameState ChooseState(GameStateCategory state)
         {
             switch (state)
             {

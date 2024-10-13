@@ -43,9 +43,6 @@ namespace CricketWithHand.Gameplay
         [SerializeField]
         GameStateManager _gameStateManager;
 
-        [SerializeField]
-        TurnSliderUI _gameplayUIMediator;
-
         int _totalScore
         {
             get
@@ -222,13 +219,17 @@ namespace CricketWithHand.Gameplay
 
         public void StartHalf()
         {
-            if (!PassPreChecks()) return;
+            if (!PassPreChecks())
+            {
+                Debug.LogError("Pre Checks not passed!");
+                return;
+            }
 
             ResetForNewHalf();
 
             OnNextHalfStarted?.Invoke();
 
-            _currentOverCount++;
+            StartNextOver();
 
             StartNextTurn();
         }
@@ -266,7 +267,7 @@ namespace CricketWithHand.Gameplay
 
             if (IsCurrentOverComplete() && !HasLastOverOfThisHalfEnded())
             {
-                _currentOverCount++;
+                StartNextOver();
             }
 
             StartNextTurn();
@@ -297,6 +298,12 @@ namespace CricketWithHand.Gameplay
                 _pauseCountdown = true;
                 return true;
             }
+        }
+
+        void StartNextOver()
+        {
+            _currentOverCount++;
+            OnNextOverStarted?.Invoke();
         }
 
         void StartNextTurn()
@@ -352,10 +359,7 @@ namespace CricketWithHand.Gameplay
             _totalWicketsLost == _gameData.TotalWicketsCountDataContainer.Value : 
             _totalWicketsLost == _gameData.TotalWicketsCountDataContainer.Value;
 
-        /// <summary>
-        /// Have both the teams started to bat?. The second half batting team might be still batting.
-        /// </summary>
-        bool HaveBothPlayersStartedBat() => _gameData.HasOwnerBattingStarted.Value && _gameData.HasOtherBattingStarted;
+        bool IsSecondHalf() => _gameData.CurrentGameStateCategory.Value == GameStateCategory.SecondHalf;
 
         /// <summary>
         /// Is the current over the last over of this half(1st half or 2nd half)
@@ -365,12 +369,12 @@ namespace CricketWithHand.Gameplay
         /// <summary>
         /// Both teams started batting and Has the owner's score crossed the other's score
         /// </summary>
-        bool HasOwnerWon() => HaveBothPlayersStartedBat() && _gameData.IsOwnerBatting && _gameData.OwnerTotalScoreContainer.Value > _gameData.OtherTotalScoreContainer.Value;
+        bool HasOwnerWon() => IsSecondHalf() && _gameData.IsOwnerBatting && _gameData.OwnerTotalScoreContainer.Value > _gameData.OtherTotalScoreContainer.Value;
 
         /// <summary>
         /// Both teams started batting and Has the other team's score crossed the owner's score
         /// </summary>
-        bool HasOtherWon() => HaveBothPlayersStartedBat() && !_gameData.IsOwnerBatting && _gameData.OtherTotalScoreContainer.Value > _gameData.OwnerTotalScoreContainer.Value;
+        bool HasOtherWon() => IsSecondHalf() && !_gameData.IsOwnerBatting && _gameData.OtherTotalScoreContainer.Value > _gameData.OwnerTotalScoreContainer.Value;
 
         /// <summary>
         /// [ If the second half batting team is all out OR
@@ -382,13 +386,13 @@ namespace CricketWithHand.Gameplay
         /// <summary>
         /// If both teams have batted AND second half batting team is all out.
         /// </summary>
-        bool IsSecondHalfBattingTeamAllOut() => HaveBothPlayersStartedBat() && IsCurrentHalfBattingTeamAllOut();
+        bool IsSecondHalfBattingTeamAllOut() => IsSecondHalf() && IsCurrentHalfBattingTeamAllOut();
 
         /// <summary>
         /// If both teams started to bat,
         /// Has the second half batting team finished the total overs to be played.
         /// </summary>
-        bool HasSecondHalfTotalOversEnded() => HaveBothPlayersStartedBat() && HasLastOverOfThisHalfEnded();
+        bool HasSecondHalfTotalOversEnded() => IsSecondHalf() && HasLastOverOfThisHalfEnded();
 
         /// <summary>
         /// If this conditions match, we end the game.

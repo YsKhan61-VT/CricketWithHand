@@ -7,7 +7,7 @@ namespace CricketWithHand.Utility
     public abstract class GenericDataContainerSO<T> : ScriptableObject
     {
         [SerializeField, TextArea(2, 2)]
-        private string _logArea;
+        protected string _logArea;
 
         public Action OnValueUpdated;
 

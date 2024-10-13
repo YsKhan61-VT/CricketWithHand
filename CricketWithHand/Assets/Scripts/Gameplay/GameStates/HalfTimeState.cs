@@ -5,13 +5,11 @@
         internal override GameStateCategory StateCategory => GameStateCategory.HalfTime;
 
         internal HalfTimeState(
-            GameStateManager stateManager) : base(stateManager)
-        {
-        }
+            GameStateManager stateManager) : base(stateManager) {}
 
         internal override void Enter()
         {
-            StateManager.OnHalfTimeStarted?.Invoke();
+            stateManager.OnHalfTimeStarted?.Invoke();
         }
     }
 

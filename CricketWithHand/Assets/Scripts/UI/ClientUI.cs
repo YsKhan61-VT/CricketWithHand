@@ -62,7 +62,6 @@ namespace CricketWithHand.UI
             _totalWickets.OnValueUpdated += UpdateWicketsUI;
             _wicketsLost.OnValueUpdated += UpdateWicketsUI;
 
-            _hasStartedBatting.OnValueUpdated += UpdatePlayingStateText;
             _inputScore.OnValueUpdated += UpdateInputScoreUI;
             _totalScore.OnValueUpdated += UpdateTotalScoreUI;
         }
@@ -76,12 +75,11 @@ namespace CricketWithHand.UI
             _totalWickets.OnValueUpdated -= UpdateWicketsUI;
             _wicketsLost.OnValueUpdated -= UpdateWicketsUI;
 
-            _hasStartedBatting.OnValueUpdated -= UpdatePlayingStateText;
             _inputScore.OnValueUpdated -= UpdateInputScoreUI;
             _totalScore.OnValueUpdated -= UpdateTotalScoreUI;
         }
 
-        private void UpdatePlayingStateText() =>
+        public void UpdatePlayingStateText() =>
             _playingStateText.text = _hasStartedBatting.Value ? 
             _battingText : _ballingText;
 
@@ -94,7 +92,12 @@ namespace CricketWithHand.UI
         private void UpdateWicketsUI() =>
             _totalWicketsText.text = $"{_wicketsLost.Value} / {_totalWickets.Value}";
 
+        /// <summary>
+        /// Here the over count of the game will be 1, but in the score board we show the first over as 0,
+        /// hence we subtract one from the actual over count. But, at start of game, when over count is zero for each client, as
+        /// they didn't even start playing, that time we wanna show 0 to the UI also, not -1, hence we use Mathf.Max
+        /// </summary>
         private void UpdateOversUI() =>
-            _totalOversText.text = $"{_overCount.Value}.{_ballCount.Value} / {_totalOvers.Value.ToString()}";
+            _totalOversText.text = $"{Mathf.Max(0, _overCount.Value - 1)}.{_ballCount.Value} / {_totalOvers.Value.ToString()}";
     }
 }

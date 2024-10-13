@@ -86,19 +86,29 @@ namespace CricketWithHand.Gameplay
             }
         }
 
+        /// <summary>
+        /// Here the over count of the game will be 1, but in the score board we show the first over as 0,
+        /// hence we subtract one from the actual over count. But, at start of game, when over count is zero for each client, as
+        /// they didn't even start playing, that time we wanna show 0 to the UI also, not -1, hence we use Mathf.Max
+        /// </summary>
         private void OnOwnerBallDataUpdated()
         {
             BallData ballData = _ownerBallDataContainer.Value;
             if (ballData.OverNumber <= 0) return;
-            _ownerOverStatsUIs[ballData.BallNumber - 1].UpdateScoreInBallText(
+            _ownerOverStatsUIs[Mathf.Max(0, ballData.OverNumber - 1)].UpdateScoreInBallText(
                 ballData.BallNumber, ballData.Score, ballData.IsWicketLost);
         }
 
+        /// <summary>
+        /// Here the over count of the game will be 1, but in the score board we show the first over as 0,
+        /// hence we subtract one from the actual over count. But, at start of game, when over count is zero for each client, as
+        /// they didn't even start playing, that time we wanna show 0 to the UI also, not -1, hence we use Mathf.Max
+        /// </summary>
         private void OnOtherBallDataUpdated()
         {
             BallData ballData = _otherBallDataContainer.Value;
             if (ballData.OverNumber <= 0) return;
-            _otherOverStatsUIs[ballData.BallNumber - 1].UpdateScoreInBallText(
+            _otherOverStatsUIs[Mathf.Max(0, ballData.OverNumber - 1)].UpdateScoreInBallText(
                 ballData.BallNumber, ballData.Score, ballData.IsWicketLost);
         }
 
